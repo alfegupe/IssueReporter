@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block nav %}
+    <nav>
+        <div class="nav-wrapper">
+        <a href="#" class="brand-logo"> AXL</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <h3>Ingreso de usuarios</h3>
+    <div class="row login-panel">
+        <div class="col l4 m4 s4 offset-l4 offset-m4 offset-s4">
+            <form method="post" role="form">
+                {% csrf_token %}
+                {{ form.username }}
+                {{ form.password }}
+                <input type="submit" value="Login"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}
