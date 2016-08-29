@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 
@@ -33,9 +34,13 @@ class TypeIssue(models.Model):
 
 
 class Person(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     identification = models.CharField(max_length=20)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -83,6 +88,9 @@ class Issue(models.Model):
     image2 = models.ImageField(
         upload_to='uploads/s', height_field=1000, width_field=1000,
         max_length=100, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('issue-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.issue

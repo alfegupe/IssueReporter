@@ -52,6 +52,7 @@ class LoginRequiredMixin(object):
 class IssueListView(LoginRequiredMixin, ListView):
     model = Issue
     template_name = 'bugtracker/issues.html'
+    paginate_by = 10
 
 
 class IssueCreateView(LoginRequiredMixin, CreateView):
@@ -68,10 +69,21 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
             person = Person.objects.get(user=self.request.user)
             form.instance.reporter = person
         except:
-            self.error_messages['caps'] = 'Hey, that CAPSLOCK is on!!!'
             return super(IssueCreateView, self).form_invalid(form)
 
         return super(IssueCreateView, self).form_valid(form)
+
+
+class IssueUpdateView(LoginRequiredMixin, CreateView):
+    model = Issue
+    fields = [
+        'issue', 'description', 'software', 'headquarter', 'browser',
+        'priority', 'type_issue', 'dev', 'ticket'
+    ]
+    slug_field = 'id'
+    template_name = 'bugtracker/update.html'
+    success_url = reverse_lazy('home')
+
 
 class IssueDetailView(LoginRequiredMixin, DetailView):
     model = Issue

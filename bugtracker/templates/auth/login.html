@@ -15,9 +15,13 @@
         <div class="col l4 m4 s4 offset-l4 offset-m4 offset-s4">
             <form method="post" role="form">
                 {% csrf_token %}
-                {{ form.username }}
-                {{ form.password }}
-                <input type="submit" value="Login"/>
+                <div class="input-field">
+                    {{ form.username }}
+                </div>
+                <div class="input-field">
+                    {{ form.password }}
+                </div>
+                <input class="btn" type="submit" value="Login"/>
             </form>
         </div>
     </div>

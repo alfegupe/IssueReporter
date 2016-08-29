@@ -12,9 +12,27 @@
 
 {% block content %}
     <h3>Incidencias</h3>
-    <ul>
+    <table class="table-of-contents">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Nombre</td>
+            <td>Prioridad</td>
+            <td>Tipo</td>
+            <td>Estado</td>
+        </tr>
+        </thead>
+        <tbody>
         {% for issue in object_list %}
-            <li>{{ issue.issue }}</li>
+            <tr>
+                <td>{{ issue.id }}</td>
+                <td>{{ issue.issue }}</td>
+                <td>{{ issue.priority }}</td>
+                <td>{{ issue.type_issue }}</td>
+                <td>{{ issue.status }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
+
 {% endblock %}
