@@ -12,6 +12,20 @@ class SoftwareIssue(models.Model):
         return self.software
 
 
+class PriorityIssue(models.Model):
+    priority = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.priority
+
+
+class StatusIssue(models.Model):
+    status = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.status
+
+
 class Headquarter(models.Model):
     headquarter = models.CharField(max_length=200)
 
@@ -49,34 +63,15 @@ class Person(models.Model):
 
 
 class Issue(models.Model):
-    PRIORITY_CHOICES = (
-        ('1', 'Baja'),
-        ('2', 'Normal'),
-        ('3', 'Importante'),
-        ('4', 'Urgente'),
-    )
-    STATUS_CHOICES = (
-        ('n', 'Nueva'),
-        ('a', 'Solucionada'),
-        ('d', 'Desarrollo'),
-        ('r', 'Rechazada'),
-    )
     issue = models.CharField(max_length=300)
     description = models.TextField()
     software = models.ForeignKey(SoftwareIssue, on_delete=models.CASCADE)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
     browser = models.ForeignKey(BrowserIssue, on_delete=models.CASCADE)
-    priority = models.CharField(
-        max_length=1,
-        choices=PRIORITY_CHOICES,
-        default='2',
-    )
+    priority = models.ForeignKey(PriorityIssue, on_delete=models.CASCADE)
     type_issue = models.ForeignKey(TypeIssue, on_delete=models.CASCADE)
-    status = models.CharField(
-        max_length=1,
-        choices=STATUS_CHOICES,
-        default='n',
-    )
+    status = models.ForeignKey(
+        StatusIssue, on_delete=models.CASCADE, blank=True, null=True)
     dev = models.ForeignKey(
         Person, on_delete=models.CASCADE, null=True, related_name='Developer')
     ticket = models.CharField(max_length=6, null=True, blank=True)
