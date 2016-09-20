@@ -10,12 +10,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">BugTracker</a>
+          <a class="navbar-brand" href="#">
+              <i class="fa fa-home"></i>
+          </a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="../../admin">Panel de Administración</a></li>
           </ul>
         </div>
       </div>
@@ -24,7 +26,19 @@
 {% block content %}
 
     <div class="row login-panel">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
+        <div class="col-lg-9 col-md-8 col-sm-8 hidden-xs">
+            <div class="jumbotron">
+                <h2>Reporte de incidencias</h2>
+                <p>
+                    Sistema para reportar incidencias (errores, ajustes o mejoras)
+                    de los diferentes aplicativos desarrollados y soportados por
+                    la oficina de Sistemas de información de la Universidad de
+                    Santander UDES y su equipo de trabajo.
+                </p>
+{#                <p><a class="btn btn-primary" href="#" role="button">Learn more</a></p>#}
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-4">
             <h3>Ingreso de usuarios</h3>
             {% if message %}
                 <p class="text-danger">{{ message }}</p>

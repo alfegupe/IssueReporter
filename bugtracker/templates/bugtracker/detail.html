@@ -1,10 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Issue</title>
-</head>
-<body>
-    Detail
-</body>
-</html>
+{% extends "bugtracker/index.html" %}
+{% block content %}
+    <div class="page-header">
+        <h3>Incidencia #{{ issue.id }}</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Nombre:</th>
+                        <td>{{ issue.issue }}</td>
+                    </tr>
+                    <tr>
+                        <th>Descripción:</th>
+                        <td>{{ issue.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Software:</th>
+                        <td>{{ issue.software }}</td>
+                    </tr>
+                    <tr>
+                        <th>Sede:</th>
+                        <td>{{ issue.headquarter }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prioridad:</th>
+                        <td>{{ issue.priority }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tipo:</th>
+                        <td>{{ issue.type_issue }}</td>
+                    </tr>
+                    <tr>
+                        <th>Estado:</th>
+                        <td>
+                            {% if issue.status %}
+                                {{ issue.status }}
+                            {% else %}
+                                Nueva
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Asignada a:</th>
+                        <td>
+                            {% if issue.dev %}
+                                {{ issue.dev }}
+                            {% else %}
+                                No asignada
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Ticket:</th>
+                        <td>
+                            {% if issue.ticket %}
+                                {{ issue.ticket }}
+                            {% else %}
+                                No asignado
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Reportado por:</th>
+                        <td>{{ issue.reporter }}</td>
+                    </tr>
+                    {% if issue.image1 %}
+                        <tr>
+                            <th>Imagen 1:</th>
+                            <td>
+                                <small class="text-muted">
+                                    {{ issue.image1 }} |
+                                    <a href="{{ MEDIA_URL }}{{ issue.image1 }}" target="_blank">Ver imagen.</a>
+                                </small>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if issue.image2 %}
+                        <tr>
+                            <th>Imagen 2:</th>
+                            <td>
+                                <small class="text-muted">
+                                    {{ issue.image2 }} |
+                                    <a href="{{ MEDIA_URL }}{{ issue.image2 }}" target="_blank">Ver imagen.</a>
+                                </small>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            {% if issue.image1 %}
+                <figure>
+                    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ issue.image1 }}">
+                    <figcaption>
+                        <small class="text-muted">
+                            {{ issue.image1 }}
+                            <a href="{{ MEDIA_URL }}{{ issue.image1 }}" target="_blank">Ver imagen.</a>
+                        </small>
+                    </figcaption>
+                </figure>
+                <hr>
+            {% endif %}
+            {% if issue.image2 %}
+                <figure>
+                    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ issue.image2 }}">
+                    <figcaption>
+                        <small class="text-muted">
+                            {{ issue.image2 }}
+                            <a href="{{ MEDIA_URL }}{{ issue.image2 }}" target="_blank">Ver imagen.</a>
+                        </small>
+                    </figcaption>
+                </figure>
+            {% endif %}
+        </div>
+    </div>
+
+    <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
+        <i class="fa fa-reply"></i> Volver
+    </a>
+{% endblock %}

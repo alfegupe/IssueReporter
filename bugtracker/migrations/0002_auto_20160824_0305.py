@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='issue',
             name='image1',
-            field=models.ImageField(blank=True, height_field=1000, upload_to='uploads/', width_field=1000),
+            field=models.ImageField(blank=True, height_field=1000, upload_to='media/', width_field=1000),
         ),
         migrations.AlterField(
             model_name='issue',
             name='image2',
-            field=models.ImageField(blank=True, height_field=1000, upload_to='uploads/s', width_field=1000),
+            field=models.ImageField(blank=True, height_field=1000, upload_to='media/s', width_field=1000),
         ),
         migrations.AlterField(
             model_name='issue',

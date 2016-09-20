@@ -64,12 +64,22 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'bugtracker/static')
+
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
+SITE_ROOT = PROJECT_ROOT
+
+# MEDIA_ROOT = os.path.join(os.path.dirname(SITE_ROOT), '../bugtracker/static/../media')
+MEDIA_ROOT = os.path.join(os.path.dirname(SITE_ROOT), 'media')
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(os.path.dirname(SITE_ROOT), 'static')
+STATIC_PATH = STATIC_ROOT
 STATIC_URL = '/static/'
 
 WSGI_APPLICATION = 'axl.wsgi.application'
@@ -111,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-co'
 
 TIME_ZONE = 'UTC'
 
@@ -120,9 +130,3 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
-STATIC_URL = '/static/'

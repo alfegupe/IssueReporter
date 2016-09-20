@@ -1,85 +1,55 @@
-{% extends "base.html" %}
-{% block nav %}
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BugTracker</a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="{% url 'home' %}">Inicio</a></li>
-            <li><a href="{% url 'logout' %}">Salir</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-{% endblock %}
-
+{% extends "bugtracker/index.html" %}
 {% block content %}
     <h3>Actualizar incidencia</h3>
     <div class="row">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="col l6 m6 s12">
-                <div class="input-field col s12 m12 l12">
-                    {{ form.issue }}
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="input-field col-sm-12 col-md-12 col-lg-12">
                     <label>Título:</label>
+                    {{ form.issue }}
                 </div>
-                <div class="col s12 m12 l12">
+                <div class="col-sm-12 col-md-12 col-lg-12">
                     <label>Descripción:</label>
                     {{ form.description }}
                 </div>
-                <div class="col s12 m12 l12 file-field input-field">
+                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
                   <div class="btn-flat">
                     <span>Imagen1 (Opcional)</span>
                     {{ form.image1 }}
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text">
-                  </div>
                 </div>
-                <div class="col s12 m12 l12 file-field input-field">
+                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
                   <div class="btn-flat">
                     <span>Imagen2 (Opcional)</span>
                     {{ form.image2 }}
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text">
-                  </div>
                 </div>
             </div>
-            <div class="col l6 m6 s12">
-                <div class="input-field">
-                    {{ form.software }}
+            <div class="col-lg-6 col-md-6 col-sm-12">
+
                     <label>Software:</label>
-                </div>
-                <div class="input-field">
-                    {{ form.headquarter }}
+                    {{ form.software }}
+
+
                     <label>Sede:</label>
-                </div>
-                <div class="input-field">
-                    {{ form.browser }}
+                    {{ form.headquarter }}
+
+
                     <label>Navegador:</label>
-                </div>
-                <div class="input-field">
-                    {{ form.priority }}
+                    {{ form.browser }}
+
+
                     <label>Prioridad:</label>
-                </div>
-                <div class="input-field">
-                    {{ form.type_issue }}
+                    {{ form.priority }}
+
+
                     <label>Tipo:</label>
-                </div>
+                    {{ form.type_issue }}
+
             </div>
 
-            <input class="btn" type="submit" value="Actualizar incidencia">
+            <input class="btn btn-success" type="submit" value="Actualizar incidencia">
         </form>
     </div>
 

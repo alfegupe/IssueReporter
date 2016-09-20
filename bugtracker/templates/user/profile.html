@@ -1,0 +1,11 @@
+{% extends "bugtracker/index.html" %}
+{% block content %}
+    <h3>Perfil</h3>
+    <ul>
+        <li>Usuario: {{ user.username }}</li>
+        <li>Nombres: {{ user.first_name }}</li>
+        <li>Apellidos: {{ user.last_name }}</li>
+        <li>Email: {{ user.email }}</li>
+        <li>Ultimo login: {{ user.last_login }}</li>
+    </ul>
+{% endblock %}

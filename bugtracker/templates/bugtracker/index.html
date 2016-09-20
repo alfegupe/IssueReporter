@@ -1,23 +1,22 @@
 {% extends "base.html" %}
 {% block nav %}
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+    {% include "includes/menu.html" %}
+{% endblock %}
 
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BugTracker</a>
-        </div>
+{% block content %}
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="{% url 'login' %}">Login</a></li>
-          </ul>
+    <div class="row login-panel">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="jumbotron">
+                <h2>Reporte de incidencias</h2>
+                <p>
+                    Sistema para reportar incidencias (errores, ajustes o mejoras)
+                    de los diferentes aplicativos desarrollados y soportados por
+                    la oficina de Sistemas de información de la Universidad de
+                    Santander UDES y su equipo de trabajo.
+                </p>
+{#                <p><a class="btn btn-primary" href="#" role="button">Learn more</a></p>#}
+            </div>
         </div>
-      </div>
-    </nav>
+    </div>
 {% endblock %}

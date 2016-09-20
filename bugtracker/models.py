@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class SoftwareIssue(models.Model):
@@ -77,12 +78,12 @@ class Issue(models.Model):
     ticket = models.CharField(max_length=6, null=True, blank=True)
     reporter = models.ForeignKey(
         Person, on_delete=models.CASCADE, related_name='Persons')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     image1 = models.ImageField(
-        upload_to='uploads/', height_field=1000, width_field=1000,
-        max_length=100, blank=True)
+        upload_to='uploads/', max_length=1500, blank=True)
     image2 = models.ImageField(
-        upload_to='uploads/s', height_field=1000, width_field=1000,
-        max_length=100, blank=True)
+        upload_to='uploads/', max_length=1500, blank=True)
 
     def get_absolute_url(self):
         return reverse('issue-detail', kwargs={'pk': self.pk})
