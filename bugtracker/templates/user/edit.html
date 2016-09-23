@@ -1,0 +1,32 @@
+{% extends "bugtracker/index.html" %}
+{% block content %}
+    <h3>Actualización de datos</h3>
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="input-field col-sm-12 col-md-12 col-lg-12">
+                    <label>Usuario:</label>
+                    {{ form.username }}
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <label>Nombres:</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <label>Apellidos:</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <label>Email:</label>
+                    {{ form.email }}
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <hr>
+                    <button type="submit" class="btn btn-success btn-sm">Guardar datos</button>
+                    <a class="btn btn-default btn-sm" href="{{request.META.HTTP_REFERER}}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

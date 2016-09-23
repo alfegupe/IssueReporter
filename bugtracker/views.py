@@ -6,14 +6,15 @@ from django.views.generic import ListView, DetailView, DeleteView, CreateView, \
 from django.views.generic.edit import UpdateView
 from .models import Issue, Person
 # Authentication imports
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, \
+    update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
-from django import forms
-from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm
+from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
+    UpdateDataUserForm, UpdatePasswordUserForm
 from django.contrib.auth.decorators import permission_required
 
 
@@ -60,6 +61,45 @@ class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'user/profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'u_name'
+
+
+class UpdateDataUserView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'user/edit.html'
+    form_class = UpdateDataUserForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'profile',
+            kwargs={'u_name': self.request.user.username}
+        )
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_username(self):
+        return self.request.user.username
+
+
+def update_password(request):
+    message = None
+    form = UpdatePasswordUserForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            current_pass = form.cleaned_data['password']
+            new_pass = form.cleaned_data['new_password']
+            if authenticate(
+                    username=request.user.username, password=current_pass
+            ):
+                request.user.set_password(new_pass)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                message = 'Password actualizado.'
+            else:
+                message = 'El password actual es incorrecto'
+
+    context = {'form': form, 'message': message}
+    return render(request, 'user/update_password.html', context)
 
 
 class IssueListView(LoginRequiredMixin, ListView):

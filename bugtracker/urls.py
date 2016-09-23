@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from .views import IndexView, LoginView, LogoutView, IssueListView, \
-    IssueCreateView, IssueDetailView, IssueUpdateView, ProfileView
+    IssueCreateView, IssueDetailView, IssueUpdateView, ProfileView, \
+    UpdateDataUserView, update_password
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -8,6 +9,8 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(), name="logout"),
     url(r'^profile/(?P<u_name>[-_\w]+)/$', ProfileView.as_view(),
         name="profile"),
+    url(r'^update_user/$', UpdateDataUserView.as_view(), name="update_user"),
+    url(r'^update_password/$', update_password, name="update_password"),
     url(r'^home/$', IssueListView.as_view(), name='home'),
     url(r'^create/$', IssueCreateView.as_view(), name='create'),
     url(r'^detail/(?P<id_issue>[-_\w]+)/$', IssueDetailView.as_view(),

@@ -65,6 +65,14 @@
                         <th>Reportado por:</th>
                         <td>{{ issue.reporter }}</td>
                     </tr>
+                    <tr>
+                        <th>Fecha creación:</th>
+                        <td>{{ issue.created_at }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha ult. modif.:</th>
+                        <td>{{ issue.updated_at }}</td>
+                    </tr>
                     {% if issue.image1 %}
                         <tr>
                             <th>Imagen 1:</th>
