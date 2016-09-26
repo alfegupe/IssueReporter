@@ -7,28 +7,36 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'index' %}">
                 <i class="fa fa-home"></i>
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            {% if user.is_authenticate %}
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'home' %}">Incidencias</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticate %}
                 <li>
                     <a href="{% url 'profile' user.username %}">
                         {{ user.first_name }} {{ user.last_name }}
                     </a>
                 </li>
-                {% endif %}
                 <li>
                     <a href="{% url 'logout' %}">
                       Salir <i class="fa fa-sign-out"></i>
                     </a>
                 </li>
             </ul>
+            {% else %}
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{% url 'login' %}">
+                        Login
+                    </a>
+                </li>
+            </ul>
+            {% endif %}
         </div>
     </div>
 </nav>
