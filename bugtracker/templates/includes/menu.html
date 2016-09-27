@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            {% if user.is_authenticate %}
+            {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'home' %}">Incidencias</a></li>
             </ul>
