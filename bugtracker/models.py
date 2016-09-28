@@ -49,6 +49,13 @@ class TypeIssue(models.Model):
         return self.type_issue
 
 
+class CategoryIssue(models.Model):
+    category_issue = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.category_issue
+
+
 class Person(models.Model):
     user = models.OneToOneField(
         User,
@@ -72,6 +79,7 @@ class Issue(models.Model):
     browser = models.ForeignKey(BrowserIssue, on_delete=models.CASCADE)
     priority = models.ForeignKey(PriorityIssue, on_delete=models.CASCADE)
     type_issue = models.ForeignKey(TypeIssue, on_delete=models.CASCADE)
+    category_issue = models.ForeignKey(CategoryIssue, on_delete=models.CASCADE)
     status = models.ForeignKey(
         StatusIssue, on_delete=models.CASCADE, blank=True, null=True)
     dev = models.ForeignKey(

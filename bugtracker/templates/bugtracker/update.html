@@ -38,12 +38,19 @@
                 {% if form.dev and form.status and form.ticket %}
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <hr>
-                        <label>Asignar a:</label>
-                        {{ form.dev }}
-                        <label>Estado:</label>
-                        {{ form.status }}
-                        <label>Ticket:</label>
-                        {{ form.ticket }}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Visible por Administradores y desarrolladores</strong>
+                            </div>
+                            <div class="panel-body">
+                                <label>Asignar a:</label>
+                                {{ form.dev }}
+                                <label>Estado:</label>
+                                {{ form.status }}
+                                <label>Ticket:</label>
+                                {{ form.ticket }}
+                            </div>
+                        </div>
                     </div>
                 {% endif %}
 
@@ -64,6 +71,10 @@
 
                 <label>Tipo:</label>
                 {{ form.type_issue }}
+
+                <label>Categoría:</label>
+                {{ form.category_issue }}
+
                 <br />
                 <input class="btn btn-success" type="submit" value="Actualizar incidencia">
 

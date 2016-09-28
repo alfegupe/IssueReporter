@@ -5,17 +5,6 @@ from django.forms import modelformset_factory
 from models import *
 
 """
-Functions - Validators
-"""
-
-def must_be_gt(value):
-    if len(value) < 5:
-        raise forms.ValidationError(
-            'Este campo debe tener al menos 5 caracteres')
-    return value
-
-
-"""
 Classes
 """
 
@@ -85,8 +74,9 @@ class CreateIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-         'issue', 'description', 'software', 'headquarter', 'browser',
-         'priority', 'type_issue', 'image1', 'image2', 'status'
+            'issue', 'description', 'software', 'headquarter', 'browser',
+            'priority', 'type_issue', 'category_issue', 'image1', 'image2',
+            'status',
         ]
         widgets = {
             'issue': forms.TextInput(
@@ -99,6 +89,7 @@ class CreateIssueForm(forms.ModelForm):
             'browser': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'type_issue': forms.Select(attrs={'class': 'form-control'}),
+            'category_issue': forms.Select(attrs={'class': 'form-control'}),
         }
 
 
@@ -107,8 +98,9 @@ class UpdateIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-         'issue', 'description', 'software', 'headquarter', 'browser',
-         'priority', 'type_issue', 'image1', 'image2', 'status'
+            'issue', 'description', 'software', 'headquarter', 'browser',
+            'priority', 'type_issue', 'category_issue', 'image1', 'image2',
+            'status',
         ]
         widgets = {
             'issue': forms.TextInput(
@@ -121,6 +113,7 @@ class UpdateIssueForm(forms.ModelForm):
             'browser': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'type_issue': forms.Select(attrs={'class': 'form-control'}),
+            'category_issue': forms.Select(attrs={'class': 'form-control'})
         }
 
 
@@ -130,8 +123,8 @@ class UpdateIssueAdminForm(forms.ModelForm):
         model = Issue
         fields = [
             'issue', 'description', 'software', 'headquarter', 'browser',
-            'priority', 'type_issue', 'image1', 'image2', 'status', 'dev',
-            'ticket',
+            'priority', 'type_issue', 'category_issue', 'image1', 'image2',
+            'status', 'dev', 'ticket',
         ]
         widgets = {
             'issue': forms.TextInput(
@@ -144,6 +137,7 @@ class UpdateIssueAdminForm(forms.ModelForm):
             'browser': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'type_issue': forms.Select(attrs={'class': 'form-control'}),
+            'category_issue': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'dev': forms.Select(attrs={'class': 'form-control'}),
             'ticket': forms.TextInput(
