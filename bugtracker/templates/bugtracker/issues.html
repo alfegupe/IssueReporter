@@ -43,6 +43,17 @@
         </div>
     </div>
     <hr>
+
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="text-danger {{ message.tags }}"{% endif %}>
+                {{ message }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if object_list %}
         <table class="table table-bordered table-stripped">
             <thead>

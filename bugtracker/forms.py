@@ -124,6 +124,33 @@ class UpdateIssueForm(forms.ModelForm):
         }
 
 
+class UpdateIssueAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Issue
+        fields = [
+            'issue', 'description', 'software', 'headquarter', 'browser',
+            'priority', 'type_issue', 'image1', 'image2', 'status', 'dev',
+            'ticket',
+        ]
+        widgets = {
+            'issue': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Incidencia'}),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Descripcion',
+                       'rows': 3}),
+            'software': forms.Select(attrs={'class': 'form-control'}),
+            'headquarter': forms.Select(attrs={'class': 'form-control'}),
+            'browser': forms.Select(attrs={'class': 'form-control'}),
+            'priority': forms.Select(attrs={'class': 'form-control'}),
+            'type_issue': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'dev': forms.Select(attrs={'class': 'form-control'}),
+            'ticket': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Ticket'}),
+        }
+
+
 class SearchIssueForm(forms.ModelForm):
 
     class Meta:

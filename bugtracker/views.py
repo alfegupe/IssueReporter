@@ -3,6 +3,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django import forms
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, \
     FormView, TemplateView, RedirectView, View
 from django.views.generic.edit import UpdateView
@@ -16,8 +17,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
-    UpdateDataUserForm, UpdatePasswordUserForm
-from django.contrib.auth.decorators import permission_required
+    UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm
+from django.contrib import messages
+
+
+def is_member(user, group):
+    return user.groups.filter(name=group).exists()
 
 
 class IndexView(TemplateView):
@@ -117,7 +122,8 @@ class IssueListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         query = self.get_params_search()
-        if not self.request.user.is_superuser:
+        if not self.request.user.is_superuser and \
+                not is_member(self.request.user, 'Developer'):
             query['reporter'] = Person.objects.get(user=self.request.user)
         return self.model.objects.filter(**query)
 
@@ -138,20 +144,24 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
     form_class = CreateIssueForm
     template_name = 'bugtracker/create.html'
     login_url = 'login'
+    message = None
     success_url = reverse_lazy('home')
-
-    def has_add_permission(self, request, obj=None):
-        return False
 
     def form_valid(self, form):
         try:
             person = Person.objects.get(user=self.request.user)
+            if not person or not \
+                    is_member(self.request.user, 'Reporter'):
+                messages.error(
+                    self.request,
+                    'Usuario no tiene permisos para reportar incidencias.'
+                )
+                return super(IssueCreateView, self).form_invalid(form)
             form.instance.reporter = person
+            return super(IssueCreateView, self).form_valid(form)
         except Exception as e:
             print e.message
             return super(IssueCreateView, self).form_invalid(form)
-
-        return super(IssueCreateView, self).form_valid(form)
 
 
 class IssueUpdateView(LoginRequiredMixin, UpdateView):
@@ -162,6 +172,47 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UpdateIssueForm
     login_url = 'login'
     success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_superuser or \
+                is_member(self.request.user, 'Developer'):
+            self.form_class = UpdateIssueAdminForm
+
+        return super(IssueUpdateView, self).get_context_data()
+
+    def form_valid(self, form):
+        try:
+            person = Person.objects.get(user=self.request.user)
+            if not person:
+                messages.error(
+                    self.request,
+                    'Usuario no existe como Persona en la base de datos.'
+                )
+                return super(IssueUpdateView, self).form_invalid(form)
+            if not self.request.user.is_superuser and \
+                    not is_member(self.request.user, 'Developer') and \
+                    not is_member(self.request.user, 'Reporter'):
+                messages.error(
+                    self.request,
+                    'Usuario no tiene permisos para actualizar incidencias.'
+                )
+                return super(IssueUpdateView, self).form_invalid(form)
+
+            form.instance.reporter = person
+            messages.success(
+                self.request,
+                'Incidencia ha sido actualizada.'
+            )
+            return super(IssueUpdateView, self).form_valid(form)
+        except Exception as e:
+            print e.message
+            return super(IssueUpdateView, self).form_invalid(form)
+
+    def post(self, request, *args, **kwargs):
+        if self.request.user.is_superuser or \
+                is_member(self.request.user, 'Developer'):
+            self.form_class = UpdateIssueAdminForm
+        return super(IssueUpdateView, self).post(request, *args, **kwargs)
 
 
 class IssueDetailView(LoginRequiredMixin, DetailView):

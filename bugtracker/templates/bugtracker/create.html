@@ -1,6 +1,25 @@
 {% extends "bugtracker/index.html" %}
 {% block content %}
     <h3>Registrar incidencia</h3>
+
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="text-danger {{ message.tags }}"{% endif %}>
+                {{ message }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if form.errors %}
+        Hay errores
+        {% for error in form.errors %}
+            <div class="text-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="row">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
