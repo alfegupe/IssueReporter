@@ -5,6 +5,21 @@
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-6">
+
+            {% if issue.evaluation_comments %}
+                <div class="panel panel-default panel-danger" style="background-color: #ffe6e6; margin-bottom: 10px;">
+                    <div class="panel-body">
+                        <strong>
+                            <i class="fa fa-quote-left fa-3x fa-pull-left" aria-hidden="true"></i>
+                            La incidencia se encuentra en estado:
+                            <i>'{{ issue.status.status|default_if_none:"Nueva" }}'</i>.
+                            <br>
+                            Concepto: {{ issue.evaluation_comments }}
+                        </strong>
+                    </div>
+                </div>
+            {% endif %}
+
             <table class="table table-bordered">
                 <tbody>
                     <tr>
@@ -16,8 +31,24 @@
                         <td>{{ issue.description }}</td>
                     </tr>
                     <tr>
+                        <th>Pasos para replicar:</th>
+                        <td>{{ issue.steps_to_reproduce }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reproducibilidad:</th>
+                        <td>{{ issue.reproducibility_issue }}</td>
+                    </tr>
+                    <tr>
                         <th>Software:</th>
                         <td>{{ issue.software }}</td>
+                    </tr>
+                    <tr>
+                        <th>Navegador:</th>
+                        <td>{{ issue.browser }}</td>
+                    </tr>
+                    <tr>
+                        <th>Sistema operativo:</th>
+                        <td>{{ issue.os }}</td>
                     </tr>
                     <tr>
                         <th>Sede:</th>

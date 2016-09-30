@@ -74,22 +74,29 @@ class CreateIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'issue', 'description', 'software', 'headquarter', 'browser',
+            'issue', 'description', 'software', 'os', 'headquarter', 'browser',
             'priority', 'type_issue', 'category_issue', 'image1', 'image2',
-            'status',
+            'status', 'reproducibility_issue', 'steps_to_reproduce',
         ]
         widgets = {
             'issue': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Incidencia'}),
             'description': forms.Textarea(
-                attrs={'class': 'form-control', 'placeholder': 'Descripcion',
+                attrs={'class': 'form-control', 'placeholder': 'Descripción',
+                       'rows': 3}),
+            'steps_to_reproduce': forms.Textarea(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Pasos para replicar',
                        'rows': 3}),
             'software': forms.Select(attrs={'class': 'form-control'}),
+            'os': forms.Select(attrs={'class': 'form-control'}),
             'headquarter': forms.Select(attrs={'class': 'form-control'}),
             'browser': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'type_issue': forms.Select(attrs={'class': 'form-control'}),
             'category_issue': forms.Select(attrs={'class': 'form-control'}),
+            'reproducibility_issue': forms.Select(
+                attrs={'class': 'form-control'}),
         }
 
 
@@ -98,9 +105,9 @@ class UpdateIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'issue', 'description', 'software', 'headquarter', 'browser',
+            'issue', 'description', 'software', 'os', 'headquarter', 'browser',
             'priority', 'type_issue', 'category_issue', 'image1', 'image2',
-            'status',
+            'status', 'reproducibility_issue', 'steps_to_reproduce',
         ]
         widgets = {
             'issue': forms.TextInput(
@@ -108,12 +115,19 @@ class UpdateIssueForm(forms.ModelForm):
             'description': forms.Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Descripcion',
                        'rows': 3}),
+            'steps_to_reproduce': forms.Textarea(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Pasos para replicar',
+                       'rows': 3}),
             'software': forms.Select(attrs={'class': 'form-control'}),
+            'os': forms.Select(attrs={'class': 'form-control'}),
             'headquarter': forms.Select(attrs={'class': 'form-control'}),
             'browser': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'type_issue': forms.Select(attrs={'class': 'form-control'}),
-            'category_issue': forms.Select(attrs={'class': 'form-control'})
+            'category_issue': forms.Select(attrs={'class': 'form-control'}),
+            'reproducibility_issue': forms.Select(
+                attrs={'class': 'form-control'}),
         }
 
 
@@ -122,9 +136,10 @@ class UpdateIssueAdminForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'issue', 'description', 'software', 'headquarter', 'browser',
+            'issue', 'description', 'os', 'software', 'headquarter', 'browser',
             'priority', 'type_issue', 'category_issue', 'image1', 'image2',
-            'status', 'dev', 'ticket',
+            'status', 'dev', 'ticket', 'reproducibility_issue',
+            'steps_to_reproduce', 'evaluation_comments',
         ]
         widgets = {
             'issue': forms.TextInput(
@@ -132,12 +147,23 @@ class UpdateIssueAdminForm(forms.ModelForm):
             'description': forms.Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Descripcion',
                        'rows': 3}),
+            'steps_to_reproduce': forms.Textarea(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Pasos para replicar',
+                       'rows': 3}),
+            'evaluation_comments': forms.Textarea(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Comentarios del evaluador',
+                       'rows': 3}),
             'software': forms.Select(attrs={'class': 'form-control'}),
+            'os': forms.Select(attrs={'class': 'form-control'}),
             'headquarter': forms.Select(attrs={'class': 'form-control'}),
             'browser': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'type_issue': forms.Select(attrs={'class': 'form-control'}),
             'category_issue': forms.Select(attrs={'class': 'form-control'}),
+            'reproducibility_issue': forms.Select(
+                attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'dev': forms.Select(attrs={'class': 'form-control'}),
             'ticket': forms.TextInput(

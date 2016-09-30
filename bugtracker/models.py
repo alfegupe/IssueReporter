@@ -28,6 +28,13 @@ class StatusIssue(models.Model):
         return self.status
 
 
+class ReproducibilityIssue(models.Model):
+    reproducibility = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.reproducibility
+
+
 class Headquarter(models.Model):
     headquarter = models.CharField(max_length=200)
 
@@ -40,6 +47,13 @@ class BrowserIssue(models.Model):
 
     def __unicode__(self):
         return self.browser
+
+
+class OsIssue(models.Model):
+    os = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.os
 
 
 class TypeIssue(models.Model):
@@ -65,7 +79,6 @@ class Person(models.Model):
     identification = models.CharField(max_length=20)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
 
-
     def __unicode__(self):
         return self.identification + ' - ' + self.user.first_name + ' ' + \
                self.user.last_name
@@ -77,9 +90,14 @@ class Issue(models.Model):
     software = models.ForeignKey(SoftwareIssue, on_delete=models.CASCADE)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
     browser = models.ForeignKey(BrowserIssue, on_delete=models.CASCADE)
+    os = models.ForeignKey(OsIssue, on_delete=models.CASCADE)
     priority = models.ForeignKey(PriorityIssue, on_delete=models.CASCADE)
     type_issue = models.ForeignKey(TypeIssue, on_delete=models.CASCADE)
     category_issue = models.ForeignKey(CategoryIssue, on_delete=models.CASCADE)
+    reproducibility_issue = models.ForeignKey(
+        ReproducibilityIssue, on_delete=models.CASCADE)
+    steps_to_reproduce = models.TextField(blank=True, null=True)
+    evaluation_comments = models.TextField(blank=True, null=True)
     status = models.ForeignKey(
         StatusIssue, on_delete=models.CASCADE, blank=True, null=True)
     dev = models.ForeignKey(

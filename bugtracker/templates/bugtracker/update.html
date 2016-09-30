@@ -14,6 +14,23 @@
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="col-lg-6 col-md-6 col-sm-12">
+
+                {% if form.evaluation_comments.value %}
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="panel panel-default panel-danger" style="background-color: #ffe6e6; margin-bottom: 10px;">
+                        <div class="panel-body">
+                            <strong>
+                                <i class="fa fa-quote-left fa-3x fa-pull-left" aria-hidden="true"></i>
+                                La incidencia se encuentra en estado:
+                                <i>'{{ form.instance.status.status|default_if_none:"Nueva" }}'</i>.
+                                <br>
+                                Concepto: {{ form.evaluation_comments.value }}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
                 <div class="input-field col-sm-12 col-md-12 col-lg-12">
                     <label>Título:</label>
                     {{ form.issue }}
@@ -22,23 +39,23 @@
                     <label>Descripción:</label>
                     {{ form.description }}
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                  <div class="btn-flat">
-                    <span>Imagen1 (Opcional)</span>
-                    {{ form.image1 }}
-                  </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <label>Pasos para reproducir:</label>
+                    {{ form.steps_to_reproduce }}
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                  <div class="btn-flat">
-                    <span>Imagen2 (Opcional)</span>
+                    <label>Imagen1 (Opcional)</label>
+                    {{ form.image1 }}
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
+                    <label>Imagen2 (Opcional)</label>
                     {{ form.image2 }}
-                  </div>
                 </div>
 
-                {% if form.dev and form.status and form.ticket %}
+                {% if form.dev and form.status and form.ticket and form.evaluation_comments %}
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <hr>
-                        <div class="panel panel-default">
+                        <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <strong>Visible por Administradores y desarrolladores</strong>
                             </div>
@@ -49,6 +66,8 @@
                                 {{ form.status }}
                                 <label>Ticket:</label>
                                 {{ form.ticket }}
+                                <label>Comentarios del evaluador:</label>
+                                {{ form.evaluation_comments }}
                             </div>
                         </div>
                     </div>
@@ -66,6 +85,9 @@
                 <label>Navegador:</label>
                 {{ form.browser }}
 
+                <label>Sistema operativo:</label>
+                {{ form.os }}
+
                 <label>Prioridad:</label>
                 {{ form.priority }}
 
@@ -74,6 +96,9 @@
 
                 <label>Categoría:</label>
                 {{ form.category_issue }}
+
+                <label>Reproducibilidad:</label>
+                {{ form.reproducibility_issue }}
 
                 <br />
                 <input class="btn btn-success" type="submit" value="Actualizar incidencia">

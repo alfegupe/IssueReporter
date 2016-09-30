@@ -113,7 +113,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     model = Issue
     template_name = 'bugtracker/issues.html'
     login_url = 'login'
-    paginate_by = 10
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         context = super(IssueListView, self).get_context_data(**kwargs)
@@ -125,7 +125,8 @@ class IssueListView(LoginRequiredMixin, ListView):
         if not self.request.user.is_superuser and \
                 not is_member(self.request.user, 'Developer'):
             query['reporter'] = Person.objects.get(user=self.request.user)
-        return self.model.objects.filter(**query)
+        return self.model.objects.filter(**query).order_by(
+            'priority', 'type_issue')
 
     def get_params_search(self):
         params = {}
@@ -157,6 +158,10 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
                     'Usuario no tiene permisos para reportar incidencias.'
                 )
                 return super(IssueCreateView, self).form_invalid(form)
+            messages.success(
+                self.request,
+                'Incidencia ha sido actualizada.'
+            )
             form.instance.reporter = person
             return super(IssueCreateView, self).form_valid(form)
         except Exception as e:
