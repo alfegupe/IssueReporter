@@ -160,7 +160,7 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
                 return super(IssueCreateView, self).form_invalid(form)
             messages.success(
                 self.request,
-                'Incidencia ha sido actualizada.'
+                'Incidencia ha sido creada correctamente.'
             )
             form.instance.reporter = person
             return super(IssueCreateView, self).form_valid(form)

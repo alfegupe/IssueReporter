@@ -18,3 +18,11 @@ footer{
     padding-top: 20px;
     padding-bottom: 20px;
 }
+
+.message_error{
+    color: darkred;
+}
+
+.message_success{
+    color: darkgreen;
+}
