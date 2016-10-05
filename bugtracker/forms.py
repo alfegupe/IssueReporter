@@ -76,7 +76,7 @@ class CreateIssueForm(forms.ModelForm):
         fields = [
             'issue', 'description', 'software', 'os', 'headquarter', 'browser',
             'priority', 'type_issue', 'category_issue', 'image1', 'image2',
-            'status', 'reproducibility_issue', 'steps_to_reproduce',
+            'reproducibility_issue', 'steps_to_reproduce',
         ]
         widgets = {
             'issue': forms.TextInput(

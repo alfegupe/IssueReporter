@@ -1,17 +1,11 @@
 # -*- encoding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django import forms
-from django.views.generic import ListView, DetailView, DeleteView, CreateView, \
-    FormView, TemplateView, RedirectView, View
+from django.views.generic import ListView, DetailView, CreateView, \
+    TemplateView, RedirectView, View
 from django.views.generic.edit import UpdateView
 from .models import Issue, Person
-# Authentication imports
 from django.contrib.auth import login, logout, authenticate, \
     update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
@@ -126,7 +120,7 @@ class IssueListView(LoginRequiredMixin, ListView):
                 not is_member(self.request.user, 'Developer'):
             query['reporter'] = Person.objects.get(user=self.request.user)
         return self.model.objects.filter(**query).order_by(
-            'priority', 'type_issue')
+            '-priority', 'type_issue')
 
     def get_params_search(self):
         params = {}
@@ -151,13 +145,21 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         try:
             person = Person.objects.get(user=self.request.user)
-            if not person or not \
-                    is_member(self.request.user, 'Reporter'):
+            if not person:
+                messages.error(
+                    self.request,
+                    'Usuario no existe como Persona en la base de datos.'
+                )
+                return super(IssueCreateView, self).form_invalid(form)
+            if not self.request.user.is_superuser and \
+                    not is_member(self.request.user, 'Developer') and \
+                    not is_member(self.request.user, 'Reporter'):
                 messages.error(
                     self.request,
                     'Usuario no tiene permisos para reportar incidencias.'
                 )
                 return super(IssueCreateView, self).form_invalid(form)
+
             messages.success(
                 self.request,
                 'Incidencia ha sido creada correctamente.'

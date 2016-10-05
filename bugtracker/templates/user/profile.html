@@ -8,6 +8,10 @@
         <li>Email: {{ user.email }}</li>
         <li>Ultimo login: {{ user.last_login }}</li>
     </ul>
-    <a class="btn btn-default" href="{% url 'update_user' %}">Actualizar mis datos</a>
-    <a class="btn btn-default" href="{% url 'update_password' %}">Cambiar contraseña</a>
+    <a class="btn btn-default" href="{% url 'update_user' %}">
+        <i class="fa fa-user"></i> Actualizar mis datos
+    </a>
+    <a class="btn btn-default" href="{% url 'update_password' %}">
+        <i class="fa fa-key"></i> Cambiar contraseña
+    </a>
 {% endblock %}

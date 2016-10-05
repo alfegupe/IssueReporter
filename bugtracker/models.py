@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.conf import settings
 
 
 class SoftwareIssue(models.Model):
@@ -77,6 +76,8 @@ class Person(models.Model):
         primary_key=True,
     )
     identification = models.CharField(max_length=20)
+    cellphone = models.CharField(max_length=20, blank=True)
+    extension = models.CharField(max_length=10, blank=True)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
 
     def __unicode__(self):

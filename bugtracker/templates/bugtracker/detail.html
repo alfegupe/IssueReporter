@@ -23,7 +23,11 @@
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <th>Nombre:</th>
+                        <th>Reportado por:</th>
+                        <td>{{ issue.reporter }}</td>
+                    </tr>
+                    <tr>
+                        <th>Título:</th>
                         <td>{{ issue.issue }}</td>
                     </tr>
                     <tr>
@@ -97,10 +101,6 @@
                         <td>
                             {{ issue.category_issue }}
                         </td>
-                    </tr>
-                    <tr>
-                        <th>Reportado por:</th>
-                        <td>{{ issue.reporter }}</td>
                     </tr>
                     <tr>
                         <th>Fecha creación:</th>

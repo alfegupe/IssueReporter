@@ -15,14 +15,9 @@ figcaption{
 }
 
 footer{
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.message_error{
-    color: darkred;
-}
-
-.message_success{
-    color: darkgreen;
+    border: 1px solid #dbdcdd;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 20px 10px;
 }
