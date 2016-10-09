@@ -20,6 +20,8 @@ parts/
 sdist/
 var/
 media/*
+parameters.py
+
 *.egg-info/
 .installed.cfg
 *.egg

@@ -15,6 +15,8 @@ class SoftwareIssue(models.Model):
 
 class PriorityIssue(models.Model):
     priority = models.CharField(max_length=200)
+    bg_color = models.CharField(max_length=30, null=True)
+    fa_icon = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):
         return self.priority
@@ -22,6 +24,7 @@ class PriorityIssue(models.Model):
 
 class StatusIssue(models.Model):
     status = models.CharField(max_length=200)
+    fa_icon = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):
         return self.status
@@ -43,6 +46,7 @@ class Headquarter(models.Model):
 
 class BrowserIssue(models.Model):
     browser = models.CharField(max_length=200)
+    fa_icon = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):
         return self.browser
@@ -50,6 +54,7 @@ class BrowserIssue(models.Model):
 
 class OsIssue(models.Model):
     os = models.CharField(max_length=200)
+    fa_icon = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):
         return self.os
@@ -57,6 +62,7 @@ class OsIssue(models.Model):
 
 class TypeIssue(models.Model):
     type_issue = models.CharField(max_length=100)
+    fa_icon = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):
         return self.type_issue

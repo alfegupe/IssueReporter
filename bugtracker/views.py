@@ -12,6 +12,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
     UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm
+from models import Issue, StatusIssue
+from django.db.models import Count
 from django.contrib import messages
 
 
@@ -19,19 +21,42 @@ def is_member(user, group):
     return user.groups.filter(name=group).exists()
 
 
-class IndexView(TemplateView):
-    template_name = "bugtracker/index.html"
+class IndexView(View):
+    template = "bugtracker/index.html"
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return redirect('login')
+
+        context = {}
+        status = Issue.objects.all().values(
+            'status_id', 'status__status'
+        ).annotate(total=Count('status_id')).order_by('-total')
+
+        priority = Issue.objects.all().values(
+            'priority_id', 'priority__priority'
+        ).annotate(total=Count('priority_id')).order_by('-total')
+
+        type_i = Issue.objects.all().values(
+            'type_issue_id', 'type_issue__type_issue'
+        ).annotate(total=Count('type_issue_id')).order_by('-total')
+
+        context['status_issues'] = status
+        context['priority_issues'] = priority
+        context['type_issues'] = type_i
+
+        return render(request, self.template, context)
 
 
 class LoginView(View):
     form = LoginForm()
     message = None
     template = "auth/login.html"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("index")
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return redirect('home')
+            return redirect('index')
         return render(request, self.template, self.get_context())
 
     def post(self, request, *args, **kwargs):
@@ -40,7 +65,7 @@ class LoginView(View):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('index')
         else:
             self.message = 'Usuario o password incorrectos'
         return render(request, self.template, self.get_context())
@@ -120,7 +145,7 @@ class IssueListView(LoginRequiredMixin, ListView):
                 not is_member(self.request.user, 'Developer'):
             query['reporter'] = Person.objects.get(user=self.request.user)
         return self.model.objects.filter(**query).order_by(
-            '-priority', 'type_issue')
+            'priority', 'type_issue', 'created_at')
 
     def get_params_search(self):
         params = {}
@@ -165,6 +190,8 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
                 'Incidencia ha sido creada correctamente.'
             )
             form.instance.reporter = person
+            form.instance.status = StatusIssue.objects.get(status__regex='uev')
+
             return super(IssueCreateView, self).form_valid(form)
         except Exception as e:
             print e.message

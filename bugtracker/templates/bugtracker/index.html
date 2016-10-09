@@ -7,15 +7,50 @@
 
     <div class="row login-panel">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="jumbotron">
-                <h2>Reporte de incidencias</h2>
-                <p>
-                    Sistema para reportar incidencias (errores, ajustes o mejoras)
-                    de los diferentes aplicativos desarrollados y soportados por
-                    la oficina de Sistemas de información de la Universidad de
-                    Santander UDES y su equipo de trabajo.
-                </p>
-{#                <p><a class="btn btn-primary" href="#" role="button">Learn more</a></p>#}
+            <div class="page-header">
+                <h1>Reporteador de incidencias
+                <small>Universidad de Santander UDES.</small></h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            Incidencias por estado
+                        </li>
+                        {% for s_i in status_issues %}
+                            <li class="list-group-item">
+                                <span class="badge">{{ s_i.total }}</span>
+                                {{ s_i.status__status }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            Incidencias por prioridad
+                        </li>
+                        {% for p_i in priority_issues %}
+                            <li class="list-group-item">
+                                <span class="badge">{{ p_i.total }}</span>
+                                {{ p_i.priority__priority }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            Incidencias por tipo
+                        </li>
+                        {% for t_i in type_issues %}
+                            <li class="list-group-item">
+                                <span class="badge">{{ t_i.total }}</span>
+                                {{ t_i.type_issue__type_issue }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

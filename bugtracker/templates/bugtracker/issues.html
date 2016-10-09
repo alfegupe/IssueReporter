@@ -51,8 +51,8 @@
             <thead>
                 <tr>
                     <th style="width: 50px">ID</th>
+                    <th style="width: 30px">Pri.</th>
                     <th>Nombre</th>
-                    <th>Prioridad</th>
                     <th>Tipo</th>
                     <th>Sistema</th>
                     <th>Sede</th>
@@ -63,10 +63,14 @@
             </thead>
             <tbody>
             {% for issue in object_list %}
-                <tr>
+                <tr style="background-color: {{ issue.priority.bg_color }}">
                     <td>{{ issue.id }}</td>
+                    <td>
+                        <i class="fa fa-{{ issue.priority.fa_icon }}"
+                           data-toggle="tooltip" data-placement="top"
+                           title="{{ issue.priority }}"></i>
+                    </td>
                     <td>{{ issue.issue }}</td>
-                    <td>{{ issue.priority }}</td>
                     <td>{{ issue.type_issue }}</td>
                     <td>{{ issue.software }}</td>
                     <td>{{ issue.headquarter }}</td>

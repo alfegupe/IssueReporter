@@ -1,5 +1,5 @@
 body{
-
+    padding-bottom: 20px;
 }
 
 figure{
@@ -15,9 +15,13 @@ figcaption{
 }
 
 footer{
-    border: 1px solid #dbdcdd;
+    border: 1px solid #c7c8c9;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     padding: 20px 10px;
+}
+
+.table tr td{
+    padding: 4px !important;
 }
