@@ -1,0 +1,58 @@
+
+{% if is_paginated %}
+    <ul class="pagination">
+        <li>
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">
+                    <i class="fa fa-angle-double-left"></i>
+                </a>
+            {% else %}
+                <span class="text-muted">
+                    <i class="fa fa-angle-double-left"></i>
+                </span>
+            {% endif %}
+        </li>
+
+        {% for page_number in paginator.page_range %}
+            {% if page_number == page_obj.number %}
+                <li class="active">
+                    <span>{{ page_number }}</span>
+                </li>
+            {% else %}
+                <li>
+                    <a href="?page={{ page_number }}">
+                        {{ page_number }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <li>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">
+                    <i class="fa fa-angle-double-right"></i>
+                </a>
+            {% else %}
+                <span class="text-muted">
+                    <i class="fa fa-angle-double-right"></i>
+                </span>
+            {% endif %}
+        </li>
+    </ul>
+{% endif %}
+
+{#{% if is_paginated %}#}
+{#    <div class="pagination">#}
+{#        <span class="page-links">#}
+{#            {% if page_obj.has_previous %}#}
+{#                <a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Anterior</a>#}
+{#            {% endif %}#}
+{#            <span class="page-current">#}
+{#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#            </span>#}
+{#            {% if page_obj.has_next %}#}
+{#                <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">Siguiente</a>#}
+{#            {% endif %}#}
+{#        </span>#}
+{#    </div>#}
+{#{% endif %}#}

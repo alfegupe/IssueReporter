@@ -16,6 +16,10 @@ from models import Issue, StatusIssue
 from django.db.models import Count
 from django.contrib import messages
 
+# names Groups:
+reporters_group = 'Reporter'
+developers_group = 'Developer'
+
 
 def is_member(user, group):
     return user.groups.filter(name=group).exists()
@@ -142,7 +146,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         query = self.get_params_search()
         if not self.request.user.is_superuser and \
-                not is_member(self.request.user, 'Developer'):
+                not is_member(self.request.user, developers_group):
             query['reporter'] = Person.objects.get(user=self.request.user)
         return self.model.objects.filter(**query).order_by(
             'priority', 'type_issue', 'created_at')
@@ -177,8 +181,8 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
                 )
                 return super(IssueCreateView, self).form_invalid(form)
             if not self.request.user.is_superuser and \
-                    not is_member(self.request.user, 'Developer') and \
-                    not is_member(self.request.user, 'Reporter'):
+                    not is_member(self.request.user, developers_group) and \
+                    not is_member(self.request.user, reporters_group):
                 messages.error(
                     self.request,
                     'Usuario no tiene permisos para reportar incidencias.'
@@ -209,7 +213,7 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         if self.request.user.is_superuser or \
-                is_member(self.request.user, 'Developer'):
+                is_member(self.request.user, developers_group):
             self.form_class = UpdateIssueAdminForm
 
         return super(IssueUpdateView, self).get_context_data()
@@ -224,8 +228,8 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
                 )
                 return super(IssueUpdateView, self).form_invalid(form)
             if not self.request.user.is_superuser and \
-                    not is_member(self.request.user, 'Developer') and \
-                    not is_member(self.request.user, 'Reporter'):
+                    not is_member(self.request.user, developers_group) and \
+                    not is_member(self.request.user, reporters_group):
                 messages.error(
                     self.request,
                     'Usuario no tiene permisos para actualizar incidencias.'
@@ -244,7 +248,7 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         if self.request.user.is_superuser or \
-                is_member(self.request.user, 'Developer'):
+                is_member(self.request.user, developers_group):
             self.form_class = UpdateIssueAdminForm
         return super(IssueUpdateView, self).post(request, *args, **kwargs)
 

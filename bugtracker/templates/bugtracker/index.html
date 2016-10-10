@@ -20,7 +20,10 @@
                         {% for s_i in status_issues %}
                             <li class="list-group-item">
                                 <span class="badge">{{ s_i.total }}</span>
-                                {{ s_i.status__status }}
+                                <a href="{% url 'home' %}?status={{ s_i.status_id }}"
+                                    data-toggle="tooltip" data-placement="top" title="Ver lista">
+                                    {{ s_i.status__status }}
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -33,7 +36,10 @@
                         {% for p_i in priority_issues %}
                             <li class="list-group-item">
                                 <span class="badge">{{ p_i.total }}</span>
-                                {{ p_i.priority__priority }}
+                                <a href="{% url 'home' %}?priority={{ p_i.priority_id }}"
+                                    data-toggle="tooltip" data-placement="top" title="Ver lista">
+                                    {{ p_i.priority__priority }}
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -46,7 +52,10 @@
                         {% for t_i in type_issues %}
                             <li class="list-group-item">
                                 <span class="badge">{{ t_i.total }}</span>
-                                {{ t_i.type_issue__type_issue }}
+                                <a href="{% url 'home' %}?type_issue={{ t_i.type_issue_id }}"
+                                    data-toggle="tooltip" data-placement="top" title="Ver lista">
+                                    {{ t_i.type_issue__type_issue }}
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
