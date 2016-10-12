@@ -32,24 +32,28 @@ class IndexView(View):
         if not request.user.is_authenticated():
             return redirect('login')
 
-        context = {}
-        status = Issue.objects.all().values(
-            'status_id', 'status__status'
-        ).annotate(total=Count('status_id')).order_by('-total')
+        if self.request.user.is_superuser or \
+                is_member(self.request.user, developers_group):
+            context = {}
+            status = Issue.objects.all().values(
+                'status_id', 'status__status'
+            ).annotate(total=Count('status_id')).order_by('-total')
 
-        priority = Issue.objects.all().values(
-            'priority_id', 'priority__priority'
-        ).annotate(total=Count('priority_id')).order_by('-total')
+            priority = Issue.objects.all().values(
+                'priority_id', 'priority__priority'
+            ).annotate(total=Count('priority_id')).order_by('-total')
 
-        type_i = Issue.objects.all().values(
-            'type_issue_id', 'type_issue__type_issue'
-        ).annotate(total=Count('type_issue_id')).order_by('-total')
+            type_i = Issue.objects.all().values(
+                'type_issue_id', 'type_issue__type_issue'
+            ).annotate(total=Count('type_issue_id')).order_by('-total')
 
-        context['status_issues'] = status
-        context['priority_issues'] = priority
-        context['type_issues'] = type_i
+            context['status_issues'] = status
+            context['priority_issues'] = priority
+            context['type_issues'] = type_i
 
-        return render(request, self.template, context)
+            return render(request, self.template, context)
+
+        return redirect('home')
 
 
 class LoginView(View):

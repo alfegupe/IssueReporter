@@ -22,7 +22,8 @@ class LoginForm(forms.Form):
 class UpdateDataUserForm(forms.ModelForm):
 
     email = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Email'}),
         error_messages={
             'required': 'El email es requerido.',
             'invalid': 'Ingrese un email valido'

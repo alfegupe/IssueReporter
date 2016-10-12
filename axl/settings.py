@@ -33,13 +33,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'bugtracker.apps.BugtrackerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bugtracker.apps.BugtrackerConfig',
 ]
 
 MIDDLEWARE = [
