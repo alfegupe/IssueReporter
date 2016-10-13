@@ -24,6 +24,7 @@ class PriorityIssue(models.Model):
 
 class StatusIssue(models.Model):
     status = models.CharField(max_length=200)
+    show_in_main_list = models.BooleanField(default=True, blank=False)
     fa_icon = models.CharField(max_length=30, null=True)
 
     def __unicode__(self):

@@ -196,6 +196,8 @@ class SearchIssueForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SearchIssueForm, self).__init__(*args, **kwargs)
+        self.fields['is_closed'] = \
+            forms.BooleanField()
         self.fields['software'].empty_label = '-- sistema'
         self.fields['headquarter'].empty_label = '-- sede'
         self.fields['browser'].empty_label = '-- navegador'

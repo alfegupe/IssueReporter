@@ -140,7 +140,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     model = Issue
     template_name = 'bugtracker/issues.html'
     login_url = 'login'
-    paginate_by = 15
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(IssueListView, self).get_context_data(**kwargs)
@@ -149,9 +149,16 @@ class IssueListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         query = self.get_params_search()
+        show_in_main_list = True
+        if 'is_closed' in query:
+            show_in_main_list = False if query['is_closed'] == 'on' else True
+            del query['is_closed']
+
         if not self.request.user.is_superuser and \
                 not is_member(self.request.user, developers_group):
             query['reporter'] = Person.objects.get(user=self.request.user)
+        query['status__show_in_main_list'] = show_in_main_list
+
         return self.model.objects.filter(**query).order_by(
             'priority', 'type_issue', 'created_at')
 

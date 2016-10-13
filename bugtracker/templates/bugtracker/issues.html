@@ -41,6 +41,10 @@
                     {{ form_search.reporter }}
                 </div>
                 {% endif %}
+                <div class="form-group">
+                    <strong>Ver cerradas</strong>
+                    {{ form_search.is_closed }}
+                </div>
                 <button type="submit" class="btn btn-default btn-sm">
                     <i class="fa fa-search"></i> Filtrar
                 </button>
@@ -55,10 +59,10 @@
         <table class="table table-bordered table-stripped">
             <thead>
                 <tr>
-                    <th style="width: 50px">ID</th>
+                    <th style="width: 35px">ID</th>
+                    <th style="width: 30px">Tipo</th>
                     <th style="width: 30px">Pri.</th>
                     <th>Nombre</th>
-                    <th>Tipo</th>
                     <th>Sistema</th>
                     <th>Sede</th>
                     <th>Estado</th>
@@ -71,12 +75,16 @@
                 <tr style="background-color: {{ issue.priority.bg_color }}">
                     <td>{{ issue.id }}</td>
                     <td>
+                        <i class="fa fa-{{ issue.type_issue.fa_icon }}"
+                           data-toggle="tooltip" data-placement="top"
+                           title="{{ issue.type_issue }}"></i>
+                    </td>
+                    <td>
                         <i class="fa fa-{{ issue.priority.fa_icon }}"
                            data-toggle="tooltip" data-placement="top"
                            title="{{ issue.priority }}"></i>
                     </td>
                     <td>{{ issue.issue }}</td>
-                    <td>{{ issue.type_issue }}</td>
                     <td>{{ issue.software }}</td>
                     <td>{{ issue.headquarter }}</td>
                     <td>{{ issue.status }}</td>
