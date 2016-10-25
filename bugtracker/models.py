@@ -82,14 +82,12 @@ class Person(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    identification = models.CharField(max_length=20)
     cellphone = models.CharField(max_length=20, blank=True)
     extension = models.CharField(max_length=10, blank=True)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return self.identification + ' - ' + self.user.first_name + ' ' + \
-               self.user.last_name
+        return self.user.first_name + ' ' + self.user.last_name
 
 
 class Issue(models.Model):

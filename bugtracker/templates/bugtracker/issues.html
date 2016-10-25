@@ -4,7 +4,7 @@
         <h1>
             <i class="fa fa-bug"></i>
             Incidencias <small>Errores, ajustes ó mejoras</small>
-            <a href="{% url 'create' %}" class="btn btn-success pull-right">
+            <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
                 <i class="fa fa-plus-circle"></i> Reportar incidencia
             </a>
         </h1>
@@ -41,8 +41,10 @@
                     {{ form_search.reporter }}
                 </div>
                 {% endif %}
-                <div class="form-group">
-                    <strong>Ver cerradas</strong>
+                <div class="form-group well well-sm" style="padding: 3px;">
+                    <label for="id_is_closed">
+                        Ver cerradas
+                    </label>
                     {{ form_search.is_closed }}
                 </div>
                 <button type="submit" class="btn btn-default btn-sm">
@@ -87,7 +89,20 @@
                     <td>{{ issue.issue }}</td>
                     <td>{{ issue.software }}</td>
                     <td>{{ issue.headquarter }}</td>
-                    <td>{{ issue.status }}</td>
+                    <td>
+                        {{ issue.status }}
+                        {% if issue.evaluation_comments or issue.dev %}
+                            -
+                            {% if issue.evaluation_comments %}
+                                <i class="fa fa-commenting-o" data-toggle="tooltip" data-placement="top"
+                               title="Comentarios: {{ issue.evaluation_comments }}"></i>
+                            {% endif %}
+                            {% if issue.dev %}
+                                <i class="fa fa-drivers-license-o" data-toggle="tooltip" data-placement="top"
+                               title="Asignado a: {{ issue.dev }}"></i>
+                            {% endif %}
+                        {% endif %}
+                    </td>
                     <td>{{ issue.created_at | date:"d/m/Y H:i" }}</td>
                     <td>
                         <a class="btn btn-default btn-xs" title="Ver"

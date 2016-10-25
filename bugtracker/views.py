@@ -95,11 +95,13 @@ class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'user/profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'u_name'
+    login_url = 'login'
 
 
 class UpdateDataUserView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'user/edit.html'
+    login_url = 'login'
     form_class = UpdateDataUserForm
 
     def get_success_url(self):
