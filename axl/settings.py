@@ -118,6 +118,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Email config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = DJ_EMAIL_HOST
+EMAIL_PORT = DJ_EMAIL_PORT
+EMAIL_HOST_USER = DJ_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = DJ_EMAIL_HOST_PASSWORD
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

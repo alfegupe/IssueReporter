@@ -26,6 +26,15 @@
                 {% endif %}
 
                 <div class="input-field col-sm-12 col-md-12 col-lg-12">
+                    <label>Reportado por:</label>
+                    {% for value, text in form.reporter.field.choices %}
+                        {% if value == form.reporter.value %}
+                            <h5>{{ text }}</h5>
+                            <input type="hidden" name="reporter" value="{{ value }}" />
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="input-field col-sm-12 col-md-12 col-lg-12">
                     <label>Título:</label>
                     {{ form.issue }}
                 </div>

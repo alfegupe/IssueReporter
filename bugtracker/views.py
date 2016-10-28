@@ -1,20 +1,21 @@
 # -*- encoding: utf-8 -*-
 
-from django.views.generic import ListView, DetailView, CreateView, \
-    TemplateView, RedirectView, View
-from django.views.generic.edit import UpdateView
-from .models import Issue, Person
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, \
     update_session_auth_hash
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
+from django.db.models import Count
 from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, CreateView, \
+    RedirectView, View
+from django.views.generic.edit import UpdateView
+from bugtracker.utils.tools import *
 from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
     UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm
 from models import Issue, StatusIssue
-from django.db.models import Count
-from django.contrib import messages
+from .models import Person
 
 # names Groups:
 reporters_group = 'Reporter'
@@ -23,6 +24,44 @@ developers_group = 'Developer'
 
 def is_member(user, group):
     return user.groups.filter(name=group).exists()
+
+
+def send_notification_bug_email(request, issue, is_update=None):
+    try:
+        id_issue = issue.id
+        op = 'actualizada' if is_update else 'creada'
+        title = 'La incidencia #' + str(id_issue) + ' ha sido ' + op
+
+        plaintext = get_template('email/bug.txt')
+        htmly = get_template('email/bug.html')
+
+        d = Context({
+            'cdf': issue,
+            'main_message': 'La incidencia #' + str(id_issue) + ' ha sido ' + op
+        })
+
+        text_content = plaintext.render(d)
+        html_content = htmly.render(d)
+
+        f_from = ''
+        to = [request.user.email]
+        if issue.reporter:
+            rep = issue.reporter
+            if rep.user.email not in to:
+                to.append(rep.user.email)
+
+        if issue.dev:
+            dev = issue.dev
+            if dev.user.email not in to:
+                to.append(dev.user.email)
+
+        if mail(title, text_content, html_content, f_from, to):
+            print 'An email has been sent.'
+
+        return True
+    except Exception as e:
+        print e.message
+        return None
 
 
 class IndexView(View):
@@ -214,6 +253,10 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
             print e.message
             return super(IssueCreateView, self).form_invalid(form)
 
+    def get_success_url(self):
+        send_notification_bug_email(self.request, self.object)
+        return super(IssueCreateView, self).get_success_url()
+
 
 class IssueUpdateView(LoginRequiredMixin, UpdateView):
     model = Issue
@@ -233,13 +276,6 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         try:
-            person = Person.objects.get(user=self.request.user)
-            if not person:
-                messages.error(
-                    self.request,
-                    'Usuario no existe como Persona en la base de datos.'
-                )
-                return super(IssueUpdateView, self).form_invalid(form)
             if not self.request.user.is_superuser and \
                     not is_member(self.request.user, developers_group) and \
                     not is_member(self.request.user, reporters_group):
@@ -249,7 +285,6 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
                 )
                 return super(IssueUpdateView, self).form_invalid(form)
 
-            form.instance.reporter = person
             messages.success(
                 self.request,
                 'Incidencia ha sido actualizada.'
@@ -258,6 +293,10 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
         except Exception as e:
             print e.message
             return super(IssueUpdateView, self).form_invalid(form)
+
+    def get_success_url(self):
+        send_notification_bug_email(self.request, self.object, True)
+        return super(IssueUpdateView, self).get_success_url()
 
     def post(self, request, *args, **kwargs):
         if self.request.user.is_superuser or \

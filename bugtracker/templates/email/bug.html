@@ -1,0 +1,107 @@
+{# main_message = The main message of email #}
+{# cdf = Clean data form #}
+<h2>{{ main_message }}</h2>
+<table border="1" style="border: 1px solid;">
+    {% if cdf.issue %}
+        <tr>
+            <th>Incidencia: </th>
+            <td>{{ cdf.issue }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.description %}
+        <tr>
+            <th>Descripción: </th>
+            <td>{{ cdf.description }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.priority %}
+        <tr>
+            <th>Prioridad: </th>
+            <td>{{ cdf.priority }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.type_issue %}
+        <tr>
+            <th>Tipo: </th>
+            <td>{{ cdf.type_issue.type_issue }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.software %}
+        <tr>
+            <th>Sistema: </th>
+            <td>{{ cdf.software.software }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.headquarter %}
+        <tr>
+            <th>Sede: </th>
+            <td>{{ cdf.headquarter.headquarter }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.browser %}
+        <tr>
+            <th>Navegador: </th>
+            <td>{{ cdf.browser.browser }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.os %}
+        <tr>
+            <th>Sistema Operativo: </th>
+            <td>{{ cdf.os.os }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.category_issue %}
+        <tr>
+            <th>Categoría: </th>
+            <td>{{ cdf.category_issue.category_issue }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.reproducibility %}
+        <tr>
+            <th>Reproducibilidad: </th>
+            <td>{{ cdf.reproducibility }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.steps_to_reproduce %}
+        <tr>
+            <th>Pasos para reproducirlo: </th>
+            <td>{{ cdf.steps_to_reproduce }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.evaluation_comments %}
+        <tr>
+            <th>Comentarios del evaluador: </th>
+            <td>{{ cdf.evaluation_comments }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.status %}
+        <tr>
+            <th>Estado: </th>
+            <td>{{ cdf.status.status }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.dev %}
+        <tr>
+            <th>Asignado a: </th>
+            <td>{{ cdf.dev.user.first_name }} {{ cdf.dev.user.last_name }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.ticket %}
+        <tr>
+            <th>Ticket asociado: </th>
+            <td>{{ cdf.ticket }}</td>
+        </tr>
+    {% endif %}
+    {% if cdf.reporter %}
+        <tr>
+            <th>Reportado por: </th>
+            <td>{{ cdf.reporter.user.first_name }} {{ cdf.reporter.user.last_name }}</td>
+        </tr>
+    {% endif %}
+</table>
+<br><br>
+<hr>
+<strong>
+    Este correo ha sido enviado automáticamente por el sistema, por favor no lo responda.
+</strong>
+<hr>

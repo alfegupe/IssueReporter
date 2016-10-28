@@ -106,9 +106,9 @@ class UpdateIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'issue', 'description', 'software', 'os', 'headquarter', 'browser',
-            'priority', 'type_issue', 'category_issue', 'image1', 'image2',
-            'status', 'reproducibility_issue', 'steps_to_reproduce',
+            'id', 'issue', 'description', 'software', 'os', 'headquarter',
+            'browser', 'priority', 'type_issue', 'category_issue', 'image1',
+            'image2', 'reproducibility_issue', 'steps_to_reproduce', 'reporter'
         ]
         widgets = {
             'issue': forms.TextInput(
@@ -137,10 +137,10 @@ class UpdateIssueAdminForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'issue', 'description', 'os', 'software', 'headquarter', 'browser',
-            'priority', 'type_issue', 'category_issue', 'image1', 'image2',
-            'status', 'dev', 'ticket', 'reproducibility_issue',
-            'steps_to_reproduce', 'evaluation_comments',
+            'id', 'issue', 'description', 'os', 'software', 'headquarter',
+            'browser', 'priority', 'type_issue', 'category_issue', 'image1',
+            'image2', 'status', 'dev', 'ticket', 'reproducibility_issue',
+            'steps_to_reproduce', 'evaluation_comments', 'reporter',
         ]
         widgets = {
             'issue': forms.TextInput(
