@@ -186,6 +186,9 @@ class IssueListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(IssueListView, self).get_context_data(**kwargs)
         context['form_search'] = SearchIssueForm(data=self.request.GET)
+        context['is_dev'] = True if is_member(
+            self.request.user, developers_group
+        ) or self.request.user.is_superuser else None
         return context
 
     def get_queryset(self):

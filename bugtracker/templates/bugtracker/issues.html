@@ -41,6 +41,11 @@
                     {{ form_search.reporter }}
                 </div>
                 {% endif %}
+                {% if is_dev %}
+                    <div class="form-group">
+                        {{ form_search.dev }}
+                    </div>
+                {% endif %}
                 <div class="form-group well well-sm" style="padding: 3px;">
                     <label for="id_is_closed">
                         Ver cerradas

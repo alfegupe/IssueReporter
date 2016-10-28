@@ -178,7 +178,7 @@ class SearchIssueForm(forms.ModelForm):
         model = Issue
         fields = [
             'issue', 'software', 'headquarter', 'browser', 'priority',
-            'type_issue', 'status', 'reporter',
+            'type_issue', 'status', 'reporter', 'dev',
         ]
         select_attr = {'class': 'form-control input-sm', 'required': False}
         widgets = {
@@ -192,6 +192,7 @@ class SearchIssueForm(forms.ModelForm):
             'type_issue': forms.Select(attrs=select_attr),
             'status': forms.Select(attrs=select_attr),
             'reporter': forms.Select(attrs=select_attr),
+            'dev': forms.Select(attrs=select_attr),
         }
 
     def __init__(self, *args, **kwargs):
@@ -205,3 +206,4 @@ class SearchIssueForm(forms.ModelForm):
         self.fields['type_issue'].empty_label = '-- tipo'
         self.fields['status'].empty_label = '-- estado'
         self.fields['reporter'].empty_label = '-- reportado por'
+        self.fields['dev'].empty_label = '-- asignado a'
