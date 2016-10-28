@@ -165,4 +165,7 @@
     <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
         <i class="fa fa-reply"></i> Volver
     </a>
+    <a class="btn btn-primary" href="{% url 'update' issue.id %}">
+        <i class="fa fa-edit"></i> Editar
+    </a>
 {% endblock %}

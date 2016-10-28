@@ -61,7 +61,12 @@
 
             </div>
 
-            <button class="btn btn-success btn-sm" type="submit">Reportar incidencia</button>
+            <button class="btn btn-success btn-sm notify" type="submit" onclick="$('.notify').toggle()">
+                Reportar incidencia
+            </button>
+            <div class="notify" style="display: none;">
+                <h3><i class="fa fa-spin fa-spinner"></i> Enviando un email de notificación.</h3>
+            </div>
         </form>
     </div>
 
