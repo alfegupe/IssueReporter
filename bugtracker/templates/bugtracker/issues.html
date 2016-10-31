@@ -19,10 +19,13 @@
                     {{ form_search.issue }}
                 </div>
                 <div class="form-group">
+                    {{ form_search.type_issue }}
+                </div>
+                <div class="form-group">
                     {{ form_search.priority }}
                 </div>
                 <div class="form-group">
-                    {{ form_search.type_issue }}
+                    {{ form_search.status }}
                 </div>
                 <div class="form-group">
                     {{ form_search.software }}
@@ -33,9 +36,7 @@
                 <div class="form-group">
                     {{ form_search.browser }}
                 </div>
-                <div class="form-group">
-                    {{ form_search.status }}
-                </div>
+
                 {% if user.is_superuser %}
                 <div class="form-group">
                     {{ form_search.reporter }}
@@ -48,9 +49,9 @@
                 {% endif %}
                 <div class="form-group well well-sm" style="padding: 3px;">
                     <label for="id_is_closed">
-                        Ver cerradas
+                        {{ form_search.is_closed }} Ver cerradas
                     </label>
-                    {{ form_search.is_closed }}
+
                 </div>
                 <button type="submit" class="btn btn-default btn-sm">
                     <i class="fa fa-search"></i> Filtrar
@@ -63,7 +64,7 @@
     {% include "includes/messages.html" %}
 
     {% if object_list %}
-        <table class="table table-bordered table-stripped">
+        <table class="table table-bordered table-condensed">
             <thead>
                 <tr>
                     <th class="text-center" style="width: 35px">ID</th>

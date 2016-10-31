@@ -189,6 +189,7 @@ class IssueListView(LoginRequiredMixin, ListView):
         context['is_dev'] = True if is_member(
             self.request.user, developers_group
         ) or self.request.user.is_superuser else None
+        context['paginator_params'] = self.get_params_pagination()
         return context
 
     def get_queryset(self):
@@ -213,6 +214,17 @@ class IssueListView(LoginRequiredMixin, ListView):
                 if self.request.GET[key] != '' and key != 'page':
                     k = key + '__contains' if key == 'issue' else key
                     params[k] = self.request.GET[key]
+        except Exception as e:
+            print e.message
+        finally:
+            return params
+
+    def get_params_pagination(self):
+        params = ""
+        try:
+            for key in self.request.GET:
+                if self.request.GET[key] != '' and key != 'page':
+                    params += "&" + key + "=" +self.request.GET[key]
         except Exception as e:
             print e.message
         finally:
