@@ -13,9 +13,12 @@ from django.views.generic import ListView, DetailView, CreateView, \
 from django.views.generic.edit import UpdateView
 from bugtracker.utils.tools import *
 from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
-    UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm
-from models import Issue, StatusIssue
+    UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm, \
+    CreateEvaluationComment
+from models import Issue, StatusIssue, EvaluationComment
 from .models import Person
+from utils.mixins import JSONResponseMixin
+
 
 # names Groups:
 reporters_group = 'Reporter'
@@ -286,8 +289,13 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
         if self.request.user.is_superuser or \
                 is_member(self.request.user, developers_group):
             self.form_class = UpdateIssueAdminForm
-
-        return super(IssueUpdateView, self).get_context_data()
+        form = super(IssueUpdateView, self).get_context_data()
+        form['formcomment'] = CreateEvaluationComment()
+        #form['comments'] = EvaluationComment.objects.select_related('user')\
+        #    .filter(issue__id=) \
+        #    .order_by('-created_at').values('user', 'comment', 'created_at')
+        print form
+        return form
 
     def form_valid(self, form):
         try:
@@ -325,3 +333,24 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     template_name = 'bugtracker/detail.html'
     slug_field = 'id'
     slug_url_kwarg = 'id_issue'
+
+class EvaluationCommentCreate(JSONResponseMixin, CreateView):
+
+    def post(self, request, *args, **kwargs):
+        try:
+            id = request.POST.get('id')
+            comment = request.POST.get('comment')
+            user = self.request.user
+            EvaluationComment.objects.create(comment=comment, issue_id=id,
+                                             user_id=user.id)
+            comments = EvaluationComment.objects.select_related('user').filter(issue__id=id)\
+                .order_by('-created_at').values('user', 'comment', 'created_at')
+            context = dict()
+            context['comments'] = list(comments)
+            return self.render_to_json_response(context)
+        except Exception as e:
+            print type(e)
+            print e.message
+            return self.render_to_json_response({'code': 540,
+                                                 'msj': 'No se ha almacenado'})
+

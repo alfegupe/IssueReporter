@@ -8,6 +8,7 @@ from models import *
 Classes
 """
 
+
 class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(attrs={
@@ -20,7 +21,6 @@ class LoginForm(forms.Form):
 
 
 class UpdateDataUserForm(forms.ModelForm):
-
     email = forms.CharField(
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Email'}),
@@ -71,7 +71,6 @@ class UpdatePasswordUserForm(forms.Form):
 
 
 class CreateIssueForm(forms.ModelForm):
-
     class Meta:
         model = Issue
         fields = [
@@ -102,7 +101,6 @@ class CreateIssueForm(forms.ModelForm):
 
 
 class UpdateIssueForm(forms.ModelForm):
-
     class Meta:
         model = Issue
         fields = [
@@ -133,7 +131,6 @@ class UpdateIssueForm(forms.ModelForm):
 
 
 class UpdateIssueAdminForm(forms.ModelForm):
-
     class Meta:
         model = Issue
         fields = [
@@ -173,7 +170,6 @@ class UpdateIssueAdminForm(forms.ModelForm):
 
 
 class SearchIssueForm(forms.ModelForm):
-
     class Meta:
         model = Issue
         fields = [
@@ -207,3 +203,14 @@ class SearchIssueForm(forms.ModelForm):
         self.fields['status'].empty_label = '-- estado'
         self.fields['reporter'].empty_label = '-- reportado por'
         self.fields['dev'].empty_label = '-- asignado a'
+
+
+class CreateEvaluationComment(forms.ModelForm):
+    class Meta:
+        model = EvaluationComment
+        fields = ['comment']
+        widgets = {
+            'comment': forms.Textarea(attrs={'class': 'form-control',
+                                             'placeholder': 'Escriba aquí el comentario...',
+                                             'rows': 5}),
+        }

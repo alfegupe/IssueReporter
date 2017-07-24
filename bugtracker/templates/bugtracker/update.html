@@ -1,118 +1,155 @@
 {% extends "bugtracker/index.html" %}
 {% block content %}
-    <h3>Actualizar incidencia</h3>
+<h3>Actualizar incidencia</h3>
 
-    {% include "includes/messages.html" %}
+{% include "includes/messages.html" %}
 
-    <div class="row">
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="col-lg-6 col-md-6 col-sm-12">
+<div class="row">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-lg-6 col-md-6 col-sm-12">
 
-                {% if form.evaluation_comments.value %}
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <div class="panel panel-default panel-danger" style="background-color: #ffe6e6; margin-bottom: 10px;">
-                        <div class="panel-body">
-                            <strong>
-                                <i class="fa fa-quote-left fa-3x fa-pull-left" aria-hidden="true"></i>
-                                La incidencia se encuentra en estado:
-                                <i>'{{ form.instance.status.status|default_if_none:"Nueva" }}'</i>.
-                                <br>
-                                Concepto: {{ form.evaluation_comments.value }}
-                            </strong>
-                        </div>
+            {% if form.evaluation_comments.value %}
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-default panel-danger"
+                     style="background-color: #ffe6e6; margin-bottom: 10px;">
+                    <div class="panel-body">
+                        <strong>
+                            <i class="fa fa-quote-left fa-3x fa-pull-left"
+                               aria-hidden="true"></i>
+                            La incidencia se encuentra en estado:
+                            <i>'{{ form.instance.status.status|default_if_none:"Nueva" }}'</i>.
+                            <br>
+                            Concepto: {{ form.evaluation_comments.value }}
+                        </strong>
                     </div>
                 </div>
+            </div>
+            {% endif %}
+
+            <div class="input-field col-sm-12 col-md-12 col-lg-12">
+                <label>Reportado por:</label>
+                {% for value, text in form.reporter.field.choices %}
+                {% if value == form.reporter.value %}
+                <h5>{{ text }}</h5>
+                <input type="hidden" name="reporter" value="{{ value }}"/>
                 {% endif %}
+                {% endfor %}
+            </div>
+            <div class="input-field col-sm-12 col-md-12 col-lg-12">
+                <label>Título:</label>
+                {{ form.issue }}
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <label>Descripción:</label>
+                {{ form.description }}
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <label>Pasos para reproducir:</label>
+                {{ form.steps_to_reproduce }}
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
+                <label>Imagen1 (Opcional)</label>
+                {{ form.image1 }}
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
+                <label>Imagen2 (Opcional)</label>
+                {{ form.image2 }}
+            </div>
 
-                <div class="input-field col-sm-12 col-md-12 col-lg-12">
-                    <label>Reportado por:</label>
-                    {% for value, text in form.reporter.field.choices %}
-                        {% if value == form.reporter.value %}
-                            <h5>{{ text }}</h5>
-                            <input type="hidden" name="reporter" value="{{ value }}" />
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="input-field col-sm-12 col-md-12 col-lg-12">
-                    <label>Título:</label>
-                    {{ form.issue }}
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <label>Descripción:</label>
-                    {{ form.description }}
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <label>Pasos para reproducir:</label>
-                    {{ form.steps_to_reproduce }}
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                    <label>Imagen1 (Opcional)</label>
-                    {{ form.image1 }}
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                    <label>Imagen2 (Opcional)</label>
-                    {{ form.image2 }}
-                </div>
-
-                {% if form.dev and form.status and form.ticket and form.evaluation_comments %}
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <hr>
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <strong>Visible por Administradores y desarrolladores</strong>
-                            </div>
-                            <div class="panel-body">
-                                <label>Asignar a:</label>
-                                {{ form.dev }}
-                                <label>Estado:</label>
-                                {{ form.status }}
-                                <label>Ticket:</label>
-                                {{ form.ticket }}
-                                <label>Comentarios del evaluador:</label>
-                                {{ form.evaluation_comments }}
-                            </div>
-                        </div>
+            {% if form.dev and form.status and form.ticket and form.evaluation_comments %}
+            <div class="col-md-12">
+                <hr>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>Visible por Administradores y
+                            desarrolladores</strong>
                     </div>
-                {% endif %}
-
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-
-                <label>Software:</label>
-                {{ form.software }}
-
-                <label>Sede:</label>
-                {{ form.headquarter }}
-
-                <label>Navegador:</label>
-                {{ form.browser }}
-
-                <label>Sistema operativo:</label>
-                {{ form.os }}
-
-                <label>Prioridad:</label>
-                {{ form.priority }}
-
-                <label>Tipo:</label>
-                {{ form.type_issue }}
-
-                <label>Categoría:</label>
-                {{ form.category_issue }}
-
-                <label>Reproducibilidad:</label>
-                {{ form.reproducibility_issue }}
-
-                <br />
-
-                <input class="btn btn-success notify" type="submit" value="Actualizar incidencia" onclick="$('.notify').toggle()">
-                <div class="notify" style="display: none;">
-                    <h3><i class="fa fa-spin fa-spinner"></i> Enviando un email de notificación.</h3>
+                    <div class="panel-body">
+                        <label>Asignar a:</label>
+                        {{ form.dev }}
+                        <label>Estado:</label>
+                        {{ form.status }}
+                        <label>Ticket:</label>
+                        {{ form.ticket }}
+                    </div>
                 </div>
-
             </div>
 
-        </form>
-    </div>
+            {% endif %}
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+
+            <label>Software:</label>
+            {{ form.software }}
+
+            <label>Sede:</label>
+            {{ form.headquarter }}
+
+            <label>Navegador:</label>
+            {{ form.browser }}
+
+            <label>Sistema operativo:</label>
+            {{ form.os }}
+
+            <label>Prioridad:</label>
+            {{ form.priority }}
+
+            <label>Tipo:</label>
+            {{ form.type_issue }}
+
+            <label>Categoría:</label>
+            {{ form.category_issue }}
+
+            <label>Reproducibilidad:</label>
+            {{ form.reproducibility_issue }}
+
+            <br/>
+
+            <input class="btn btn-success notify" type="submit"
+                   value="Actualizar incidencia"
+                   onclick="$('.notify').toggle()">
+            <div class="notify" style="display: none;">
+                <h3><i class="fa fa-spin fa-spinner"></i> Enviando un email de
+                    notificación.</h3>
+            </div>
+
+        </div>
+        <br/>
+        <br/>
+        <div class="col-md-6">
+                <hr>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>Registrar comentario de evaluador</strong>
+                    </div>
+                    <div class="panel-body">
+                        <label>Comentarios del evaluador:</label>
+                        {{ formcomment.comment }}
+                        <span class="label label-danger" id="error_comment" style="display: none;"></span>
+                        <input type="hidden" id="issue_id" value="{{form.instance.pk}}">
+                        <br/>
+                        <button type="button" class="btn btn-default pull-right"
+                                onclick="saveCoomentEvaluator()">
+                            <i class="fa fa-save"></i> Agregar Comentario
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-12">
+                <hr>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>Comentarios registrados por evaluador</strong>
+                    </div>
+                    <div class="panel-body" id="list-comments" style="max-height: 400px; overflow: scroll;">
+                        .. No se han cargado comentarios ..
+                    </div>
+                </div>
+            </div>
+
+    </form>
+</div>
 
 {% endblock %}
