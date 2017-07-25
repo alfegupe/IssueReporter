@@ -173,11 +173,14 @@ class SearchIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'issue', 'software', 'headquarter', 'browser', 'priority',
+            'id', 'issue', 'software', 'headquarter', 'browser', 'priority',
             'type_issue', 'status', 'reporter', 'dev',
         ]
         select_attr = {'class': 'form-control input-sm', 'required': False}
         widgets = {
+            'id': forms.TextInput(
+                attrs={'class': 'form-control input-sm',
+                       'placeholder': 'Buscar por id'}),
             'issue': forms.TextInput(
                 attrs={'class': 'form-control input-sm',
                        'placeholder': 'Buscar por nombre'}),
