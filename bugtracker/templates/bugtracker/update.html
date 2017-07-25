@@ -116,38 +116,44 @@
             </div>
 
         </div>
-        <br/>
-        <br/>
-        <div class="col-md-6">
-                <hr>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <strong>Registrar comentario de evaluador</strong>
-                    </div>
-                    <div class="panel-body">
-                        <label>Comentarios del evaluador:</label>
-                        {{ formcomment.comment }}
-                        <span class="label label-danger" id="error_comment" style="display: none;"></span>
-                        <input type="hidden" id="issue_id" value="{{form.instance.pk}}">
-                        <br/>
-                        <button type="button" class="btn btn-default pull-right"
-                                onclick="saveCoomentEvaluator()">
-                            <i class="fa fa-save"></i> Agregar Comentario
-                        </button>
-                    </div>
-                </div>
-            </div>
+
         <div class="col-md-12">
-                <hr>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <strong>Comentarios registrados por evaluador</strong>
-                    </div>
-                    <div class="panel-body" id="list-comments" style="max-height: 400px; overflow: scroll;">
-                        .. No se han cargado comentarios ..
+            <hr>
+            <div class="panel panel-primary">
+                <a class="btn btn-default pull-right" data-toggle="modal"
+                                                        data-target="#myModal">
+                    <i class="fa fa-th-list"></i>
+                    Agregar Comentario Evaluador
+                </a>
+                <div class="panel-heading">
+                    <strong>Comentarios registrados</strong>
+                </div>
+                <div class="panel-body" style="max-height: 400px; overflow: scroll;">
+                    <div id="list-comments"></div>
+                    <div id="content-comments">
+                        {% for comment in comments %}
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    {{ comment.user.first_name }}
+                                    {{ comment.user.last_name }}
+                                    </br>
+                                    <small>
+                                        {{comment.created_at | date:"d/m/Y H:i"}}
+                                    </small>
+                                </div>
+                                <div class="panel-body">
+                                    {{ comment.comment }}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <span class="label label-warning">
+                                No se han registrado comentarios
+                            </span>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
+        </div>
 
     </form>
 </div>

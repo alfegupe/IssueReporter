@@ -18,6 +18,7 @@ from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, 
 from models import Issue, StatusIssue, EvaluationComment
 from .models import Person
 from utils.mixins import JSONResponseMixin
+from django.http import JsonResponse
 
 
 # names Groups:
@@ -291,10 +292,9 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
             self.form_class = UpdateIssueAdminForm
         form = super(IssueUpdateView, self).get_context_data()
         form['formcomment'] = CreateEvaluationComment()
-        #form['comments'] = EvaluationComment.objects.select_related('user')\
-        #    .filter(issue__id=) \
-        #    .order_by('-created_at').values('user', 'comment', 'created_at')
-        print form
+        form['comments'] = EvaluationComment.objects.select_related('user') \
+            .filter(issue__id=self.kwargs['id_issue']) \
+            .order_by('-created_at').all()
         return form
 
     def form_valid(self, form):
@@ -334,6 +334,14 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     slug_field = 'id'
     slug_url_kwarg = 'id_issue'
 
+    def get_context_data(self, **kwargs):
+        form = super(IssueDetailView, self).get_context_data()
+        form['formcomment'] = CreateEvaluationComment()
+        form['comments'] = EvaluationComment.objects.select_related('user') \
+            .filter(issue__id=self.kwargs['id_issue']) \
+            .order_by('-created_at').all()
+        return form
+
 class EvaluationCommentCreate(JSONResponseMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
@@ -341,13 +349,18 @@ class EvaluationCommentCreate(JSONResponseMixin, CreateView):
             id = request.POST.get('id')
             comment = request.POST.get('comment')
             user = self.request.user
-            EvaluationComment.objects.create(comment=comment, issue_id=id,
+            ev = EvaluationComment.objects.create(comment=comment, issue_id=id,
                                              user_id=user.id)
-            comments = EvaluationComment.objects.select_related('user').filter(issue__id=id)\
-                .order_by('-created_at').values('user', 'comment', 'created_at')
-            context = dict()
-            context['comments'] = list(comments)
-            return self.render_to_json_response(context)
+            count_comments = EvaluationComment.objects.select_related('user') \
+                                .filter(issue__id=id) \
+                                .order_by('-created_at').count()
+            comments = {
+                'comment': ev.comment,
+                'user': user.first_name+" "+user.last_name,
+                'created_at': ev.created_at,
+                'count': count_comments,
+            }
+            return JsonResponse(comments, safe=False)
         except Exception as e:
             print type(e)
             print e.message

@@ -159,41 +159,60 @@
                     </figcaption>
                 </figure>
             {% endif %}
+
+
+
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+        <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
+            <i class="fa fa-reply"></i> Volver
+        </a>
+        <a class="btn btn-primary" href="{% url 'update' issue.id %}">
+            <i class="fa fa-edit"></i> Editar
+        </a>
+
+    </div>
+    <div class="col-md-12">
+        <hr>
+        <div class="panel panel-primary">
+            <a class="btn btn-default pull-right" data-toggle="modal"
+                                                        data-target="#myModal">
+                <i class="fa fa-th-list"></i> Agregar Comentario Evaluador
+            </a>
+            <div class="panel-heading">
+                <strong>Comentarios registrados</strong>
+
+            </div>
+            <div class="panel-body" style="max-height: 400px; overflow: scroll;">
+                <div id="list-comments"></div>
+                <div id="content-comments">
+                    {% for comment in comments %}
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                {{ comment.user.first_name }}
+                                {{ comment.user.last_name }}
+                                </br>
+                                <small>
+                                    {{ comment.created_at | date:"d/m/Y H:i" }}
+                                </small>
+                            </div>
+                            <div class="panel-body" >
+                                {{ comment.comment }}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <span class="label label-warning">
+                            No se han registrado comentarios
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 
-    <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
-        <i class="fa fa-reply"></i> Volver
-    </a>
-    <a class="btn btn-primary" href="{% url 'update' issue.id %}">
-        <i class="fa fa-edit"></i> Editar
-    </a>
-    <a class="btn btn-default" data-toggle="modal" data-target="#myModal">
-        <i class="fa fa-th-list"></i> Agregar Comentario Evaluador
-    </a>
 
-    <!-- Modal add comment evaluator -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Agregar comentario del evaluador</h4>
-          </div>
-          <div class="modal-body">
-            <textarea class="form-control" rows="4" placeholder="Escriba aquí el comentario..."></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-                <i class="fa fa-close"></i> Cerrar
-            </button>
-            <button type="button" class="btn btn-primary" onclick="saveCoomentEvaluator()">
-                <i class="fa fa-save"></i> Guardar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Fin modal add comment evaluator -->
 
 {% endblock %}

@@ -11,7 +11,6 @@ function saveCoomentEvaluator(){
     var comment = $("#id_comment").val();
     var issue_id = $("#issue_id").val();
     var token = $("input[name=csrfmiddlewaretoken]").val();
-    console.log(token);
     if(comment && issue_id){
         $.ajax({
           url: "/bugtracker/add_evaluation_comment/",
@@ -22,23 +21,28 @@ function saveCoomentEvaluator(){
                 'csrfmiddlewaretoken': token
             }
         }).done(function(response) {
-          console.log("done - " + JSON.stringify(response));
           var msj = "";
-          if(response.comments){
-          var comment = $("#id_comment").val('');
-            response.comments.forEach(function(item, indx){
-                var date = new Date(item.created_at);
-                msj += '<div class="panel panel-default">';
-                msj += '<div class="panel-heading">';
-                msj += item.user + '</br>';
-                msj += '<small>'+date.toDateString()+'</small>';
-                msj += '</div>';
-                msj += '<div class="panel-body">';
-                msj += item.comment;
-                msj += '</div>';
-                msj += '</div>';
-            })
-            $("#list-comments").html(msj)
+          if(response.comment){
+            var comment = $("#id_comment").val('');
+            var date = new Date(response.created_at);
+            msj += '<div id="list-comments">';
+            msj += '<div class="panel panel-info">';
+            msj += '<div class="panel-heading">';
+            msj += response.user + '</br>';
+            msj += '<small>'+getFormatTime(date.getDate())+'/'+getFormatTime(parseInt(date.getMonth()+1))
+                +'/'+date.getFullYear()+' '+getFormatTime(date.getHours())+':'
+                +getFormatTime(date.getMinutes())+'</small>';
+            msj += '</div>';
+            msj += '<div class="panel-body">';
+            msj += response.comment;
+            msj += '</div>';
+            msj += '</div>';
+            msj += '</div>';
+            if(response.count === 1){
+                $("#content-comments").html('');
+            }
+            $("#list-comments").before(msj)
+            $("#close-modal-detail-comment").click();
           }else{
             $("#list-comments").html("<p>No se han agregado comentarios a la incidencia</>")
           }
@@ -47,4 +51,10 @@ function saveCoomentEvaluator(){
         $("#error_comment").removeAttr("style");
         $("#error_comment").html("Debe digitar un comentario para guadarlo.");
     }
+}
+
+function getFormatTime(time){
+    if(time < 10)
+        return '0'+time;
+    return time;
 }
