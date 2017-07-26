@@ -124,6 +124,7 @@ class Issue(models.Model):
     def __unicode__(self):
         return self.issue
 
+
 class EvaluationComment(models.Model):
     comment = models.TextField(blank=True, null=True)
     user = models.ForeignKey(

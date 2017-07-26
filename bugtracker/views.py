@@ -343,7 +343,6 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         return form
 
 class EvaluationCommentCreate(JSONResponseMixin, CreateView):
-
     def post(self, request, *args, **kwargs):
         try:
             id = request.POST.get('id')

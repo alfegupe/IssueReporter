@@ -6,7 +6,7 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 });
 
-function saveCoomentEvaluator(){
+function saveCommentEvaluator(){
     $("#error_comment").attr("style", "display: none;");
     var comment = $("#id_comment").val();
     var issue_id = $("#issue_id").val();
