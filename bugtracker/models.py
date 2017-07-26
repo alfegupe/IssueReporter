@@ -123,3 +123,12 @@ class Issue(models.Model):
 
     def __unicode__(self):
         return self.issue
+
+
+class EvaluationComment(models.Model):
+    comment = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, related_name='Evaluator')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
