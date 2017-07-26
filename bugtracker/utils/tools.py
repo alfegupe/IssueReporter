@@ -16,3 +16,5 @@ def mail(title, body_txt, body_html, e_from, to):
         print e.__class__, ' - ', e.message
     finally:
         return None
+
+

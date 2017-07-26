@@ -3,7 +3,7 @@
 from django.conf.urls import url
 from .views import IndexView, LoginView, LogoutView, IssueListView, \
     IssueCreateView, IssueDetailView, IssueUpdateView, ProfileView, \
-    UpdateDataUserView, update_password
+    UpdateDataUserView, update_password, EvaluationCommentCreate
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -19,4 +19,5 @@ urlpatterns = [
         name='detail'),
     url(r'^update/(?P<id_issue>[-_\w]+)/$', IssueUpdateView.as_view(),
         name='update'),
+    url(r'add_evaluation_comment/$', EvaluationCommentCreate.as_view()),
 ]

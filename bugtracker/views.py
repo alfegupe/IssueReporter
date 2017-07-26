@@ -13,9 +13,13 @@ from django.views.generic import ListView, DetailView, CreateView, \
 from django.views.generic.edit import UpdateView
 from bugtracker.utils.tools import *
 from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
-    UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm
-from models import Issue, StatusIssue
+    UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm, \
+    CreateEvaluationComment
+from models import Issue, StatusIssue, EvaluationComment
 from .models import Person
+from utils.mixins import JSONResponseMixin
+from django.http import JsonResponse
+
 
 # names Groups:
 reporters_group = 'Reporter'
@@ -286,8 +290,12 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
         if self.request.user.is_superuser or \
                 is_member(self.request.user, developers_group):
             self.form_class = UpdateIssueAdminForm
-
-        return super(IssueUpdateView, self).get_context_data()
+        form = super(IssueUpdateView, self).get_context_data()
+        form['formcomment'] = CreateEvaluationComment()
+        form['comments'] = EvaluationComment.objects.select_related('user') \
+            .filter(issue__id=self.kwargs['id_issue']) \
+            .order_by('-created_at').all()
+        return form
 
     def form_valid(self, form):
         try:
@@ -325,3 +333,36 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     template_name = 'bugtracker/detail.html'
     slug_field = 'id'
     slug_url_kwarg = 'id_issue'
+
+    def get_context_data(self, **kwargs):
+        form = super(IssueDetailView, self).get_context_data()
+        form['formcomment'] = CreateEvaluationComment()
+        form['comments'] = EvaluationComment.objects.select_related('user') \
+            .filter(issue__id=self.kwargs['id_issue']) \
+            .order_by('-created_at').all()
+        return form
+
+class EvaluationCommentCreate(JSONResponseMixin, CreateView):
+    def post(self, request, *args, **kwargs):
+        try:
+            id = request.POST.get('id')
+            comment = request.POST.get('comment')
+            user = self.request.user
+            ev = EvaluationComment.objects.create(comment=comment, issue_id=id,
+                                             user_id=user.id)
+            count_comments = EvaluationComment.objects.select_related('user') \
+                                .filter(issue__id=id) \
+                                .order_by('-created_at').count()
+            comments = {
+                'comment': ev.comment,
+                'user': user.first_name+" "+user.last_name,
+                'created_at': ev.created_at,
+                'count': count_comments,
+            }
+            return JsonResponse(comments, safe=False)
+        except Exception as e:
+            print type(e)
+            print e.message
+            return self.render_to_json_response({'code': 540,
+                                                 'msj': 'No se ha almacenado'})
+
