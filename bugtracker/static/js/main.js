@@ -7,11 +7,16 @@ $(function () {
 });
 
 function saveCommentEvaluator(){
+
     $("#error_comment").attr("style", "display: none;");
     var comment = $("#id_comment").val();
     var issue_id = $("#issue_id").val();
     var token = $("input[name=csrfmiddlewaretoken]").val();
     if(comment && issue_id){
+        $("#save-comment").attr('disabled', 'true');
+        $("#save-comment").html(
+            "<i clas='fa fa-spinner'></i> Guardando."
+        );
         $.ajax({
           url: "/bugtracker/add_evaluation_comment/",
             method: "post",
@@ -41,12 +46,21 @@ function saveCommentEvaluator(){
             if(response.count === 1){
                 $("#content-comments").html('');
             }
+            $("#save-comment").removeAttr('disabled');
+            $("#save-comment").html(
+                    "<i clas='fa fa-save'></i> Guardar."
+                );
             $("#list-comments").before(msj)
             $("#close-modal-detail-comment").click();
           }else{
             $("#list-comments").html("<p>No se han agregado comentarios a la incidencia</>")
+            $("#save-comment").removeAttr('disabled');
+            $("#save-comment").html(
+                    "<i clas='fa fa-save'></i> Guardar."
+                );
           }
         });
+
     }else{
         $("#error_comment").removeAttr("style");
         $("#error_comment").html("Debe digitar un comentario para guadarlo.");

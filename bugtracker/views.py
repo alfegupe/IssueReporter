@@ -20,7 +20,6 @@ from .models import Person
 from utils.mixins import JSONResponseMixin
 from django.http import JsonResponse
 
-
 # names Groups:
 reporters_group = 'Reporter'
 developers_group = 'Developer'
@@ -68,6 +67,32 @@ def send_notification_bug_email(request, issue, is_update=None):
         return None
 
 
+def send_notification_new_evaluation_comment_email(issue_id, comments):
+    issue = Issue.objects.get(pk=issue_id)
+    f_from = ''
+    to = []
+    if issue.dev:
+        if issue.dev.user.email not in to:
+            to.append(issue.dev.user.email)
+
+    htmly = get_template('email/evaluation_comment.html')
+
+    d = Context({
+        'user': comments['user'],
+        'comment': comments['comment'],
+        'main_message': 'La incidencia #' + str(issue_id) +
+                        ' tiene un nuevo comentario'
+    })
+
+    text_content = ""
+    html_content = htmly.render(d)
+
+    if mail('Nuevo comentario en la incidencia ' + str(issue.id), text_content,
+            html_content, f_from, to):
+        print 'An email has been sent.'
+    pass
+
+
 class IndexView(View):
     template = "bugtracker/index.html"
 
@@ -82,12 +107,16 @@ class IndexView(View):
                 'status_id', 'status__status'
             ).annotate(total=Count('status_id')).order_by('-total')
 
-            priority = Issue.objects.all().values(
-                'priority_id', 'priority__priority'
-            ).annotate(total=Count('priority_id')).order_by('-total')
+            priority = Issue.objects.values(
+                'priority__id', 'priority__priority'
+            ).filter(
+                status__id__lt=4
+            ).annotate(total=Count('priority__id')).order_by('-total')
 
             type_i = Issue.objects.all().values(
                 'type_issue_id', 'type_issue__type_issue'
+            ).filter(
+                status__id__lt=4
             ).annotate(total=Count('type_issue_id')).order_by('-total')
 
             context['status_issues'] = status
@@ -198,15 +227,26 @@ class IssueListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         query = self.get_params_search()
+        date = ""
+        print(query)
         show_in_main_list = True
         if 'is_closed' in query:
             show_in_main_list = False if query['is_closed'] == 'on' else True
             del query['is_closed']
 
+        if 'date' in query:
+            date = query['date']
+            del query['date']
+
         if not self.request.user.is_superuser and \
                 not is_member(self.request.user, developers_group):
             query['reporter'] = Person.objects.get(user=self.request.user)
         query['status__show_in_main_list'] = show_in_main_list
+
+        if date == "asc":
+            return self.model.objects.filter(**query).order_by('created_at')
+        elif date == "dsc":
+            return self.model.objects.filter(**query).order_by('-created_at')
 
         return self.model.objects.filter(**query).order_by(
             'priority', 'type_issue', 'created_at')
@@ -228,7 +268,7 @@ class IssueListView(LoginRequiredMixin, ListView):
         try:
             for key in self.request.GET:
                 if self.request.GET[key] != '' and key != 'page':
-                    params += "&" + key + "=" +self.request.GET[key]
+                    params += "&" + key + "=" + self.request.GET[key]
         except Exception as e:
             print e.message
         finally:
@@ -342,6 +382,7 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
             .order_by('-created_at').all()
         return form
 
+
 class EvaluationCommentCreate(JSONResponseMixin, CreateView):
     def post(self, request, *args, **kwargs):
         try:
@@ -349,20 +390,20 @@ class EvaluationCommentCreate(JSONResponseMixin, CreateView):
             comment = request.POST.get('comment')
             user = self.request.user
             ev = EvaluationComment.objects.create(comment=comment, issue_id=id,
-                                             user_id=user.id)
+                                                  user_id=user.id)
             count_comments = EvaluationComment.objects.select_related('user') \
-                                .filter(issue__id=id) \
-                                .order_by('-created_at').count()
+                .filter(issue__id=id) \
+                .order_by('-created_at').count()
             comments = {
                 'comment': ev.comment,
-                'user': user.first_name+" "+user.last_name,
+                'user': user.first_name + " " + user.last_name,
                 'created_at': ev.created_at,
                 'count': count_comments,
             }
+            send_notification_new_evaluation_comment_email(id, comments)
             return JsonResponse(comments, safe=False)
         except Exception as e:
             print type(e)
             print e.message
             return self.render_to_json_response({'code': 540,
                                                  'msj': 'No se ha almacenado'})
-
