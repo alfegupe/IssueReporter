@@ -420,7 +420,6 @@ class ExportXlsx(JSONResponseMixin, CreateView):
         from io import BytesIO
 
         query = self.get_params_search()
-        print query
         output = BytesIO()
 
         book = Workbook(output)
