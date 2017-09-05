@@ -19,6 +19,7 @@ from models import Issue, StatusIssue, EvaluationComment
 from .models import Person
 from utils.mixins import JSONResponseMixin
 from django.http import JsonResponse
+from django.http import HttpResponse
 
 # names Groups:
 reporters_group = 'Reporter'
@@ -228,7 +229,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         query = self.get_params_search()
         date = ""
-        print(query)
+        issues = ""
         show_in_main_list = True
         if 'is_closed' in query:
             show_in_main_list = False if query['is_closed'] == 'on' else True
@@ -244,12 +245,14 @@ class IssueListView(LoginRequiredMixin, ListView):
         query['status__show_in_main_list'] = show_in_main_list
 
         if date == "asc":
-            return self.model.objects.filter(**query).order_by('created_at')
+            issues = self.model.objects.filter(**query).order_by('created_at')
         elif date == "dsc":
-            return self.model.objects.filter(**query).order_by('-created_at')
+            issues = self.model.objects.filter(**query).order_by('-created_at')
+        else:
+            issues = self.model.objects.filter(**query).order_by(
+                'priority', 'type_issue', 'created_at')
 
-        return self.model.objects.filter(**query).order_by(
-            'priority', 'type_issue', 'created_at')
+        return issues
 
     def get_params_search(self):
         params = {}
@@ -407,3 +410,75 @@ class EvaluationCommentCreate(JSONResponseMixin, CreateView):
             print e.message
             return self.render_to_json_response({'code': 540,
                                                  'msj': 'No se ha almacenado'})
+
+
+class ExportXlsx(JSONResponseMixin, CreateView):
+    model = Issue
+
+    def get(self, request, *args, **kwargs):
+        from xlsxwriter.workbook import Workbook
+        from io import BytesIO
+
+        query = self.get_params_search()
+        print query
+        output = BytesIO()
+
+        book = Workbook(output)
+        header = book.add_format({
+            'bg_color': '#F7F7F7',
+            'color': 'black',
+            'align': 'center',
+            'valign': 'top',
+            'border': 1
+        })
+        sheet = book.add_worksheet('Listado')
+        row = 1
+        sheet.write(0, 0, "ID", header)
+        sheet.write(0, 1, "NOMBRE", header)
+        sheet.write(0, 2, "REPORTADA", header)
+        sheet.write(0, 3, "TIPO", header)
+        sheet.write(0, 4, "ESTADO", header)
+        sheet.write(0, 5, "SOFTWARE", header)
+        sheet.write(0, 6, "DESCRIPCION", header)
+        data = self.model.objects.all().filter(**query)
+        for issue in data:
+            sheet.write(row, 0, issue.id)
+            sheet.write(row, 1, issue.issue)
+            sheet.write(row, 2, str(issue.created_at).split(" ")[0])
+            sheet.write(row, 3, issue.type_issue.type_issue)
+            sheet.write(row, 4, issue.status.status)
+            sheet.write(row, 5, issue.software.software)
+            sheet.write(row, 6, issue.description)
+            row += 1
+        book.close()
+        output.seek(0)
+        response = HttpResponse(output.read(),
+                                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        return response
+
+    def get_params_search(self):
+        params = {}
+        try:
+            params['status__id__lt'] = 4
+            if self.request.GET.get('id'):
+                params['id'] = self.request.GET.get('id')
+            if self.request.GET.get('issue'):
+                params['issue'] = self.request.GET.get('issue')
+            if self.request.GET.get('type_issue'):
+                params['type_issue'] = self.request.GET.get('type_issue')
+            if self.request.GET.get('priority'):
+                params['priority'] = self.request.GET.get('priority')
+            if self.request.GET.get('status'):
+                params['status'] = self.request.GET.get('status')
+            if self.request.GET.get('software'):
+                params['software'] = self.request.GET.get('software')
+            if self.request.GET.get('headquarter'):
+                params['headquarter'] = self.request.GET.get('headquarter')
+            if self.request.GET.get('browser'):
+                params['browser'] = self.request.GET.get('browser')
+            if self.request.GET.get('dev'):
+                params['dev'] = self.request.GET.get('dev')
+        except Exception as e:
+            print e.message
+        finally:
+            return params

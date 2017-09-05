@@ -3,7 +3,7 @@
 from django.conf.urls import url
 from .views import IndexView, LoginView, LogoutView, IssueListView, \
     IssueCreateView, IssueDetailView, IssueUpdateView, ProfileView, \
-    UpdateDataUserView, update_password, EvaluationCommentCreate
+    UpdateDataUserView, update_password, EvaluationCommentCreate, ExportXlsx
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^update/(?P<id_issue>[-_\w]+)/$', IssueUpdateView.as_view(),
         name='update'),
     url(r'add_evaluation_comment/$', EvaluationCommentCreate.as_view()),
+    url(r'xlsx/$', ExportXlsx.as_view(), name='xlsx'),
 ]
