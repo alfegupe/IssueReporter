@@ -85,6 +85,8 @@ function excel(){
             a.style.display = 'none';
             document.body.appendChild(a);
             return a.click();
+        }else if(xhttp.readyState === 4 && xhttp.status === 500){
+            alert("Se ha presentado un error al interno al intenter generar el excel, por favor intentelo de nuevo.");
         }
     };
     xhttp.open("get", "/bugtracker/xlsx/?"+$("#filter").serialize(), true);
@@ -92,6 +94,5 @@ function excel(){
     xhttp.responseType = 'blob';
     var data = new FormData();
     data.append('data', $("#filter").serialize());
-    data.append('csrfmiddlewaretoken', $("input[name=csrfmiddlewaretoken]").val());
     xhttp.send(data);
 }

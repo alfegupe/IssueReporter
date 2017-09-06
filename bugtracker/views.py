@@ -420,64 +420,54 @@ class ExportXlsx(JSONResponseMixin, CreateView):
         from io import BytesIO
 
         query = self.get_params_search()
-        output = BytesIO()
+        if query:
+            output = BytesIO()
 
-        book = Workbook(output)
-        header = book.add_format({
-            'bg_color': '#F7F7F7',
-            'color': 'black',
-            'align': 'center',
-            'valign': 'top',
-            'border': 1
-        })
-        sheet = book.add_worksheet('Listado')
-        row = 1
-        sheet.write(0, 0, "ID", header)
-        sheet.write(0, 1, "NOMBRE", header)
-        sheet.write(0, 2, "REPORTADA", header)
-        sheet.write(0, 3, "TIPO", header)
-        sheet.write(0, 4, "ESTADO", header)
-        sheet.write(0, 5, "SOFTWARE", header)
-        sheet.write(0, 6, "DESCRIPCION", header)
-        data = self.model.objects.all().filter(**query)
-        for issue in data:
-            sheet.write(row, 0, issue.id)
-            sheet.write(row, 1, issue.issue)
-            sheet.write(row, 2, str(issue.created_at).split(" ")[0])
-            sheet.write(row, 3, issue.type_issue.type_issue)
-            sheet.write(row, 4, issue.status.status)
-            sheet.write(row, 5, issue.software.software)
-            sheet.write(row, 6, issue.description)
-            row += 1
-        book.close()
-        output.seek(0)
-        response = HttpResponse(output.read(),
-                                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        return response
+            book = Workbook(output)
+            header = book.add_format({
+                'bg_color': '#F7F7F7',
+                'color': 'black',
+                'align': 'center',
+                'valign': 'top',
+                'border': 1
+            })
+            sheet = book.add_worksheet('Listado')
+            row = 1
+            sheet.write(0, 0, "ID", header)
+            sheet.write(0, 1, "NOMBRE", header)
+            sheet.write(0, 2, "REPORTADA", header)
+            sheet.write(0, 3, "TIPO", header)
+            sheet.write(0, 4, "ESTADO", header)
+            sheet.write(0, 5, "SOFTWARE", header)
+            sheet.write(0, 6, "DESCRIPCIÓN".decode('utf8'), header)
+            data = self.model.objects.all().filter(**query)
+            for issue in data:
+                sheet.write(row, 0, issue.id, header)
+                sheet.write(row, 1, issue.issue)
+                sheet.write(row, 2, str(issue.created_at).split(" ")[0])
+                sheet.write(row, 3, issue.type_issue.type_issue)
+                sheet.write(row, 4, issue.status.status)
+                sheet.write(row, 5, issue.software.software)
+                sheet.write(row, 6, issue.description)
+                row += 1
+            book.close()
+            output.seek(0)
+            response = HttpResponse(output.read(),
+                                    content_type="application/vnd.openxmlformats" +
+                                                 "-officedocument.spreadsheetml." +
+                                                 "sheet")
+            return response
+
+        return None
 
     def get_params_search(self):
         params = {}
         try:
             params['status__id__lt'] = 4
-            if self.request.GET.get('id'):
-                params['id'] = self.request.GET.get('id')
-            if self.request.GET.get('issue'):
-                params['issue'] = self.request.GET.get('issue')
-            if self.request.GET.get('type_issue'):
-                params['type_issue'] = self.request.GET.get('type_issue')
-            if self.request.GET.get('priority'):
-                params['priority'] = self.request.GET.get('priority')
-            if self.request.GET.get('status'):
-                params['status'] = self.request.GET.get('status')
-            if self.request.GET.get('software'):
-                params['software'] = self.request.GET.get('software')
-            if self.request.GET.get('headquarter'):
-                params['headquarter'] = self.request.GET.get('headquarter')
-            if self.request.GET.get('browser'):
-                params['browser'] = self.request.GET.get('browser')
-            if self.request.GET.get('dev'):
-                params['dev'] = self.request.GET.get('dev')
+            for i in self.request.GET:
+                if self.request.GET.get(i):
+                    params[i] = self.request.GET.get(i)
         except Exception as e:
-            print e.message
+            return None
         finally:
             return params
