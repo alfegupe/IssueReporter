@@ -36,7 +36,7 @@
                         {% for p_i in priority_issues %}
                             <li class="list-group-item">
                                 <span class="badge">{{ p_i.total }}</span>
-                                <a href="{% url 'home' %}?priority={{ p_i.priority_id }}"
+                                <a href="{% url 'home' %}?priority={{ p_i.priority__id }}"
                                     data-toggle="tooltip" data-placement="top" title="Ver lista">
                                     {{ p_i.priority__priority }}
                                 </a>

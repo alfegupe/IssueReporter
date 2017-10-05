@@ -123,6 +123,7 @@ class IndexView(View):
             context['status_issues'] = status
             context['priority_issues'] = priority
             context['type_issues'] = type_i
+            print priority
 
             return render(request, self.template, context)
 
@@ -439,7 +440,7 @@ class ExportXlsx(JSONResponseMixin, CreateView):
             sheet.write(0, 3, "TIPO", header)
             sheet.write(0, 4, "ESTADO", header)
             sheet.write(0, 5, "SOFTWARE", header)
-            sheet.write(0, 6, "DESCRIPCIÓN".decode('utf8'), header)
+            sheet.write(0, 6, "ASIGNADO A", header)
             data = self.model.objects.all().filter(**query)
             for issue in data:
                 sheet.write(row, 0, issue.id, header)
@@ -448,7 +449,10 @@ class ExportXlsx(JSONResponseMixin, CreateView):
                 sheet.write(row, 3, issue.type_issue.type_issue)
                 sheet.write(row, 4, issue.status.status)
                 sheet.write(row, 5, issue.software.software)
-                sheet.write(row, 6, issue.description)
+                if issue.dev:
+                    sheet.write(row, 6, str(issue.dev).decode('utf-8'))
+                else:
+                    sheet.write(row, 6, '--')
                 row += 1
             book.close()
             output.seek(0)
