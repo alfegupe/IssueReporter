@@ -167,12 +167,26 @@
     </div>
 
     <div class="col-md-12">
+
         <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
             <i class="fa fa-reply"></i> Volver
         </a>
+
         <a class="btn btn-primary" href="{% url 'update' issue.id %}">
             <i class="fa fa-edit"></i> Editar
         </a>
+
+        {% if issue.status.id == 5 and issue.reporter_id == user.id %}
+            {% if is_evaluated is not True%}
+                <a class="btn btn-info" data-toggle="modal" data-target="#myModalEv">
+                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Evaluar
+                </a>
+            {% else %}
+                <a class="btn btn-info" disabled>
+                    <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
+                </a>
+            {% endif %}
+        {% endif %}
 
     </div>
     <div class="col-md-12">

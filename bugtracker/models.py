@@ -132,3 +132,21 @@ class EvaluationComment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+
+
+class IssueEvaluation(models.Model):
+    class Meta:
+        permissions = (
+            ("can_view_results_evaluations", "Can view evaluations results"),
+        )
+    observations = models.TextField(blank=True, null=True)
+    time_evaluation = models.TextField()
+    resolve = models.TextField()
+    notify = models.TextField()
+    satisfied = models.TextField()
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, related_name='EvalUser')
+    issue = models.ForeignKey(
+        Issue, on_delete=models.CASCADE, null=True, related_name='EvalIssue')
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)

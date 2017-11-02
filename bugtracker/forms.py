@@ -217,3 +217,39 @@ class CreateEvaluationComment(forms.ModelForm):
                                              'placeholder': 'Escriba aquí el comentario...',
                                              'rows': 5}),
         }
+
+
+class CreateIssueEvaluation(forms.ModelForm):
+    class Meta:
+        model = IssueEvaluation
+        fields = ['observations', 'time_evaluation', 'resolve', 'notify',
+                  'satisfied']
+        resolve_choices = [
+            ('', '-- Selecciona una opción --',), ('2', 'Completamente',),
+            ('1', 'Parcialmente',), ('0', 'No fue resuelta',)
+        ]
+        time_evaluation_choices = [
+            ('', '-- Selecciona una opción --',), ('4', 'Muy rápido',),
+            ('3', 'Rápido',), ('2', 'Normal',), ('1', 'Lento',),
+            ('0', 'Muy lento',)
+        ]
+        notify_choices = [
+            ('', '-- Selecciona una opción --',), ('2', 'Por Teléfono',),
+            ('1', 'Por Correo electrónico',), ('0', 'No fue notificado',)
+        ]
+        satisfied_choices = [
+            ('', '-- Selecciona una opción --',), ('1', 'Si',), ('0', 'No',)
+        ]
+        widgets = {
+            'observations': forms.Textarea(attrs={'class': 'form-control',
+                                             'placeholder': 'Escriba aquí el comentario...',
+                                             'rows': 5}),
+            'time_evaluation': forms.Select(choices=time_evaluation_choices,
+                                            attrs={'class': 'form-control'}),
+            'resolve': forms.Select(choices=resolve_choices,
+                                            attrs={'class': 'form-control'}),
+            'notify': forms.Select(choices=notify_choices,
+                                            attrs={'class': 'form-control'}),
+            'satisfied': forms.Select(choices=satisfied_choices,
+                                            attrs={'class': 'form-control'}),
+        }

@@ -14,12 +14,14 @@ from django.views.generic.edit import UpdateView
 from bugtracker.utils.tools import *
 from forms import LoginForm, CreateIssueForm, UpdateIssueForm, SearchIssueForm, \
     UpdateDataUserForm, UpdatePasswordUserForm, UpdateIssueAdminForm, \
-    CreateEvaluationComment
-from models import Issue, StatusIssue, EvaluationComment
+    CreateEvaluationComment, CreateIssueEvaluation
+from models import Issue, StatusIssue, EvaluationComment, IssueEvaluation
 from .models import Person
 from utils.mixins import JSONResponseMixin
 from django.http import JsonResponse
 from django.http import HttpResponse
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 # names Groups:
 reporters_group = 'Reporter'
@@ -40,7 +42,7 @@ def send_notification_bug_email(request, issue, is_update=None):
         htmly = get_template('email/bug.html')
 
         d = Context({
-            'cdf': issue,
+            'cdf': issue, 'id_issue': id_issue,
             'main_message': 'La incidencia #' + str(id_issue) + ' ha sido ' + op
         })
 
@@ -51,8 +53,16 @@ def send_notification_bug_email(request, issue, is_update=None):
         to = [request.user.email]
         if issue.reporter:
             rep = issue.reporter
-            if rep.user.email not in to:
-                to.append(rep.user.email)
+            if issue.status.id == 5:
+                htmly2 = get_template('email/bug_link_evaluation.html')
+                html_content2 = htmly2.render(d)
+                to2 = [rep.user.email]
+                print "Cerrando - enviando a: ", to2
+                if mail(title, text_content, html_content2, f_from, to2):
+                    print 'An email has been sent whit evaluation link.'
+            else:
+                if rep.user.email not in to:
+                    to.append(rep.user.email)
 
         if issue.dev:
             dev = issue.dev
@@ -123,7 +133,6 @@ class IndexView(View):
             context['status_issues'] = status
             context['priority_issues'] = priority
             context['type_issues'] = type_i
-            print priority
 
             return render(request, self.template, context)
 
@@ -381,9 +390,13 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         form = super(IssueDetailView, self).get_context_data()
         form['formcomment'] = CreateEvaluationComment()
+        form['formissueevaluation'] = CreateIssueEvaluation()
         form['comments'] = EvaluationComment.objects.select_related('user') \
             .filter(issue__id=self.kwargs['id_issue']) \
             .order_by('-created_at').all()
+        evaluated = IssueEvaluation.objects. \
+            filter(issue__id=self.kwargs['id_issue']).all()
+        form['is_evaluated'] = True if len(evaluated) > 0 else False
         return form
 
 
@@ -475,3 +488,57 @@ class ExportXlsx(JSONResponseMixin, CreateView):
             return None
         finally:
             return params
+
+
+class IssueEvaluationView(JSONResponseMixin, CreateView):
+    model = IssueEvaluation
+
+    def post(self, request, *args, **kwargs):
+        id = request.POST.get('issue_id')
+        q1 = request.POST.get('resolve')
+        q2 = request.POST.get('time_evaluation')
+        q3 = request.POST.get('notify')
+        q4 = request.POST.get('satisfied')
+        obs = request.POST.get('observations')
+        user = self.request.user
+        ev = IssueEvaluation(observations=obs, time_evaluation=q2, resolve=q1,
+                             notify=q3, satisfied=q4, user_id=user.id,
+                             issue_id=id)
+        ev.save()
+        if ev:
+            # send_notification_new_evaluation_comment_email(id, comments)
+            return JsonResponse(
+                {'code': 200, 'msg': 'Se ha creado...'}, safe=False)
+        else:
+            return JsonResponse(
+                {'code': 400, 'msg': 'No se ha creado...'}, safe=False)
+
+
+class IssueEvaluationResultView(View):
+    model = IssueEvaluation
+    fields = ['observations', 'time_evaluation', 'resolve', 'notify',
+              'satisfied']
+    template = "bugtracker/result_evaluations.html"
+
+    @method_decorator(permission_required(
+        'bugtracker.can_view_results_evaluations', reverse_lazy('home')))
+    def get(self, request, *args, **kwargs):
+        time = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0}
+        resolve = {'0': 0, '1': 0, '2': 0}
+        notify = {'0': 0, '1': 0, '2': 0}
+        satisfied = {'0': 0, '1': 0}
+        observations = []
+        issue_evaluations = IssueEvaluation.objects.all()
+        for ev in issue_evaluations:
+            observations.append(ev.observations)
+            time[ev.time_evaluation] = time[ev.time_evaluation] + 1
+            resolve[ev.resolve] = resolve[ev.resolve] + 1
+            notify[ev.notify] = notify[ev.notify] + 1
+            satisfied[ev.satisfied] = satisfied[ev.satisfied] + 1
+        return render(request, "bugtracker/result_evaluations.html",
+                      {'observations': observations, 'time': time,
+                       'resolve': resolve, 'notify': notify,
+                       'satisfied':satisfied, 'cant': issue_evaluations.count()})
+
+    def __data_result_evaluations__(self, data, type):
+        pass

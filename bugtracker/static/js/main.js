@@ -96,3 +96,39 @@ function excel(){
     data.append('data', $("#filter").serialize());
     xhttp.send(data);
 }
+
+function saveIssueEvaluation(){
+    var issue_id = $("#id_issue").val();
+    var q1 = $("#id_resolve").val();
+    var q2 = $("#id_time_evaluation").val();
+    var q3 = $("#id_notify").val();
+    var q4 = $("#id_satisfied").val();
+    var obs = $("#id_observations").val();
+    var token = $("input[name=csrfmiddlewaretoken]").val();
+    if(q1 && q2 && q3 && q4){
+        $("#error_evaluate").attr('style', 'display: none;');
+        $.ajax({
+          url: "/bugtracker/issue_evaluation/",
+            method: "post",
+            data: {
+                'issue_id': issue_id,
+                'resolve': q1,
+                'time_evaluation': q2,
+                'notify': q3,
+                'satisfied': q4,
+                'observations': obs,
+                'csrfmiddlewaretoken': token
+            }
+        }).done(function(response) {
+            if(response.code == 200){
+                alert(JSON.stringify(response.msg));
+                window.location.href = "/";
+            }else{
+                alert(JSON.stringify(response.msg));
+            }
+        });
+    }else{
+        $("#error_evaluate").removeAttr('style');
+        $("#error_evaluate").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Debe responder todas las preguntas.');
+    }
+}

@@ -17,6 +17,13 @@
                 <li><a href="{% url 'home' %}">Incidencias</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                {% if perms.bugtracker.can_view_results_evaluations %}
+                <li>
+                    <a href="{% url 'issue_evaluation_results' %}">
+                        Resultados de Evaluación del Servicio
+                    </a>
+                </li>
+                {% endif %}
                 <li>
                     <a href="{% url 'profile' user.username %}">
                         {{ user.first_name }} {{ user.last_name }}
