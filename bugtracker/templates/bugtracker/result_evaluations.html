@@ -10,152 +10,190 @@
 
 <div class="row">
     <div class="col-md-12">
-      <table class="table table-bordered">
-          <tr>
-              <th style="width: 40%;">
-                  Número de evaluaciones presentadas:
-              </td>
-              <td style="text-align: center;">{{ cant }}</td>
-          </tr>
-      </table>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">1. La incidencia reportada fue resuelta?</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th style="width: 40%;">
+                    Número de evaluaciones presentadas:
+                </td>
+                <td style="text-align: center;">{{ cant }}</td>
+            </tr>
+        </table>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">¿Su solicitud fue resuelta?</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>No resuelta</th>
+                            <td>{{ resolve.1 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fue resuelta completamente</th>
+                            <td>{{ resolve.5 }}</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="chart-resolve" width="100%"></canvas>
+                </div>
+                <input type="hidden" id="resolve"
+                       value="{{resolve.1}},{{resolve.5}},{{cant}}">
+            </div>
         </div>
-        <div class="panel-body">
-          <div class="col-md-6">
-            <table class="table table-bordered">
-              <thead>
-              <tr>
-                  <th>No fue resuelta</th>
-                  <td>{{ resolve.0 }}</td>
-              </tr>
-              <tr>
-                  <th>Parcialmente</th>
-                  <td>{{ resolve.1 }}</td>
-              </tr>
-              <tr>
-                  <th>Completamente</th>
-                  <td>{{ resolve.2 }}</td>
-              </tr>
-              </thead>
-            </table>
-          </div>
-          <div class="col-md-6">
-            <canvas id="chart-resolve" width="100%"></canvas>
-          </div>
-          <input type="hidden" id="resolve" value="{{resolve.0}},{{resolve.1}},{{resolve.2}},{{cant}}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    El Tiempo en atender su solicitud fue:
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Muy lento</th>
+                            <td>{{ time.1 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Lento</th>
+                            <td>{{ time.2 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Rápido</th>
+                            <td>{{ time.3 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Muy rápido</th>
+                            <td>{{ time.5 }}</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="chart-time" width="100%"></canvas>
+                </div>
+                <input type="hidden" id="time"
+                       value="{{time.1}},{{time.2}},{{time.3}},{{time.5}},{{cant}}">
+            </div>
         </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">2. El tiempo de respuesta en atender la incidencia fue:</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    EL nivel de dificultad para usar el software de
+                    reporte de incidencias fue:
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Muy fácil</th>
+                            <td>{{ difficulty.1 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fácil</th>
+                            <td>{{ difficulty.2 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Difícil</th>
+                            <td>{{ difficulty.3 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Muy difícil</th>
+                            <td>{{ difficulty.5 }}</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="chart-difficulty" width="100%"></canvas>
+                </div>
+                <input type="hidden" id="difficulty"
+                       value="{{difficulty.1}},{{difficulty.2}},{{difficulty.3}},{{difficulty.5}},{{cant}}">
+            </div>
         </div>
-        <div class="panel-body">
-          <div class="col-md-6">
-            <table class="table table-bordered">
-              <thead>
-              <tr>
-                <th>Muy lento</th>
-                <td>{{ time.0 }}</td>
-              </tr>
-              <tr>
-                <th>Lento</th>
-                <td>{{ time.1 }}</td>
-              </tr>
-              <tr>
-                <th>Normal</th>
-                <td>{{ time.2 }}</td>
-              </tr>
-              <tr>
-                <th>Rápido</th>
-                <td>{{ time.3 }}</td>
-              </tr>
-              <tr>
-                <th>Muy rápido</th>
-                <td>{{ time.4 }}</td>
-              </tr>
-              </thead>
-            </table>
-          </div>
-          <div class="col-md-6">
-            <canvas id="chart-time" width="100%"></canvas>
-          </div>
-          <input type="hidden" id="time" value="{{time.0}},{{time.1}},{{time.2}},{{time.3}},{{time.4}},{{cant}}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    ¿Fue contactado por alguno de estos medios para resolver su
+                    solicitud?
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Extensión telefónica</th>
+                            <td>{{ contact.1 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Correo electrónico</th>
+                            <td>{{ contact.2 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Celular</th>
+                            <td>{{ contact.3 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Chat</th>
+                            <td>{{ contact.4 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ninguno</th>
+                            <td>{{ contact.5 }}</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="chart-contact" width="100%"></canvas>
+                </div>
+                <input type="hidden" id="contact"
+                       value="{{contact.1}},{{contact.2}},{{contact.3}},{{contact.4}},{{contact.5}},{{cant}}">
+            </div>
         </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">3. El seguimiento de la incidencia fue notificado?</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Nivel de satisfacción con la atención recibida:
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Muy insatisfecho</th>
+                            <td>{{ satisfied.1 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Insatisfecho</th>
+                            <td>{{ satisfied.2 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Satisfecho</th>
+                            <td>{{ satisfied.3 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Muy satisfecho</th>
+                            <td>{{ satisfied.5 }}</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="chart-satisfied" width="100%"></canvas>
+                </div>
+                <input type="hidden" id="satisfied"
+                       value="{{satisfied.1}},{{satisfied.2}},{{satisfied.3}},{{satisfied.5}},{{cant}}">
+            </div>
         </div>
-        <div class="panel-body">
-          <div class="col-md-6">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>No fue notificado</th>
-                  <td>{{ notify.0 }}</td>
-                </tr>
-                <tr>
-                  <th>Por Correo electrónico</th>
-                  <td>{{ notify.1 }}</td>
-                </tr>
-                <tr>
-                  <th>Por Teléfono</th>
-                  <td>{{ notify.2 }}</td>
-                </tr>
-                </thead>
-            </table>
-          </div>
-          <div class="col-md-6">
-            <canvas id="chart-notify" width="100%"></canvas>
-          </div>
-          <input type="hidden" id="notify" value="{{notify.0}},{{notify.1}},{{notify.2}},{{cant}}">
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            4. Recomendaría a otros usuarios utilizar el reporteador de
-            incidencias Bugtracker?
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div class="col-md-6">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>No</th>
-                  <td>{{ satisfied.0 }}</td>
-                </tr>
-                <tr>
-                  <th>Si</th>
-                  <td>{{ satisfied.1 }}</td>
-                </tr>
-                </thead>
-            </table>
-          </div>
-          <div class="col-md-6">
-            <canvas id="chart-satisfied" width="100%"></canvas>
-          </div>
-          <input type="hidden" id="satisfied" value="{{satisfied.0}},{{satisfied.1}},{{cant}}">
-        </div>        
-      </div>
-    </div>
-    <div class="col-md-12">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Comentarios
-        </div>
-        <div class="panel-body" style="max-height: 400px; overflow: scroll;">
-          {% for obs in observations %}
-          <figure class="highlight">
-            <p style="font-style: italic;">{{ obs }}</p>
-          </figure>
-          <hr>
-          {% endfor %}
-        </div>
-      </div>
     </div>
 </div>
 

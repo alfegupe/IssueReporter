@@ -222,33 +222,37 @@ class CreateEvaluationComment(forms.ModelForm):
 class CreateIssueEvaluation(forms.ModelForm):
     class Meta:
         model = IssueEvaluation
-        fields = ['observations', 'time_evaluation', 'resolve', 'notify',
-                  'satisfied']
+        fields = ['resolve', 'time_evaluation', 'difficulty',
+                  'contact', 'satisfied']
         resolve_choices = [
-            ('', '-- Selecciona una opción --',), ('2', 'Completamente',),
-            ('1', 'Parcialmente',), ('0', 'No fue resuelta',)
+            ('', '-- Selecciona una opción --'), ('1', 'No resuelta'),
+            ('5', 'Fue resuelta completamente')
         ]
         time_evaluation_choices = [
-            ('', '-- Selecciona una opción --',), ('4', 'Muy rápido',),
-            ('3', 'Rápido',), ('2', 'Normal',), ('1', 'Lento',),
-            ('0', 'Muy lento',)
+            ('', '-- Selecciona una opción --'), ('1', 'Muy lento'),
+            ('2', 'Lento'), ('3', 'Rápido'), ('5', 'Muy rápido')
         ]
-        notify_choices = [
-            ('', '-- Selecciona una opción --',), ('2', 'Por Teléfono',),
-            ('1', 'Por Correo electrónico',), ('0', 'No fue notificado',)
+        difficulty_choices = [
+            ('', '-- Selecciona una opción --'), ('1', 'Muy fácil'),
+            ('2', 'Fácil'), ('3', 'Difícil'), ('5', 'Muy difícil')
+        ]
+        contact_choices = [
+            ('', '-- Selecciona una opción --'), ('1', 'Extensión telefónica'),
+            ('2', 'Correo electrónico'), ('3', 'Celular'), ('4', 'Chat'),
+            ('5', 'Ninguno')
         ]
         satisfied_choices = [
-            ('', '-- Selecciona una opción --',), ('1', 'Si',), ('0', 'No',)
+            ('', '-- Selecciona una opción --',), ('1', 'Muy insatisfecho'),
+            ('2', 'Insatisfecho'), ('3', 'Satisfecho'), ('5', 'Muy satisfecho')
         ]
         widgets = {
-            'observations': forms.Textarea(attrs={'class': 'form-control',
-                                             'placeholder': 'Escriba aquí el comentario...',
-                                             'rows': 5}),
+            'resolve': forms.Select(choices=resolve_choices,
+                                    attrs={'class': 'form-control'}),
             'time_evaluation': forms.Select(choices=time_evaluation_choices,
                                             attrs={'class': 'form-control'}),
-            'resolve': forms.Select(choices=resolve_choices,
+            'difficulty': forms.Select(choices=difficulty_choices,
                                             attrs={'class': 'form-control'}),
-            'notify': forms.Select(choices=notify_choices,
+            'contact': forms.Select(choices=contact_choices,
                                             attrs={'class': 'form-control'}),
             'satisfied': forms.Select(choices=satisfied_choices,
                                             attrs={'class': 'form-control'}),

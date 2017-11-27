@@ -90,32 +90,34 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6 form-group">
-                        <label for="id_resolve">1. La incidencia reportada fue
-                            resuelta?</label>
+                        <label for="id_resolve">¿Su solicitud fue resuelta?</label>
                         {{ formissueevaluation.resolve }}
                     </div>
                     <div class="col-md-6 form-group">
-                        <label for="id_time_evaluation">2. El tiempo de
-                            respuesta en atender
-                            la incidencia fue:</label>
+                        <label for="id_time_evaluation">
+                            El Tiempo en atender su solicitud fue:
+                        </label>
                         {{ formissueevaluation.time_evaluation }}
                     </div>
                     <div class="col-md-6 form-group">
-                        <label for="id_notify">3. El seguimiento de la
-                            incidencia
-                            fue notificado?</label>
-                        {{ formissueevaluation.notify }}
+                        <label for="id_difficulty">
+                            EL nivel de dificultad para usar el software de
+                            reporte de incidencias fue:
+                        </label>
+                        {{ formissueevaluation.difficulty }}
                     </div>
                     <div class="col-md-6 form-group">
-                        <label for="id_satisfied">4. Recomendaría a otros
-                            usuarios
-                            utilizar el reporteador de incidencias
-                            Bugtracker?</label>
-                        {{ formissueevaluation.satisfied }}
+                        <label for="id_contact">
+                            ¿Fue contactado por alguno de estos medios para
+                            resolver su solicitud?
+                        </label>
+                        {{ formissueevaluation.contact }}
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="id_observations">5. Observaciones</label>
-                        {{ formissueevaluation.observations }}
+                        <label for="id_satisfied">
+                            Nivel de satisfacción con la atención recibida:
+                        </label>
+                        {{ formissueevaluation.satisfied }}
                     </div>
                     <div class="col-md-12">
                         <div class="alert alert-danger" id="error_evaluate"

@@ -101,11 +101,11 @@ function saveIssueEvaluation(){
     var issue_id = $("#id_issue").val();
     var q1 = $("#id_resolve").val();
     var q2 = $("#id_time_evaluation").val();
-    var q3 = $("#id_notify").val();
-    var q4 = $("#id_satisfied").val();
-    var obs = $("#id_observations").val();
+    var q3 = $("#id_difficulty").val();
+    var q4 = $("#id_contact").val();
+    var q5 = $("#id_satisfied").val();
     var token = $("input[name=csrfmiddlewaretoken]").val();
-    if(q1 && q2 && q3 && q4){
+    if(q1 && q2 && q3 && q4 && q5){
         $("#error_evaluate").attr('style', 'display: none;');
         $.ajax({
           url: "/bugtracker/issue_evaluation/",
@@ -114,14 +114,14 @@ function saveIssueEvaluation(){
                 'issue_id': issue_id,
                 'resolve': q1,
                 'time_evaluation': q2,
-                'notify': q3,
-                'satisfied': q4,
-                'observations': obs,
+                'difficulty': q3,
+                'contact': q4,
+                'satisfied': q5,
                 'csrfmiddlewaretoken': token
             }
         }).done(function(response) {
             if(response.code == 200){
-                alert(JSON.stringify(response.msg));
+                //alert(JSON.stringify(response.msg));
                 window.location.href = "/";
             }else{
                 alert(JSON.stringify(response.msg));

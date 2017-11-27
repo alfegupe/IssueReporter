@@ -139,10 +139,10 @@ class IssueEvaluation(models.Model):
         permissions = (
             ("can_view_results_evaluations", "Can view evaluations results"),
         )
-    observations = models.TextField(blank=True, null=True)
     time_evaluation = models.TextField()
     resolve = models.TextField()
-    notify = models.TextField()
+    difficulty = models.TextField()
+    contact = models.TextField()
     satisfied = models.TextField()
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name='EvalUser')

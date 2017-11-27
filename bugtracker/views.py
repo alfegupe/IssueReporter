@@ -497,12 +497,12 @@ class IssueEvaluationView(JSONResponseMixin, CreateView):
         id = request.POST.get('issue_id')
         q1 = request.POST.get('resolve')
         q2 = request.POST.get('time_evaluation')
-        q3 = request.POST.get('notify')
-        q4 = request.POST.get('satisfied')
-        obs = request.POST.get('observations')
+        q3 = request.POST.get('difficulty')
+        q4 = request.POST.get('contact')
+        q5 = request.POST.get('satisfied')
         user = self.request.user
-        ev = IssueEvaluation(observations=obs, time_evaluation=q2, resolve=q1,
-                             notify=q3, satisfied=q4, user_id=user.id,
+        ev = IssueEvaluation(satisfied=q5, time_evaluation=q2, resolve=q1,
+                             difficulty=q3, contact=q4, user_id=user.id,
                              issue_id=id)
         ev.save()
         if ev:
@@ -523,21 +523,21 @@ class IssueEvaluationResultView(View):
     @method_decorator(permission_required(
         'bugtracker.can_view_results_evaluations', reverse_lazy('home')))
     def get(self, request, *args, **kwargs):
-        time = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0}
-        resolve = {'0': 0, '1': 0, '2': 0}
-        notify = {'0': 0, '1': 0, '2': 0}
-        satisfied = {'0': 0, '1': 0}
-        observations = []
+        resolve = {'1': 0, '5': 0}
+        time = {'1': 0, '2': 0, '3': 0, '5': 0}
+        difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
+        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+        satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
         issue_evaluations = IssueEvaluation.objects.all()
         for ev in issue_evaluations:
-            observations.append(ev.observations)
             time[ev.time_evaluation] = time[ev.time_evaluation] + 1
             resolve[ev.resolve] = resolve[ev.resolve] + 1
-            notify[ev.notify] = notify[ev.notify] + 1
+            difficulty[ev.difficulty] = difficulty[ev.difficulty] + 1
+            contact[ev.contact] = contact[ev.contact] + 1
             satisfied[ev.satisfied] = satisfied[ev.satisfied] + 1
         return render(request, "bugtracker/result_evaluations.html",
-                      {'observations': observations, 'time': time,
-                       'resolve': resolve, 'notify': notify,
+                      {'difficulty': difficulty, 'time': time,
+                       'resolve': resolve, 'contact': contact,
                        'satisfied':satisfied, 'cant': issue_evaluations.count()})
 
     def __data_result_evaluations__(self, data, type):
