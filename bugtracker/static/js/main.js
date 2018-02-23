@@ -76,7 +76,6 @@ function getFormatTime(time){
 function excel(opc){
   var url = "";
   var name = "";
-  alertify.error(opc);
   if(opc == '1'){
     url = "/bugtracker/xlsx/?"+$("#filter").serialize();
     name = "incidencias_";
