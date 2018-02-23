@@ -569,6 +569,12 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
             'valign': 'top',
             'border': 1
         })
+        datax = book.add_format({
+            'color': 'black',
+            'align': 'center',
+            'valign': 'top',
+            'border': 1
+        })
         sheet = book.add_worksheet('Listado')
         row = 1
 
@@ -583,54 +589,56 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
         sheet.write(0, 1, issue_evaluations.count(), header)
 
         sheet.write(2, 0, "Su solicitud fue resuelta", header)
+        sheet.merge_range(2, 0, 2, 1, "Su solicitud fue resuelta",
+            header)
         sheet.write(3, 0, "No resuelta", header)
-        sheet.write(3, 1, resolve['1'], header)
+        sheet.write(3, 1, resolve['1'], datax)
         sheet.write(4, 0, "Fue resuelta completamente", header)
-        sheet.write(4, 1, resolve['5'], header)
+        sheet.write(4, 1, resolve['5'], datax)
 
-        sheet.write(6, 0, "El Tiempo en atender su solicitud fue:", header)
+        sheet.merge_range(6, 0, 6, 1, "El Tiempo en atender su solicitud fue:", header)
         sheet.write(7, 0, "Muy lento", header)
-        sheet.write(7, 1, time['1'], header)
+        sheet.write(7, 1, time['1'], datax)
         sheet.write(8, 0, "Lento", header)
-        sheet.write(8, 1, time['2'], header)
+        sheet.write(8, 1, time['2'], datax)
         sheet.write(9, 0, "Rapido", header)
-        sheet.write(9, 1, time['3'], header)
+        sheet.write(9, 1, time['3'], datax)
         sheet.write(10, 0, "Muy rapido", header)
-        sheet.write(10, 1, time['5'], header)
+        sheet.write(10, 1, time['5'], datax)
 
-        sheet.write(12, 0, "EL nivel de dificultad para usar el software de " +
+        sheet.merge_range(12, 0, 12, 1, "EL nivel de dificultad para usar el software de " +
             "reporte de incidencias fue:", header)
         sheet.write(13, 0, "Muy facil", header)
-        sheet.write(13, 1, difficulty['1'], header)
+        sheet.write(13, 1, difficulty['1'], datax)
         sheet.write(14, 0, "Facil", header)
-        sheet.write(14, 1, difficulty['2'], header)
+        sheet.write(14, 1, difficulty['2'], datax)
         sheet.write(15, 0, "Dificil", header)
-        sheet.write(15, 1, difficulty['3'], header)
+        sheet.write(15, 1, difficulty['3'], datax)
         sheet.write(16, 0, "Muy dificil", header)
-        sheet.write(16, 1, difficulty['5'], header)
+        sheet.write(16, 1, difficulty['5'], datax)
 
-        sheet.write(18, 0, "Fue contactado por alguno de estos medios para "+
+        sheet.merge_range(18, 0, 18, 1, "Fue contactado por alguno de estos medios para "+
             "resolver su solicitud", header)
         sheet.write(19, 0, "Extension telefonica", header)
-        sheet.write(19, 1, contact['1'], header)
+        sheet.write(19, 1, contact['1'], datax)
         sheet.write(20, 0, 'Correo electronico', header)
-        sheet.write(20, 1, contact['2'], header)
+        sheet.write(20, 1, contact['2'], datax)
         sheet.write(21, 0, "Celular", header)
-        sheet.write(21, 1, contact['3'], header)
+        sheet.write(21, 1, contact['3'], datax)
         sheet.write(22, 0, 'Chat', header)
-        sheet.write(22, 1, contact['4'], header)
+        sheet.write(22, 1, contact['4'], datax)
         sheet.write(23, 0, "Ninguno", header)
-        sheet.write(23, 1, contact['5'], header)
+        sheet.write(23, 1, contact['5'], datax)
 
-        sheet.write(25, 0, 'Nivel de satisfaccion con la atencion recibida:', header)
+        sheet.merge_range(25, 0, 25, 1, 'Nivel de satisfaccion con la atencion recibida:', header)
         sheet.write(26, 0, 'Muy insatisfecho', header)
-        sheet.write(26, 1, satisfied['1'], header)
+        sheet.write(26, 1, satisfied['1'], datax)
         sheet.write(27, 0, "Insatisfecho", header)
-        sheet.write(27, 1, satisfied['2'], header)
+        sheet.write(27, 1, satisfied['2'], datax)
         sheet.write(28, 0, "Satisfecho", header)
-        sheet.write(28, 1, satisfied['3'], header)
+        sheet.write(28, 1, satisfied['3'], datax)
         sheet.write(29, 0, "Muy satisfecho", header)
-        sheet.write(29, 1, satisfied['5'], header)
+        sheet.write(29, 1, satisfied['5'], datax)
 
         book.close()
         output.seek(0)
