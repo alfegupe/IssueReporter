@@ -5,7 +5,7 @@
 {% include "includes/messages.html" %}
 
 <div class="row">
-    <form action="" method="post" enctype="multipart/form-data">
+    <form id="issue-udapte-form" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="col-lg-6 col-md-6 col-sm-12">
 
@@ -58,24 +58,26 @@
             </div>
 
             {% if form.dev and form.status and form.ticket and form.evaluation_comments %}
-            <div class="col-md-12">
-                <hr>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <strong>Visible por Administradores y
-                            desarrolladores</strong>
-                    </div>
-                    <div class="panel-body">
-                        <label>Asignar a:</label>
-                        {{ form.dev }}
-                        <label>Estado:</label>
-                        {{ form.status }}
-                        <label>Ticket:</label>
-                        {{ form.ticket }}
-                    </div>
-                </div>
-            </div>
-
+              <div class="col-md-12">
+                  <hr>
+                  <div class="panel panel-primary">
+                      <div class="panel-heading">
+                          <strong>Visible por Administradores y
+                              desarrolladores</strong>
+                      </div>
+                      <div class="panel-body">
+                          <label>Asignar a:</label>
+                          {{ form.dev }}
+                          <label>Estado:</label>
+                          {{ form.status }}
+                          <label>Ticket:</label>
+                          {{ form.ticket }}
+                      </div>
+                  </div>
+                  <input type="hidden" id="is_admin" value="true">
+              </div>
+            {% else %}
+            <input type="hidden" id="is_admin" value="false">
             {% endif %}
 
         </div>
@@ -107,14 +109,12 @@
 
             <br/>
 
-            <input class="btn btn-success notify" type="submit"
-                   value="Actualizar incidencia"
-                   onclick="$('.notify').toggle()">
-            <div class="notify" style="display: none;">
-                <h3><i class="fa fa-spin fa-spinner"></i> Enviando un email de
-                    notificación.</h3>
-            </div>
-
+            <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
+                <i class="fa fa-arrow-left"></i> Volver
+            </a>
+            <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
+              <i class="fa fa-save"></i> Actualizar incidencia
+            </button>
         </div>
 
         <div class="col-md-12">
@@ -157,5 +157,104 @@
 
     </form>
 </div>
+
+<script type="text/javascript">
+  function validateForm(){
+    var validate = 0;
+    var msj_error = "<ul>";
+
+    //Validate Title
+    if($("#id_issue").val() == ""){
+      validate++;
+      msj_error += "<li> El <b>Título</b> de la incidencia. </li>";
+    }
+
+    //Validate Desciption
+    if($("#id_description").val() == ""){
+      validate++;
+      msj_error += "<li> La <b>Descripción</b> es requerida. </li>";
+    }
+
+    //Validate steps_to_reproduce
+    if($("#id_steps_to_reproduce").val() == ""){
+      validate++;
+      msj_error += "<li> La <b>Descripción</b> es requerida. </li>";
+    }
+
+    //Validate Software
+    if($("#id_software").val() == ""){
+      validate++;
+      msj_error += "<li> El <b>Software</b> es requerido. </li>";
+    }
+
+    //Validate Sede
+    if($("#id_headquarter").val() == ""){
+      validate++;
+      msj_error += "<li> La <b>Sede</b> es requerida. </li>";
+    }
+
+    //Validate Navegador
+    if($("#id_browser").val() == ""){
+      validate++;
+      msj_error += "<li> El <b>Navegador</b> es requerido. </li>";
+    }
+
+    //Validate OS
+    if($("#id_os").val() == ""){
+      validate++;
+      msj_error += "<li> El <b>Sistema operativo</b> es requerido. </li>";
+    }
+
+    //Validate priority
+    if($("#id_priority").val() == ""){
+      validate++;
+      msj_error += "<li> La <b>Prioridad</b> es requerida. </li>";
+    }
+
+    //Validate type_issue
+    if($("#id_type_issue").val() == ""){
+      validate++;
+      msj_error += "<li> El <b>Tipo de Incidencia</b> es requerido. </li>";
+    }
+
+    //Validate Category_issue
+    if($("#id_category_issue").val() == ""){
+      validate++;
+      msj_error += "<li> La <b>Categoría</b> es requerida. </li>";
+    }
+
+    //Validate Reproducibility_issue
+    if($("#id_reproducibility_issue").val() == ""){
+      validate++;
+      msj_error += "<li> La <b>Reproducibilidad</b> es requerida. </li>";
+    }
+
+    var is_admin = $("#is_admin").val();
+    if(is_admin == "true"){
+      if($("#id_dev").val() == ""){
+        validate++;
+        msj_error += "<li> Debe asignar un <b>Responsable</b> a la incidencia. </li></ul>";
+        sendForm2(validate, msj_error);
+       }else{
+         sendForm2(validate, msj_error);
+       }
+    }else{
+       msj_error += "</ul>";
+       sendForm2(validate, msj_error);
+    }
+  }
+
+  function sendForm2(validate, msj_error){
+    if(validate == 0){
+      $("#btn-to-back").hide();
+      $("#btn-to-save").attr('disabled', 'true');
+      alertify.success("<i class='fa fa-spin fa-spinner'></i> Enviando un email de notificación.");
+      $("#issue-udapte-form").submit();
+    }else{
+      alertify.error("Debe llenar los campos requeridos: <br/><br/>" + msj_error);
+    }
+
+  }
+</script>
 
 {% endblock %}

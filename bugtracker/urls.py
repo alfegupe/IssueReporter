@@ -4,7 +4,7 @@ from django.conf.urls import url
 from .views import IndexView, LoginView, LogoutView, IssueListView, \
     IssueCreateView, IssueDetailView, IssueUpdateView, ProfileView, \
     UpdateDataUserView, update_password, EvaluationCommentCreate, ExportXlsx, \
-    IssueEvaluationView, IssueEvaluationResultView
+    IssueEvaluationView, IssueEvaluationResultView, IssueEvaluationResulExportXlsx
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -22,6 +22,7 @@ urlpatterns = [
         name='update'),
     url(r'add_evaluation_comment/$', EvaluationCommentCreate.as_view()),
     url(r'xlsx/$', ExportXlsx.as_view(), name='xlsx'),
+    url(r'xlsx_results/$', IssueEvaluationResulExportXlsx.as_view(), name='xlsx_results'),
     url(r'^issue_evaluation/$', IssueEvaluationView.as_view(),
         name='issue_evaluation'),
     url(r'^issue_evaluation/result/$', IssueEvaluationResultView.as_view(),

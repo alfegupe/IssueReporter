@@ -73,28 +73,38 @@ function getFormatTime(time){
     return time;
 }
 
-function excel(){
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        var a, today;
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-            a = document.createElement('a');
-            a.href = window.URL.createObjectURL(xhttp.response);
-            today = new Date();
-            a.download = "incidencias_" + today.toDateString().split(" ").join("_") + ".xls";
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            return a.click();
-        }else if(xhttp.readyState === 4 && xhttp.status === 500){
-            alert("Se ha presentado un error al interno al intenter generar el excel, por favor intentelo de nuevo.");
-        }
-    };
-    xhttp.open("get", "/bugtracker/xlsx/?"+$("#filter").serialize(), true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.responseType = 'blob';
-    var data = new FormData();
-    data.append('data', $("#filter").serialize());
-    xhttp.send(data);
+function excel(opc){
+  var url = "";
+  var name = "";
+  alertify.error(opc);
+  if(opc == '1'){
+    url = "/bugtracker/xlsx/?"+$("#filter").serialize();
+    name = "incidencias_";
+  }else if (opc == '2'){
+    url = "/bugtracker/xlsx_results/";
+    name = "resultados_evaluaciones_";
+  }
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+      var a, today;
+      if (xhttp.readyState === 4 && xhttp.status === 200) {
+          a = document.createElement('a');
+          a.href = window.URL.createObjectURL(xhttp.response);
+          today = new Date();
+          a.download = name + today.toDateString().split(" ").join("_") + ".xls";
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          return a.click();
+      }else if(xhttp.readyState === 4 && xhttp.status === 500){
+          alert("Se ha presentado un error interno al intentar generar el excel, por favor intentelo de nuevo.");
+      }
+  };
+  xhttp.open("get", url, true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.responseType = 'blob';
+  var data = new FormData();
+  data.append('data', $("#filter").serialize());
+  xhttp.send(data);
 }
 
 function saveIssueEvaluation(){
@@ -131,4 +141,99 @@ function saveIssueEvaluation(){
         $("#error_evaluate").removeAttr('style');
         $("#error_evaluate").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Debe responder todas las preguntas.');
     }
+}
+
+function validateFormNewUpdateIssue(){
+  var validate = 0;
+  var msj_error = "<ul>";
+
+  //Validate Title
+  if($("#id_issue").val() == ""){
+    validate++;
+    msj_error += "<li> El <b>Título</b> de la incidencia. </li>";
+  }
+
+  //Validate Desciption
+  if($("#id_description").val() == ""){
+    validate++;
+    msj_error += "<li> La <b>Descripción</b> es requerida. </li>";
+  }
+
+  //Validate steps_to_reproduce
+  if($("#id_steps_to_reproduce").val() == ""){
+    validate++;
+    msj_error += "<li> Los <b>Pasos para reproducirlo</b> son requeridos. </li>";
+  }
+
+  //Validate Software
+  if($("#id_software").val() == ""){
+    validate++;
+    msj_error += "<li> El <b>Software</b> es requerido. </li>";
+  }
+
+  //Validate Sede
+  if($("#id_headquarter").val() == ""){
+    validate++;
+    msj_error += "<li> La <b>Sede</b> es requerida. </li>";
+  }
+
+  //Validate Navegador
+  if($("#id_browser").val() == ""){
+    validate++;
+    msj_error += "<li> El <b>Navegador</b> es requerido. </li>";
+  }
+
+  //Validate OS
+  if($("#id_os").val() == ""){
+    validate++;
+    msj_error += "<li> El <b>Sistema operativo</b> es requerido. </li>";
+  }
+
+  //Validate priority
+  if($("#id_priority").val() == ""){
+    validate++;
+    msj_error += "<li> La <b>Prioridad</b> es requerida. </li>";
+  }
+
+  //Validate type_issue
+  if($("#id_type_issue").val() == ""){
+    validate++;
+    msj_error += "<li> El <b>Tipo de Incidencia</b> es requerido. </li>";
+  }
+
+  //Validate Category_issue
+  if($("#id_category_issue").val() == ""){
+    validate++;
+    msj_error += "<li> La <b>Categoría</b> es requerida. </li>";
+  }
+
+  //Validate Reproducibility_issue
+  if($("#id_reproducibility_issue").val() == ""){
+    validate++;
+    msj_error += "<li> La <b>Reproducibilidad</b> es requerida. </li>";
+  }
+
+  var is_admin = $("#is_admin").val();
+  if(is_admin == "true"){
+    if($("#id_dev").val() == ""){
+      validate++;
+      msj_error += "<li> Debe asignar un <b>Responsable</b> a la incidencia. </li></ul>";
+    }
+    saveIssueNewUpdate(validate, msj_error);
+  }else{
+    msj_error += "</ul>";
+    saveIssueNewUpdate(validate, msj_error);
+  }
+}
+
+function saveIssueNewUpdate(validate, msj_error){
+  if(validate == 0){
+    $("#btn-to-back").hide();
+    $("#btn-to-save").attr('disabled', 'true');
+    alertify.success("<i class='fa fa-spin fa-spinner'></i> Enviando un email de notificación.");
+    $("#issue-udapte-form").submit();
+  }else{
+    alertify.error("Debe llenar los campos requeridos: <br/><br/>" + msj_error);
+  }
+
 }
