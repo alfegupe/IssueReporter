@@ -5,7 +5,7 @@
     {% include "includes/messages.html" %}
 
     <div class="row">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form id="issue-udapte-form" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="input-field col-sm-12 col-md-12 col-lg-12">
@@ -60,13 +60,13 @@
                 {{ form.reproducibility_issue }}
 
             </div>
-
-            <button class="btn btn-success btn-sm notify" type="submit" onclick="$('.notify').toggle()">
-                Reportar incidencia
+            <input type="hidden" id="is_admin" value="false">
+            <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
+                <i class="fa fa-arrow-left"></i> Volver
+            </a>
+            <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
+              <i class="fa fa-save"></i> Actualizar incidencia
             </button>
-            <div class="notify" style="display: none;">
-                <h3><i class="fa fa-spin fa-spinner"></i> Enviando un email de notificación.</h3>
-            </div>
         </form>
     </div>
 

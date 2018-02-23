@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" type="image/png"
           href="{% static 'img/favicon.png' %}"/>
-    <title>{% block title %}BugTracker{% endblock %}</title>
+    <title>{% block title %}Optimus App{% endblock %}</title>
     {% block styles %}
     <link rel="stylesheet"
           href="{% static 'bootstrap/css/bootstrap.min.css' %}"/>
@@ -16,6 +16,8 @@
     <link rel="stylesheet"
           href="{% static 'font-awesome/css/font-awesome.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
     {% endblock %}
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -153,6 +155,60 @@
         src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+<script type="text/javascript">
+  alertify.defaults = {
+        // dialogs defaults
+        autoReset:true,
+        basic:false,
+        closable:true,
+        closableByDimmer:true,
+        frameless:false,
+        maintainFocus:true, // <== global default not per instance, applies to all dialogs
+        maximizable:true,
+        modal:true,
+        movable:true,
+        moveBounded:false,
+        overflow:true,
+        padding: true,
+        pinnable:true,
+        pinned:true,
+        preventBodyShift:false, // <== global default not per instance, applies to all dialogs
+        resizable:true,
+        startMaximized:false,
+        transition:'pulse',
+
+        // notifier defaults
+        notifier:{
+            // auto-dismiss wait time (in seconds)
+            delay:5,
+            // default position
+            position:'top-right',
+            // adds a close button to notifier messages
+            closeButton: false
+        },
+
+        // language resources
+        glossary:{
+            // dialogs default title
+            title:'AlertifyJS',
+            // ok button text
+            ok: 'Si',
+            // cancel button text
+            cancel: 'Cancelar'
+        },
+
+        // theme settings
+        theme:{
+            // class name attached to prompt dialog input textbox.
+            input:'ajs-input',
+            // class name attached to ok button
+            ok:'ajs-ok',
+            // class name attached to cancel button
+            cancel:'ajs-cancel'
+        }
+    };
+</script>
 {% endblock %}
 </body>
 </html>

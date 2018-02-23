@@ -542,3 +542,100 @@ class IssueEvaluationResultView(View):
 
     def __data_result_evaluations__(self, data, type):
         pass
+
+class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
+
+    model = IssueEvaluation
+
+    def get(self, request, *args, **kwargs):
+
+        from xlsxwriter.workbook import Workbook
+        from io import BytesIO
+
+        resolve = {'1': 0, '5': 0}
+        time = {'1': 0, '2': 0, '3': 0, '5': 0}
+        difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
+        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+        satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
+        issue_evaluations = IssueEvaluation.objects.all()
+
+        output = BytesIO()
+
+        book = Workbook(output)
+        header = book.add_format({
+            'bg_color': '#F7F7F7',
+            'color': 'black',
+            'align': 'center',
+            'valign': 'top',
+            'border': 1
+        })
+        sheet = book.add_worksheet('Listado')
+        row = 1
+
+        for ev in issue_evaluations:
+            time[ev.time_evaluation] = time[ev.time_evaluation] + 1
+            resolve[ev.resolve] = resolve[ev.resolve] + 1
+            difficulty[ev.difficulty] = difficulty[ev.difficulty] + 1
+            contact[ev.contact] = contact[ev.contact] + 1
+            satisfied[ev.satisfied] = satisfied[ev.satisfied] + 1
+
+        sheet.write(0, 0, "Numero de evaluaciones presentadas:", header)
+        sheet.write(0, 1, issue_evaluations.count(), header)
+
+        sheet.write(2, 0, "Su solicitud fue resuelta", header)
+        sheet.write(3, 0, "No resuelta", header)
+        sheet.write(3, 1, resolve['1'], header)
+        sheet.write(4, 0, "Fue resuelta completamente", header)
+        sheet.write(4, 1, resolve['5'], header)
+
+        sheet.write(6, 0, "El Tiempo en atender su solicitud fue:", header)
+        sheet.write(7, 0, "Muy lento", header)
+        sheet.write(7, 1, time['1'], header)
+        sheet.write(8, 0, "Lento", header)
+        sheet.write(8, 1, time['2'], header)
+        sheet.write(9, 0, "Rapido", header)
+        sheet.write(9, 1, time['3'], header)
+        sheet.write(10, 0, "Muy rapido", header)
+        sheet.write(10, 1, time['5'], header)
+
+        sheet.write(12, 0, "EL nivel de dificultad para usar el software de " +
+            "reporte de incidencias fue:", header)
+        sheet.write(13, 0, "Muy facil", header)
+        sheet.write(13, 1, difficulty['1'], header)
+        sheet.write(14, 0, "Facil", header)
+        sheet.write(14, 1, difficulty['2'], header)
+        sheet.write(15, 0, "Dificil", header)
+        sheet.write(15, 1, difficulty['3'], header)
+        sheet.write(16, 0, "Muy dificil", header)
+        sheet.write(16, 1, difficulty['5'], header)
+
+        sheet.write(18, 0, "Fue contactado por alguno de estos medios para "+
+            "resolver su solicitud", header)
+        sheet.write(19, 0, "Extension telefonica", header)
+        sheet.write(19, 1, contact['1'], header)
+        sheet.write(20, 0, 'Correo electronico', header)
+        sheet.write(20, 1, contact['2'], header)
+        sheet.write(21, 0, "Celular", header)
+        sheet.write(21, 1, contact['3'], header)
+        sheet.write(22, 0, 'Chat', header)
+        sheet.write(22, 1, contact['4'], header)
+        sheet.write(23, 0, "Ninguno", header)
+        sheet.write(23, 1, contact['5'], header)
+
+        sheet.write(25, 0, 'Nivel de satisfaccion con la atencion recibida:', header)
+        sheet.write(26, 0, 'Muy insatisfecho', header)
+        sheet.write(26, 1, satisfied['1'], header)
+        sheet.write(27, 0, "Insatisfecho", header)
+        sheet.write(27, 1, satisfied['2'], header)
+        sheet.write(28, 0, "Satisfecho", header)
+        sheet.write(28, 1, satisfied['3'], header)
+        sheet.write(29, 0, "Muy satisfecho", header)
+        sheet.write(29, 1, satisfied['5'], header)
+
+        book.close()
+        output.seek(0)
+        response = HttpResponse(output.read(),
+                                content_type="application/vnd.openxmlformats" +
+                                             "-officedocument.spreadsheetml." +
+                                             "sheet")
+        return response
