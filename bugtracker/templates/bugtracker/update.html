@@ -37,15 +37,15 @@
                 {% endfor %}
             </div>
             <div class="input-field col-sm-12 col-md-12 col-lg-12">
-                <label>Título:</label>
+                <label>Título: <span style="color: red;"> * </span> </label>
                 {{ form.issue }}
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <label>Descripción:</label>
+                <label>Descripción: <span style="color: red;"> * </span> </label>
                 {{ form.description }}
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <label>Pasos para reproducir:</label>
+                <label>Pasos para reproducir: <span style="color: red;"> * </span> </label>
                 {{ form.steps_to_reproduce }}
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
@@ -66,7 +66,7 @@
                               desarrolladores</strong>
                       </div>
                       <div class="panel-body">
-                          <label>Asignar a:</label>
+                          <label>Asignar a: <span style="color: red;"> * </span> </label>
                           {{ form.dev }}
                           <label>Estado:</label>
                           {{ form.status }}
@@ -83,28 +83,28 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
 
-            <label>Software:</label>
+            <label>Software: <span style="color: red;"> * </span> </label>
             {{ form.software }}
 
-            <label>Sede:</label>
+            <label>Sede: <span style="color: red;"> * </span> </label>
             {{ form.headquarter }}
 
-            <label>Navegador:</label>
+            <label>Navegador: <span style="color: red;"> * </span> </label>
             {{ form.browser }}
 
-            <label>Sistema operativo:</label>
+            <label>Sistema operativo: <span style="color: red;"> * </span> </label>
             {{ form.os }}
 
-            <label>Prioridad:</label>
+            <label>Prioridad: <span style="color: red;"> * </span> </label>
             {{ form.priority }}
 
-            <label>Tipo:</label>
+            <label>Tipo: <span style="color: red;"> * </span> </label>
             {{ form.type_issue }}
 
-            <label>Categoría:</label>
+            <label>Categoría: <span style="color: red;"> * </span> </label>
             {{ form.category_issue }}
 
-            <label>Reproducibilidad:</label>
+            <label>Reproducibilidad: <span style="color: red;"> * </span> </label>
             {{ form.reproducibility_issue }}
 
             <br/>
