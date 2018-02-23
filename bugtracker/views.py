@@ -35,7 +35,15 @@ def is_member(user, group):
 def send_notification_bug_email(request, issue, is_update=None):
     try:
         id_issue = issue.id
-        op = 'actualizada' if is_update else 'creada'
+        if issue.status_id == 5:
+            op = "cerrada"
+        elif is_update:
+            op = "actualizada"
+        else:
+            op = "creada"
+
+        print(op)
+        #op = 'actualizada' if is_update else 'creada'
         title = 'La incidencia #' + str(id_issue) + ' ha sido ' + op
 
         plaintext = get_template('email/bug.txt')
