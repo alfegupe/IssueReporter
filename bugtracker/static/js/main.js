@@ -236,3 +236,17 @@ function saveIssueNewUpdate(validate, msj_error){
   }
 
 }
+
+function getEvaluationDataById(id_issue){
+  var url = $("#url_get_issue_details").val();
+  $.ajax({
+    method: "GET",
+    url: url
+  }).done(function(response) {
+    $("#response_data").text(response.resolve);
+    $("#time_data").text(response.time);
+    $("#difficulty_data").text(response.difficulty);
+    $("#contact_data").text(response.contact);
+    $("#satisfied_data").text(response.satisfied);
+  });
+}

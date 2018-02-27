@@ -84,6 +84,151 @@
     </div>
 </div>
 
+<!-- Modal Show results evaluations by Issue -->
+<div class="modal fade" id="myModalEvResults" tabindex="-1" role="dialog"
+     aria-labelledby="myModalEvResultsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                      aria-label="Close">
+                <span aria-hidden="true">
+                  &times;
+                </span>
+              </button>
+              <h4 class="modal-title" id="myModalEvResultsLabel">
+                Resultados Evaluación
+              </h4>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Init Q1 -->
+                <div class="col-md-6">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">¿Su solicitud fue resuelta?</h3>
+                    </div>
+                    <div class="panel-body">
+                      <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th id="response_data">No resuelta</th>
+                          </tr>
+                          </thead>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Q1 -->
+
+                <!--Inic Q2 -->
+                <div class="col-md-6">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">
+                            El Tiempo en atender su solicitud fue:
+                        </h3>
+                      </div>
+                      <div class="panel-body">
+                        <div class="col-md-6">
+                          <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                              <th id="time_data">Muy lento</th>
+                            </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <!-- End Q2 -->
+
+                <!-- Init Q3 -->
+                <div class="col-md-6">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">
+                              EL nivel de dificultad para usar el software de
+                              reporte de incidencias fue:
+                          </h3>
+                      </div>
+                      <div class="panel-body">
+                        <div class="col-md-6">
+                          <table class="table table-bordered">
+                              <thead>
+                              <tr>
+                                <th id="difficulty_data">Muy fácil</th>
+                              </thead>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <!-- ENd Q3 -->
+
+                <!-- Init Q4-->
+                <div class="col-md-6">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">
+                              ¿Fue contactado por alguno de estos medios para resolver su
+                              solicitud?
+                          </h3>
+                      </div>
+                      <div class="panel-body">
+                        <div class="col-md-6">
+                          <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                              <th id="contact_data">Extensión telefónica</th>
+                            </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <!-- End Q4 -->
+
+                <!-- Init Q5 -->
+                <div class="col-md-12">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">
+                              Nivel de satisfacción con la atención recibida:
+                          </h3>
+                      </div>
+                      <div class="panel-body">
+                        <div class="col-md-6">
+                          <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                              <th id="satisfied_data">Muy insatisfecho</th>
+                            </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <!-- End Q5 -->
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              {% csrf_token %}
+              <button type="button" class="btn btn-default"
+                      data-dismiss="modal"
+                      id="close-modal-detail-comment">
+                  <i class="fa fa-close"></i> Cerrar
+              </button>
+          </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal add evaluation issue -->
 <div class="modal fade bs-example-modal-lg" id="myModalEv" tabindex="-1"
      role="dialog" aria-labelledby="myModalLabelEval">

@@ -22,6 +22,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
+import json
 
 # names Groups:
 reporters_group = 'Reporter'
@@ -548,8 +549,6 @@ class IssueEvaluationResultView(View):
                        'resolve': resolve, 'contact': contact,
                        'satisfied':satisfied, 'cant': issue_evaluations.count()})
 
-    def __data_result_evaluations__(self, data, type):
-        pass
 
 class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
 
@@ -655,3 +654,31 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
                                              "-officedocument.spreadsheetml." +
                                              "sheet")
         return response
+
+
+class IssueEvaluationDetails(LoginRequiredMixin, DetailView):
+    model = IssueEvaluation
+    slug_field = 'id'
+    slug_url_kwarg = 'id_issue'
+
+    def get(self, request, *args, **kwargs):
+        time_opc = {"1": "Muy lento", "2": "Lento", "3": "Rápido",
+            "5": "Muy rápido"}
+        resolve_opc = {"1": "No resuelta", "5": "Fue resuelta completamente"}
+        difficulty_opc = {"1": "Muy fácil", "2": "Fácil", "3": "Difícil",
+            "5": "Muy difícil"}
+        contact_opc = {"1": "Extensión telefónica", "2": "Correo electrónico",
+            "3": "Celular", "4": "Chat", "5": "Ninguno"}
+        satisfied_opc = {"1": "Muy insatisfecho", "2": "Insatisfecho",
+            "3": "Satisfecho", "5": "Muy satisfecho"}
+
+        id_issue = self.kwargs['id_issue']
+        issue_evaluation = IssueEvaluation.objects.get(issue_id=id_issue)
+        issue_evaluation_arr = {
+            'time': time_opc[issue_evaluation.time_evaluation],
+            'resolve': resolve_opc[issue_evaluation.resolve],
+            'difficulty': difficulty_opc[issue_evaluation.difficulty],
+            'contact': contact_opc[issue_evaluation.contact],
+            "satisfied": satisfied_opc[issue_evaluation.satisfied]
+        }
+        return JsonResponse(issue_evaluation_arr)

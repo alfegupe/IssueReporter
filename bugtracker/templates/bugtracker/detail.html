@@ -176,17 +176,30 @@
             <i class="fa fa-edit"></i> Editar
         </a>
 
-        {% if issue.status.id == 5 and issue.reporter_id == user.id %}
-            {% if is_evaluated is not True%}
-                <a class="btn btn-info" data-toggle="modal" data-target="#myModalEv">
+        {% if issue.status.id == 5 %}
+            {% if is_evaluated is not True %}
+                {% if issue.reporter_id == user.id %}
+                  <a class="btn btn-info" data-toggle="modal" data-target="#myModalEv">
                     <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Evaluar
-                </a>
+                  </a>
+                {% endif %}
             {% else %}
                 <a class="btn btn-info" disabled>
-                    <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
+                  <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
                 </a>
+                {% for g in request.user.groups.all %}
+                    {% if "ResultsEvaluation" == g.name %}
+                      <a class="btn btn-info" data-toggle="modal"
+                        data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
+                          <i class="fa fa-eye"></i> Resultados de Evaluación
+                      </a>
+                      <input type="hidden" id="url_get_issue_details"
+                        value="{% url 'issue_evaluation_result_results' issue.id %}">
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         {% endif %}
+
 
     </div>
     <div class="col-md-12">
