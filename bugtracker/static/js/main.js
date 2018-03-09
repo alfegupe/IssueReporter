@@ -117,7 +117,7 @@ function saveIssueEvaluation(){
     if(q1 && q2 && q3 && q4 && q5){
         $("#error_evaluate").attr('style', 'display: none;');
         $.ajax({
-          url: "/bugtracker/issue_evaluation/",
+            url: "/bugtracker/issue_evaluation/",
             method: "post",
             data: {
                 'issue_id': issue_id,
@@ -249,4 +249,56 @@ function getEvaluationDataById(id_issue){
     $("#contact_data").text(response.contact);
     $("#satisfied_data").text(response.satisfied);
   });
+}
+
+function filterEvaluationsResults(){
+    var div_show = $("#show-data").clone();
+    var url = $("#url_get_issue_filters").val();
+
+    var init = $("#init_date").val();
+    var end = $("#end_date").val();
+
+    $("#show-data").html("<div style='text-align: center;'><h1><i class='fa fa-circle-o-notch fa-spin'></i> Cargando datos</h1></div>");
+    $.ajax({
+        url: url,
+        method: "get",
+        data: {
+            "init_date": init,
+            "end_date": end,
+        },
+    }).done(function(result){
+
+        $("#show-data").html(div_show);
+
+        $("#resolve1").text(result.resolve['1']);
+        $("#resolve5").text(result.resolve['5']);
+        $("#resolve").val(result.resolve['1']+","+result.resolve['5']);
+
+        $("#time1").text(result.time['1']);
+        $("#time2").text(result.time['2']);
+        $("#time3").text(result.time['3']);
+        $("#time5").text(result.time['5']);
+        $("#time").val(result.time['1']+","+result.time['2']+","+result.time['3']+","+result.time['5']);
+
+        $("#difficulty1").text(result.difficulty['1']);
+        $("#difficulty2").text(result.difficulty['2']);
+        $("#difficulty3").text(result.difficulty['3']);
+        $("#difficulty5").text(result.difficulty['5']);
+        $("#difficulty").val(result.difficulty['1']+","+result.difficulty['2']+","+result.difficulty['3']+","+result.difficulty['5']);
+
+        $("#contact1").text(result.contact['1']);
+        $("#contact2").text(result.contact['2']);
+        $("#contact3").text(result.contact['3']);
+        $("#contact4").text(result.contact['4']);
+        $("#contact5").text(result.contact['5']);
+        $("#contact").val(result.contact['1']+","+result.contact['2']+","+result.contact['3']+","+result.contact['4']+","+result.contact['5']);
+
+        $("#satisfied1").text(result.satisfied['1']);
+        $("#satisfied2").text(result.satisfied['2']);
+        $("#satisfied3").text(result.satisfied['3']);
+        $("#satisfied5").text(result.satisfied['5']);
+        $("#satisfied5").val(result.satisfied['1']+","+result.satisfied['2']+","+result.satisfied['3']+","+result.satisfied['5']);
+
+        showGraphicsData();
+    });
 }

@@ -5,7 +5,7 @@ from .views import IndexView, LoginView, LogoutView, IssueListView, \
     IssueCreateView, IssueDetailView, IssueUpdateView, ProfileView, \
     UpdateDataUserView, update_password, EvaluationCommentCreate, ExportXlsx, \
     IssueEvaluationView, IssueEvaluationResultView, \
-    IssueEvaluationResulExportXlsx, IssueEvaluationDetails
+    IssueEvaluationResulExportXlsx, IssueEvaluationDetails, IssueEvaluationFilter
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^issue_evaluation/(?P<id_issue>[-_\w]+)/$',
         IssueEvaluationDetails.as_view(),
         name="issue_evaluation_result_results"),
+    url(r'^issue_evaluation/filter/result/$', IssueEvaluationFilter.as_view(),
+        name="issue_evaluation_filter_est"),
 ]

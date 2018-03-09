@@ -9,11 +9,25 @@
 </div>
 
 <div class="row">
-    <button type="button" onclick="excel('2')" class="btn btn-success btn-sm pull-right">
-        <i class="fa fa-file-excel-o"></i> Ver en Excel
-    </button>
-    <br/><br/>
     <div class="col-md-12">
+        <h3>Filtrar:</h3>
+        <div class="form-group col-md-4">
+            <label>Fecha Inicial:</label>
+            <input type="date" id="init_date" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Fecha Final:</label>
+            <input type="date" id="end_date" class="form-control" onchange="filterEvaluationsResults()">
+        </div>
+        <div class="form-group col-md-4">
+            <button type="button" onclick="excel('2')" class="btn btn-success btn-sm pull-right">
+                <i class="fa fa-file-excel-o"></i> Ver en Excel
+            </button>
+        </div>
+    </div>
+
+    <br/><br/>
+    <div class="col-md-12" id="show-data">
         <table class="table table-bordered">
             <tr>
                 <th style="width: 40%;">
@@ -32,11 +46,11 @@
                         <thead>
                         <tr>
                             <th>No resuelta</th>
-                            <td>{{ resolve.1 }}</td>
+                            <td id="resolve1">{{ resolve.1 }}</td>
                         </tr>
                         <tr>
                             <th>Fue resuelta completamente</th>
-                            <td>{{ resolve.5 }}</td>
+                            <td id="resolve5">{{ resolve.5 }}</td>
                         </tr>
                         </thead>
                     </table>
@@ -60,19 +74,19 @@
                         <thead>
                         <tr>
                             <th>Muy lento</th>
-                            <td>{{ time.1 }}</td>
+                            <td id="time1">{{ time.1 }}</td>
                         </tr>
                         <tr>
                             <th>Lento</th>
-                            <td>{{ time.2 }}</td>
+                            <td id="time2">{{ time.2 }}</td>
                         </tr>
                         <tr>
                             <th>Rápido</th>
-                            <td>{{ time.3 }}</td>
+                            <td id="time3">{{ time.3 }}</td>
                         </tr>
                         <tr>
                             <th>Muy rápido</th>
-                            <td>{{ time.5 }}</td>
+                            <td id="time5">{{ time.5 }}</td>
                         </tr>
                         </thead>
                     </table>
@@ -97,19 +111,19 @@
                         <thead>
                         <tr>
                             <th>Muy fácil</th>
-                            <td>{{ difficulty.1 }}</td>
+                            <td id="difficulty1">{{ difficulty.1 }}</td>
                         </tr>
                         <tr>
                             <th>Fácil</th>
-                            <td>{{ difficulty.2 }}</td>
+                            <td id="difficulty2">{{ difficulty.2 }}</td>
                         </tr>
                         <tr>
                             <th>Difícil</th>
-                            <td>{{ difficulty.3 }}</td>
+                            <td id="difficulty3">{{ difficulty.3 }}</td>
                         </tr>
                         <tr>
                             <th>Muy difícil</th>
-                            <td>{{ difficulty.5 }}</td>
+                            <td id="difficulty5">{{ difficulty.5 }}</td>
                         </tr>
                         </thead>
                     </table>
@@ -134,23 +148,23 @@
                         <thead>
                         <tr>
                             <th>Extensión telefónica</th>
-                            <td>{{ contact.1 }}</td>
+                            <td id="contact1">{{ contact.1 }}</td>
                         </tr>
                         <tr>
                             <th>Correo electrónico</th>
-                            <td>{{ contact.2 }}</td>
+                            <td id="contact2">{{ contact.2 }}</td>
                         </tr>
                         <tr>
                             <th>Celular</th>
-                            <td>{{ contact.3 }}</td>
+                            <td id="contact3">{{ contact.3 }}</td>
                         </tr>
                         <tr>
                             <th>Chat</th>
-                            <td>{{ contact.4 }}</td>
+                            <td id="contact4">{{ contact.4 }}</td>
                         </tr>
                         <tr>
                             <th>Ninguno</th>
-                            <td>{{ contact.5 }}</td>
+                            <td id="contact5">{{ contact.5 }}</td>
                         </tr>
                         </thead>
                     </table>
@@ -174,19 +188,19 @@
                         <thead>
                         <tr>
                             <th>Muy insatisfecho</th>
-                            <td>{{ satisfied.1 }}</td>
+                            <td id="satisfied1">{{ satisfied.1 }}</td>
                         </tr>
                         <tr>
                             <th>Insatisfecho</th>
-                            <td>{{ satisfied.2 }}</td>
+                            <td id="satisfied2">{{ satisfied.2 }}</td>
                         </tr>
                         <tr>
                             <th>Satisfecho</th>
-                            <td>{{ satisfied.3 }}</td>
+                            <td id="satisfied3">{{ satisfied.3 }}</td>
                         </tr>
                         <tr>
                             <th>Muy satisfecho</th>
-                            <td>{{ satisfied.5 }}</td>
+                            <td id="satisfied5">{{ satisfied.5 }}</td>
                         </tr>
                         </thead>
                     </table>
@@ -199,11 +213,13 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="url_get_issue_filters"
+                        value="{% url 'issue_evaluation_filter_est' %}">
 </div>
-
 
 <script type="text/javascript"
         src="{% static 'js/jquery-3.1.0.min.js' %}"></script>
 <script type="text/javascript"
         src="{% static 'js/graphic_data.js' %}"></script>
+
 {% endblock %}

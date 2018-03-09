@@ -682,3 +682,36 @@ class IssueEvaluationDetails(LoginRequiredMixin, DetailView):
             "satisfied": satisfied_opc[issue_evaluation.satisfied]
         }
         return JsonResponse(issue_evaluation_arr)
+
+
+class IssueEvaluationFilter(JSONResponseMixin, CreateView):
+    model = IssueEvaluation
+
+    def get(self, request, *args, **kwargs):
+
+        init_date = request.GET['init_date']
+        end_date = request.GET['end_date']
+
+        resolve = {'1': 0, '5': 0}
+        time = {'1': 0, '2': 0, '3': 0, '5': 0}
+        difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
+        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+        satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
+
+        issue_evaluations = IssueEvaluation.objects.filter(
+            created_at__range=[init_date, end_date])
+
+        for ev in issue_evaluations:
+            time[ev.time_evaluation] = time[ev.time_evaluation] + 1
+            resolve[ev.resolve] = resolve[ev.resolve] + 1
+            difficulty[ev.difficulty] = difficulty[ev.difficulty] + 1
+            contact[ev.contact] = contact[ev.contact] + 1
+            satisfied[ev.satisfied] = satisfied[ev.satisfied] + 1
+
+        return JsonResponse({
+            "time": time,
+            "resolve": resolve,
+            "difficulty": difficulty,
+            "contact": contact,
+            "satisfied": satisfied
+        })

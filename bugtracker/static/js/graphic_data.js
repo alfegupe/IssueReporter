@@ -1,5 +1,12 @@
 $(document).ready(function() {
 
+    showGraphicsData();
+
+});
+
+
+function showGraphicsData(){
+
   var ctResolve = document.getElementById("chart-resolve").getContext('2d');
   var ctTime = document.getElementById("chart-time").getContext('2d');
   var ctDifficulty = document.getElementById("chart-difficulty").getContext('2d');
@@ -175,4 +182,4 @@ $(document).ready(function() {
       }
   });
 
-});
+}
