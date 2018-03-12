@@ -129,6 +129,10 @@
                     </td>
                     <td>{{ issue.created_at | date:"d/m/Y H:i" }}</td>
                     <td class="text-center">
+                        {% if issue.evaluated %}
+                            <i class="fa fa-exclamation-circle" title="Evaluada"
+                           data-toggle="tooltip" data-placement="top"></i>
+                        {% endif %}
                         <a class="btn btn-default btn-xs" title="Ver"
                            data-toggle="tooltip" data-placement="top"
                             href="{% url 'detail' issue.id %}">

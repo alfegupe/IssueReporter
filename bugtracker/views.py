@@ -564,7 +564,16 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
         difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
         contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
         satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
-        issue_evaluations = IssueEvaluation.objects.all()
+
+        init_date = request.GET['init_date']
+        end_date = request.GET['end_date']
+
+        if init_date and end_date:
+            issue_evaluations = IssueEvaluation.objects.filter(
+                issue__created_at__lte=end_date,
+                issue__created_at__gte=init_date)
+        else:
+            issue_evaluations = IssueEvaluation.objects.all()
 
         output = BytesIO()
 
@@ -698,8 +707,12 @@ class IssueEvaluationFilter(JSONResponseMixin, CreateView):
         contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
         satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
 
-        issue_evaluations = IssueEvaluation.objects.filter(
-            created_at__range=[init_date, end_date])
+        if init_date and end_date:
+            issue_evaluations = IssueEvaluation.objects.filter(
+                issue__created_at__lte=end_date,
+                issue__created_at__gte=init_date)
+        else:
+            issue_evaluations = IssueEvaluation.objects.all()
 
         for ev in issue_evaluations:
             time[ev.time_evaluation] = time[ev.time_evaluation] + 1
@@ -713,5 +726,6 @@ class IssueEvaluationFilter(JSONResponseMixin, CreateView):
             "resolve": resolve,
             "difficulty": difficulty,
             "contact": contact,
-            "satisfied": satisfied
+            "satisfied": satisfied,
+            "cant": len(issue_evaluations)
         })

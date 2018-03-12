@@ -76,12 +76,15 @@ function getFormatTime(time){
 function excel(opc){
   var url = "";
   var name = "";
+  var data = new FormData();
   if(opc == '1'){
     url = "/bugtracker/xlsx/?"+$("#filter").serialize();
     name = "incidencias_";
+    data.append('data', $("#filter").serialize());
   }else if (opc == '2'){
-    url = "/bugtracker/xlsx_results/";
+    url = "/bugtracker/xlsx_results/?"+'init_date='+$("#init_date_results").val()+"&end_date="+$("#end_date_results").val();
     name = "resultados_evaluaciones_";
+    data.append('data', {'init_date': $("#init_date").val(), 'end_date': $("#end_date_results").val()});
   }
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -95,14 +98,12 @@ function excel(opc){
           document.body.appendChild(a);
           return a.click();
       }else if(xhttp.readyState === 4 && xhttp.status === 500){
-          alert("Se ha presentado un error interno al intentar generar el excel, por favor intentelo de nuevo.");
+          alertify.error("Se ha presentado un error interno al intentar generar el excel, por favor intentelo de nuevo.");
       }
   };
   xhttp.open("get", url, true);
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.responseType = 'blob';
-  var data = new FormData();
-  data.append('data', $("#filter").serialize());
   xhttp.send(data);
 }
 
@@ -252,11 +253,11 @@ function getEvaluationDataById(id_issue){
 }
 
 function filterEvaluationsResults(){
-    var div_show = $("#show-data").clone();
+    var div_show = $("#clone-data").clone();
     var url = $("#url_get_issue_filters").val();
 
-    var init = $("#init_date").val();
-    var end = $("#end_date").val();
+    var init = $("#init_date_results").val();
+    var end = $("#end_date_results").val();
 
     $("#show-data").html("<div style='text-align: center;'><h1><i class='fa fa-circle-o-notch fa-spin'></i> Cargando datos</h1></div>");
     $.ajax({
@@ -267,6 +268,8 @@ function filterEvaluationsResults(){
             "end_date": end,
         },
     }).done(function(result){
+
+        console.log(JSON.stringify(result));
 
         $("#show-data").html(div_show);
 
@@ -298,6 +301,8 @@ function filterEvaluationsResults(){
         $("#satisfied3").text(result.satisfied['3']);
         $("#satisfied5").text(result.satisfied['5']);
         $("#satisfied5").val(result.satisfied['1']+","+result.satisfied['2']+","+result.satisfied['3']+","+result.satisfied['5']);
+
+        $("#total-evaluations").text(result.cant);
 
         showGraphicsData();
     });

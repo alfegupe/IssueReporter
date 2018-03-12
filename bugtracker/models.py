@@ -106,6 +106,7 @@ class Issue(models.Model):
     evaluation_comments = models.TextField(blank=True, null=True)
     status = models.ForeignKey(
         StatusIssue, on_delete=models.CASCADE, blank=True, null=True)
+    evaluated = models.BooleanField(default=False)
     dev = models.ForeignKey(
         Person, on_delete=models.CASCADE, null=True, related_name='Developer')
     ticket = models.CharField(max_length=6, null=True, blank=True)

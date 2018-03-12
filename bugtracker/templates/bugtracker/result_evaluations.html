@@ -11,15 +11,22 @@
 <div class="row">
     <div class="col-md-12">
         <h3>Filtrar:</h3>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label>Fecha Inicial:</label>
-            <input type="date" id="init_date" class="form-control">
+            <input type="date" id="init_date_results" class="form-control">
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label>Fecha Final:</label>
-            <input type="date" id="end_date" class="form-control" onchange="filterEvaluationsResults()">
+            <input type="date" id="end_date_results" class="form-control">
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
+            <br>
+            <button type="button" onclick="filterEvaluationsResults()" class="btn btn-default btn-sm pull-left">
+                <i class="fa fa-filter"></i> Filtro
+            </button>
+        </div>
+        <div class="form-group col-md-3">
+            <br>
             <button type="button" onclick="excel('2')" class="btn btn-success btn-sm pull-right">
                 <i class="fa fa-file-excel-o"></i> Ver en Excel
             </button>
@@ -27,13 +34,17 @@
     </div>
 
     <br/><br/>
-    <div class="col-md-12" id="show-data">
+
+    <div id="show-data">
+        <div class="col-md-12" id="clone-data">
         <table class="table table-bordered">
             <tr>
                 <th style="width: 40%;">
                     Número de evaluaciones presentadas:
                 </td>
-                <td style="text-align: center;">{{ cant }}</td>
+                <td style="text-align: center;" id="total-evaluations">
+                    {{ cant }}
+                </td>
             </tr>
         </table>
         <div class="panel panel-default">
@@ -213,6 +224,8 @@
             </div>
         </div>
     </div>
+    </div>
+
     <input type="hidden" id="url_get_issue_filters"
                         value="{% url 'issue_evaluation_filter_est' %}">
 </div>
