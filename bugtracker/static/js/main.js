@@ -275,32 +275,32 @@ function filterEvaluationsResults(){
 
         $("#resolve1").text(result.resolve['1']);
         $("#resolve5").text(result.resolve['5']);
-        $("#resolve").val(result.resolve['1']+","+result.resolve['5']);
+        $("#resolve").val(result.resolve['1']+","+result.resolve['5']+","+result.cant);
 
         $("#time1").text(result.time['1']);
         $("#time2").text(result.time['2']);
         $("#time3").text(result.time['3']);
         $("#time5").text(result.time['5']);
-        $("#time").val(result.time['1']+","+result.time['2']+","+result.time['3']+","+result.time['5']);
+        $("#time").val(result.time['1']+","+result.time['2']+","+result.time['3']+","+result.time['5']+","+result.cant);
 
         $("#difficulty1").text(result.difficulty['1']);
         $("#difficulty2").text(result.difficulty['2']);
         $("#difficulty3").text(result.difficulty['3']);
         $("#difficulty5").text(result.difficulty['5']);
-        $("#difficulty").val(result.difficulty['1']+","+result.difficulty['2']+","+result.difficulty['3']+","+result.difficulty['5']);
+        $("#difficulty").val(result.difficulty['1']+","+result.difficulty['2']+","+result.difficulty['3']+","+result.difficulty['5']+","+result.cant);
 
         $("#contact1").text(result.contact['1']);
         $("#contact2").text(result.contact['2']);
         $("#contact3").text(result.contact['3']);
         $("#contact4").text(result.contact['4']);
         $("#contact5").text(result.contact['5']);
-        $("#contact").val(result.contact['1']+","+result.contact['2']+","+result.contact['3']+","+result.contact['4']+","+result.contact['5']);
+        $("#contact").val(result.contact['1']+","+result.contact['2']+","+result.contact['3']+","+result.contact['4']+","+result.contact['5']+","+result.cant);
 
         $("#satisfied1").text(result.satisfied['1']);
         $("#satisfied2").text(result.satisfied['2']);
         $("#satisfied3").text(result.satisfied['3']);
         $("#satisfied5").text(result.satisfied['5']);
-        $("#satisfied5").val(result.satisfied['1']+","+result.satisfied['2']+","+result.satisfied['3']+","+result.satisfied['5']);
+        $("#satisfied5").val(result.satisfied['1']+","+result.satisfied['2']+","+result.satisfied['3']+","+result.satisfied['5']+","+result.cant);
 
         $("#total-evaluations").text(result.cant);
 
