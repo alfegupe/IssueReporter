@@ -500,7 +500,6 @@ class ExportXlsx(JSONResponseMixin, CreateView):
 
 
 class IssueEvaluationView(JSONResponseMixin, CreateView):
-    model = IssueEvaluation
 
     def post(self, request, *args, **kwargs):
         id = request.POST.get('issue_id')
@@ -516,6 +515,7 @@ class IssueEvaluationView(JSONResponseMixin, CreateView):
         ev.save()
         if ev:
             # send_notification_new_evaluation_comment_email(id, comments)
+            Issue.objects.filter(pk=id).update(evaluated=True)
             return JsonResponse(
                 {'code': 200, 'msg': 'Se ha creado...'}, safe=False)
         else:
