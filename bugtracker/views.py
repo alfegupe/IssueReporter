@@ -44,7 +44,7 @@ def send_notification_bug_email(request, issue, is_update=None):
             op = "creada"
 
         print(op)
-        #op = 'actualizada' if is_update else 'creada'
+        # op = 'actualizada' if is_update else 'creada'
         title = 'La incidencia #' + str(id_issue) + ' ha sido ' + op
 
         plaintext = get_template('email/bug.txt')
@@ -547,11 +547,10 @@ class IssueEvaluationResultView(View):
         return render(request, "bugtracker/result_evaluations.html",
                       {'difficulty': difficulty, 'time': time,
                        'resolve': resolve, 'contact': contact,
-                       'satisfied':satisfied, 'cant': issue_evaluations.count()})
+                       'satisfied': satisfied, 'cant': issue_evaluations.count()})
 
 
 class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
-
     model = IssueEvaluation
 
     def get(self, request, *args, **kwargs):
@@ -606,7 +605,7 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
 
         sheet.write(2, 0, "Su solicitud fue resuelta", header)
         sheet.merge_range(2, 0, 2, 1, "Su solicitud fue resuelta",
-            header)
+                          header)
         sheet.write(3, 0, "No resuelta", header)
         sheet.write(3, 1, resolve['1'], datax)
         sheet.write(4, 0, "Fue resuelta completamente", header)
@@ -623,7 +622,7 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
         sheet.write(10, 1, time['5'], datax)
 
         sheet.merge_range(12, 0, 12, 1, "EL nivel de dificultad para usar el software de " +
-            "reporte de incidencias fue:", header)
+                          "reporte de incidencias fue:", header)
         sheet.write(13, 0, "Muy facil", header)
         sheet.write(13, 1, difficulty['1'], datax)
         sheet.write(14, 0, "Facil", header)
@@ -633,8 +632,8 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
         sheet.write(16, 0, "Muy dificil", header)
         sheet.write(16, 1, difficulty['5'], datax)
 
-        sheet.merge_range(18, 0, 18, 1, "Fue contactado por alguno de estos medios para "+
-            "resolver su solicitud", header)
+        sheet.merge_range(18, 0, 18, 1, "Fue contactado por alguno de estos medios para " +
+                          "resolver su solicitud", header)
         sheet.write(19, 0, "Extension telefonica", header)
         sheet.write(19, 1, contact['1'], datax)
         sheet.write(20, 0, 'Correo electronico', header)
@@ -672,14 +671,14 @@ class IssueEvaluationDetails(LoginRequiredMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         time_opc = {"1": "Muy lento", "2": "Lento", "3": "Rápido",
-            "5": "Muy rápido"}
+                    "5": "Muy rápido"}
         resolve_opc = {"1": "No resuelta", "5": "Fue resuelta completamente"}
         difficulty_opc = {"1": "Muy fácil", "2": "Fácil", "3": "Difícil",
-            "5": "Muy difícil"}
+                          "5": "Muy difícil"}
         contact_opc = {"1": "Extensión telefónica", "2": "Correo electrónico",
-            "3": "Celular", "4": "Chat", "5": "Ninguno"}
+                       "3": "Celular", "4": "Chat", "5": "Ninguno"}
         satisfied_opc = {"1": "Muy insatisfecho", "2": "Insatisfecho",
-            "3": "Satisfecho", "5": "Muy satisfecho"}
+                         "3": "Satisfecho", "5": "Muy satisfecho"}
 
         id_issue = self.kwargs['id_issue']
         issue_evaluation = IssueEvaluation.objects.get(issue_id=id_issue)
