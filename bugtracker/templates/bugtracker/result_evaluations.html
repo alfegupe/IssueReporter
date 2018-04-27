@@ -4,12 +4,12 @@
 
 {% load static %}
 
-<div class="page-header">
+<div class="page-header text-center col-md-10 col-md-offset-1">
     <h3>Resultados Generales Evaluaciones del Servicio</h3>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
         <h3>Filtrar:</h3>
         <div class="form-group col-md-3">
             <label>Fecha Inicial:</label>
@@ -36,12 +36,12 @@
     <br/><br/>
 
     <div id="show-data">
-        <div class="col-md-12" id="clone-data">
+        <div class="col-md-10 col-md-offset-1" id="clone-data">
         <table class="table table-bordered">
             <tr>
                 <th style="width: 40%;">
                     Número de evaluaciones presentadas:
-                </td>
+                </th>
                 <td style="text-align: center;" id="total-evaluations">
                     {{ cant }}
                 </td>
@@ -52,21 +52,21 @@
                 <h3 class="panel-title">¿Su solicitud fue resuelta?</h3>
             </div>
             <div class="panel-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>No resuelta</th>
-                            <td id="resolve1">{{ resolve.1 }}</td>
+                            <td id="resolve1" class="col-md-2" style="text-align: center">{{ resolve.1 }}</td>
                         </tr>
                         <tr>
                             <th>Fue resuelta completamente</th>
-                            <td id="resolve5">{{ resolve.5 }}</td>
+                            <td id="resolve5" class="col-md-2" style="text-align: center">{{ resolve.5 }}</td>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <canvas id="chart-resolve" width="100%"></canvas>
                 </div>
                 <input type="hidden" id="resolve"
@@ -80,29 +80,29 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>Muy lento</th>
-                            <td id="time1">{{ time.1 }}</td>
+                            <td id="time1" class="col-md-2" style="text-align: center">{{ time.1 }}</td>
                         </tr>
                         <tr>
                             <th>Lento</th>
-                            <td id="time2">{{ time.2 }}</td>
+                            <td id="time2" class="col-md-2" style="text-align: center">{{ time.2 }}</td>
                         </tr>
                         <tr>
                             <th>Rápido</th>
-                            <td id="time3">{{ time.3 }}</td>
+                            <td id="time3" class="col-md-2" style="text-align: center">{{ time.3 }}</td>
                         </tr>
                         <tr>
                             <th>Muy rápido</th>
-                            <td id="time5">{{ time.5 }}</td>
+                            <td id="time5" class="col-md-2" style="text-align: center">{{ time.5 }}</td>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <canvas id="chart-time" width="100%"></canvas>
                 </div>
                 <input type="hidden" id="time"
@@ -117,29 +117,29 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>Muy fácil</th>
-                            <td id="difficulty1">{{ difficulty.1 }}</td>
+                            <td id="difficulty1" class="col-md-2" style="text-align: center">{{ difficulty.1 }}</td>
                         </tr>
                         <tr>
                             <th>Fácil</th>
-                            <td id="difficulty2">{{ difficulty.2 }}</td>
+                            <td id="difficulty2" class="col-md-2" style="text-align: center">{{ difficulty.2 }}</td>
                         </tr>
                         <tr>
                             <th>Difícil</th>
-                            <td id="difficulty3">{{ difficulty.3 }}</td>
+                            <td id="difficulty3" class="col-md-2" style="text-align: center">{{ difficulty.3 }}</td>
                         </tr>
                         <tr>
                             <th>Muy difícil</th>
-                            <td id="difficulty5">{{ difficulty.5 }}</td>
+                            <td id="difficulty5" class="col-md-2" style="text-align: center">{{ difficulty.5 }}</td>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <canvas id="chart-difficulty" width="100%"></canvas>
                 </div>
                 <input type="hidden" id="difficulty"
@@ -154,33 +154,33 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>Extensión telefónica</th>
-                            <td id="contact1">{{ contact.1 }}</td>
+                            <td id="contact1" class="col-md-2" style="text-align: center">{{ contact.1 }}</td>
                         </tr>
                         <tr>
                             <th>Correo electrónico</th>
-                            <td id="contact2">{{ contact.2 }}</td>
+                            <td id="contact2" class="col-md-2" style="text-align: center">{{ contact.2 }}</td>
                         </tr>
                         <tr>
                             <th>Celular</th>
-                            <td id="contact3">{{ contact.3 }}</td>
+                            <td id="contact3" class="col-md-2" style="text-align: center">{{ contact.3 }}</td>
                         </tr>
                         <tr>
                             <th>Chat</th>
-                            <td id="contact4">{{ contact.4 }}</td>
+                            <td id="contact4" class="col-md-2" style="text-align: center">{{ contact.4 }}</td>
                         </tr>
                         <tr>
                             <th>Ninguno</th>
-                            <td id="contact5">{{ contact.5 }}</td>
+                            <td id="contact5" class="col-md-2" style="text-align: center">{{ contact.5 }}</td>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <canvas id="chart-contact" width="100%"></canvas>
                 </div>
                 <input type="hidden" id="contact"
@@ -194,29 +194,29 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>Muy insatisfecho</th>
-                            <td id="satisfied1">{{ satisfied.1 }}</td>
+                            <td id="satisfied1" class="col-md-2" style="text-align: center">{{ satisfied.1 }}</td>
                         </tr>
                         <tr>
                             <th>Insatisfecho</th>
-                            <td id="satisfied2">{{ satisfied.2 }}</td>
+                            <td id="satisfied2" class="col-md-2" style="text-align: center">{{ satisfied.2 }}</td>
                         </tr>
                         <tr>
                             <th>Satisfecho</th>
-                            <td id="satisfied3">{{ satisfied.3 }}</td>
+                            <td id="satisfied3" class="col-md-2" style="text-align: center">{{ satisfied.3 }}</td>
                         </tr>
                         <tr>
                             <th>Muy satisfecho</th>
-                            <td id="satisfied5">{{ satisfied.5 }}</td>
+                            <td id="satisfied5" class="col-md-2" style="text-align: center">{{ satisfied.5 }}</td>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <canvas id="chart-satisfied" width="100%"></canvas>
                 </div>
                 <input type="hidden" id="satisfied"

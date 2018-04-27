@@ -10,8 +10,8 @@ function showGraphicsData(){
 
   var ctResolve = document.getElementById("chart-resolve").getContext('2d');
   var dataResolve = $("#resolve").val().split(',');
-  totalResolve = (dataResolve[0])+ (dataResolve[1]);
-  percentageResolve = [(dataResolve[0]/totalResolve*100).toFixed(0), (dataResolve[1]/totalResolve*100).toFixed(0)];
+  totalResolve = parseInt(dataResolve[0])+ parseInt(dataResolve[1]);
+  percentageResolve = [(dataResolve[0]/totalResolve*100).toFixed(1), (dataResolve[1]/totalResolve*100).toFixed(1)];
   var chartResolve = new Chart(ctResolve, {
       type: 'pie',
       data: {
@@ -41,8 +41,8 @@ function showGraphicsData(){
   var dataTime = $("#time").val().split(',');
   totalTime = parseInt(dataTime[0])+ parseInt(dataTime[1])+
       parseInt(dataTime[2])+ parseInt(dataTime[3]);
-  percentageTime = [(dataTime[0]/totalTime*100).toFixed(0), (dataTime[1]/totalTime*100).toFixed(0),
-      (dataTime[2]/totalTime*100).toFixed(0), (dataTime[3]/totalTime*100).toFixed(0)];
+  percentageTime = [(dataTime[0]/totalTime*100).toFixed(1), (dataTime[1]/totalTime*100).toFixed(1),
+      (dataTime[2]/totalTime*100).toFixed(1), (dataTime[3]/totalTime*100).toFixed(1)];
   var chartTime = new Chart(ctTime, {
       type: 'pie',
       data: {
@@ -73,9 +73,9 @@ function showGraphicsData(){
   var dataDifficulty = $("#difficulty").val().split(',');
   totalDifficulty = parseInt(dataDifficulty[0])+ parseInt(dataDifficulty[1])+
       parseInt(dataDifficulty[2])+ parseInt(dataDifficulty[3]);
-  percentageDifficulty = [(dataDifficulty[0]/totalDifficulty*100).toFixed(0),
-      (dataDifficulty[1]/totalDifficulty*100).toFixed(0), (dataDifficulty[2]/totalDifficulty*100).toFixed(0),
-      (dataDifficulty[3]/totalDifficulty*100).toFixed(0)];
+  percentageDifficulty = [(dataDifficulty[0]/totalDifficulty*100).toFixed(1),
+      (dataDifficulty[1]/totalDifficulty*100).toFixed(1), (dataDifficulty[2]/totalDifficulty*100).toFixed(1),
+      (dataDifficulty[3]/totalDifficulty*100).toFixed(1)];
   var chartDifficulty = new Chart(ctDifficulty, {
       type: 'pie',
       data: {
@@ -106,8 +106,8 @@ function showGraphicsData(){
   var dataContact = $("#contact").val().split(',');
   totalContact = parseInt(dataContact[0])+ parseInt(dataContact[1])+
       parseInt(dataContact[2])+ parseInt(dataContact[3])+ parseInt(dataContact[4]);
-  percentageContact = [(dataContact[0]/totalContact*100).toFixed(0), (dataContact[1]/totalContact*100).toFixed(0),
-      (dataContact[2]/totalContact*100).toFixed(0), (dataContact[3]/totalContact*100).toFixed(0),(dataContact[4]/totalContact*100).toFixed(0)];
+  percentageContact = [(dataContact[0]/totalContact*100).toFixed(1), (dataContact[1]/totalContact*100).toFixed(1),
+      (dataContact[2]/totalContact*100).toFixed(1), (dataContact[3]/totalContact*100).toFixed(1),(dataContact[4]/totalContact*100).toFixed(1)];
   var chartContact = new Chart(ctContact, {
       type: 'pie',
       data: {
@@ -136,8 +136,8 @@ function showGraphicsData(){
   var dataSatisfied = $("#satisfied").val().split(',');
   totalSatisfied = parseInt(dataSatisfied[0])+ parseInt(dataSatisfied[1])+
       parseInt(dataSatisfied[2])+ parseInt(dataSatisfied[3]);
-  percentageSatisfied = [(dataSatisfied[0]/totalSatisfied*100).toFixed(0), (dataSatisfied[1]/totalSatisfied*100).toFixed(0),
-      (dataSatisfied[2]/totalSatisfied*100).toFixed(0), (dataSatisfied[3]/totalSatisfied*100).toFixed(0)];
+  percentageSatisfied = [(dataSatisfied[0]/totalSatisfied*100).toFixed(1), (dataSatisfied[1]/totalSatisfied*100).toFixed(1),
+      (dataSatisfied[2]/totalSatisfied*100).toFixed(1), (dataSatisfied[3]/totalSatisfied*100).toFixed(1)];
   var chartSatisfied = new Chart(ctSatisfied, {
       type: 'pie',
       data: {

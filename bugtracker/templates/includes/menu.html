@@ -20,8 +20,9 @@
                 {% for g in request.user.groups.all %}
                     {% if "ResultsEvaluation" == g.name %}
                     <li>
-                        <a href="{% url 'issue_evaluation_results' %}" class="fa fa-bar-chart" aria-hidden="true">
-                            Resultados de Evaluación
+                        <a href="{% url 'issue_evaluation_results' %}">
+                            <i class="fa fa-bar-chart"></i>
+                            Resultados Evaluación
                         </a>
                     </li>
                     {% endif %}
