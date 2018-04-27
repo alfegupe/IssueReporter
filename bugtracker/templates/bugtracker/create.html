@@ -1,13 +1,14 @@
 {% extends "bugtracker/index.html" %}
 {% block content %}
-    <h3>Registrar incidencia</h3>
+    <h3 class="text-center">Registrar incidencia</h3>
+    <hr>
 
     {% include "includes/messages.html" %}
 
     <div class="row">
         <form id="issue-udapte-form" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-offset-2 col-md-5 col-sm-12">
                 <div class="input-field col-sm-12 col-md-12 col-lg-12">
                     <label>Título: <span style="color: red;"> * </span> </label>
                     {{ form.issue }}
@@ -33,7 +34,7 @@
                   </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-3 col-md-9 col-sm-12">
 
                 <label>Software: <span style="color: red;"> * </span> </label>
                 {{ form.software }}
@@ -58,16 +59,17 @@
 
                 <label>Reproducibilidad: <span style="color: red;"> * </span> </label>
                 {{ form.reproducibility_issue }}
-
             </div>
-            <input type="hidden" id="is_admin" value="false">
-            <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
-                <i class="fa fa-arrow-left"></i> Volver
-            </a>
-            <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
-              <i class="fa fa-save"></i> Actualizar incidencia
-            </button>
         </form>
     </div>
-
+     <div class="col-lg-offset-2 col-md-12">
+        <input type="hidden" id="is_admin" value="false">
+        <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
+            <i class="fa fa-arrow-left"></i> Volver
+        </a>
+        <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
+          <i class="fa fa-save"></i> Actualizar incidencia
+        </button>
+    </div>
+    <hr>
 {% endblock %}

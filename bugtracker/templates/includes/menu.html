@@ -20,15 +20,15 @@
                 {% for g in request.user.groups.all %}
                     {% if "ResultsEvaluation" == g.name %}
                     <li>
-                        <a href="{% url 'issue_evaluation_results' %}">
-                            Resultados de Evaluación del Servicio
+                        <a href="{% url 'issue_evaluation_results' %}" class="fa fa-bar-chart" aria-hidden="true">
+                            Resultados de Evaluación
                         </a>
                     </li>
                     {% endif %}
                 {% endfor %}
                 <li>
                     <a href="{% url 'profile' user.username %}">
-                        {{ user.first_name }} {{ user.last_name }}
+                        <strong>{{ user.first_name }} {{ user.last_name }}</strong>
                     </a>
                 </li>
                 <li>

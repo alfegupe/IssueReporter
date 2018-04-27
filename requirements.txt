@@ -1,5 +1,5 @@
 Django==1.10.1
 django-braces==1.9.0
 Pillow==3.3.1
-psycopg2==2.6.2
+psycopg2==2.7.4
 XlsxWriter==0.9.8

@@ -83,11 +83,11 @@ class CreateIssueForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'Incidencia'}),
             'description': forms.Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Descripción',
-                       'rows': 3}),
+                       'rows': 5}),
             'steps_to_reproduce': forms.Textarea(
                 attrs={'class': 'form-control',
                        'placeholder': 'Pasos para replicar',
-                       'rows': 3}),
+                       'rows': 4}),
             'software': forms.Select(attrs={'class': 'form-control'}),
             'os': forms.Select(attrs={'class': 'form-control'}),
             'headquarter': forms.Select(attrs={'class': 'form-control'}),
@@ -113,11 +113,11 @@ class UpdateIssueForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'Incidencia'}),
             'description': forms.Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Descripcion',
-                       'rows': 3}),
+                       'rows': 5}),
             'steps_to_reproduce': forms.Textarea(
                 attrs={'class': 'form-control',
                        'placeholder': 'Pasos para replicar',
-                       'rows': 3}),
+                       'rows': 4}),
             'software': forms.Select(attrs={'class': 'form-control'}),
             'os': forms.Select(attrs={'class': 'form-control'}),
             'headquarter': forms.Select(attrs={'class': 'form-control'}),
@@ -144,11 +144,11 @@ class UpdateIssueAdminForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'Incidencia'}),
             'description': forms.Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Descripcion',
-                       'rows': 3}),
+                       'rows': 5}),
             'steps_to_reproduce': forms.Textarea(
                 attrs={'class': 'form-control',
                        'placeholder': 'Pasos para replicar',
-                       'rows': 3}),
+                       'rows': 4}),
             'evaluation_comments': forms.Textarea(
                 attrs={'class': 'form-control',
                        'placeholder': 'Comentarios del evaluador',

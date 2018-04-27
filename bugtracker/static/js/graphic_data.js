@@ -7,22 +7,15 @@ $(document).ready(function() {
 
 function showGraphicsData(){
 
+
   var ctResolve = document.getElementById("chart-resolve").getContext('2d');
-  var ctTime = document.getElementById("chart-time").getContext('2d');
-  var ctDifficulty = document.getElementById("chart-difficulty").getContext('2d');
-  var ctContact = document.getElementById("chart-contact").getContext('2d');
-  var ctSatisfied = document.getElementById("chart-satisfied").getContext('2d');
-
   var dataResolve = $("#resolve").val().split(',');
-  var dataTime = $("#time").val().split(',');
-  var dataDifficulty = $("#difficulty").val().split(',');
-  var dataContact = $("#contact").val().split(',');
-  var dataSatisfied = $("#satisfied").val().split(',');
-
+  totalResolve = (dataResolve[0])+ (dataResolve[1]);
+  percentageResolve = [(dataResolve[0]/totalResolve*100).toFixed(0), (dataResolve[1]/totalResolve*100).toFixed(0)];
   var chartResolve = new Chart(ctResolve, {
-      type: 'horizontalBar',
+      type: 'pie',
       data: {
-          labels: ["No resuelta", "Fue resuelta completamente", "Total"],
+          labels: ["No resuelta: "+ percentageResolve[0]+"%", "Fue resuelta completamente: "+ percentageResolve[1]+"%"],
           datasets: [{
               label: '',
               data: dataResolve,
@@ -41,23 +34,21 @@ function showGraphicsData(){
               borderWidth: 1
           }]
       },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
   });
 
+
+  var ctTime = document.getElementById("chart-time").getContext('2d');
+  var dataTime = $("#time").val().split(',');
+  totalTime = parseInt(dataTime[0])+ parseInt(dataTime[1])+
+      parseInt(dataTime[2])+ parseInt(dataTime[3]);
+  percentageTime = [(dataTime[0]/totalTime*100).toFixed(0), (dataTime[1]/totalTime*100).toFixed(0),
+      (dataTime[2]/totalTime*100).toFixed(0), (dataTime[3]/totalTime*100).toFixed(0)];
   var chartTime = new Chart(ctTime, {
-      type: 'horizontalBar',
+      type: 'pie',
       data: {
-          labels: ["Muy lento", "Lento", "Rápido", "Muy rápido", "Total"],
+          labels: ["Muy lento: "+ percentageTime[0]+"%", "Lento: "+ percentageTime[1]+"%", "Rápido: "+ percentageTime[2]+"%", "Muy rápido: "+ percentageTime[3]+"%"],
           datasets: [{
-              label: '',
+              labels: '',
               data: dataTime,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
@@ -74,21 +65,21 @@ function showGraphicsData(){
               borderWidth: 1
           }]
       },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
+
   });
 
+
+  var ctDifficulty = document.getElementById("chart-difficulty").getContext('2d');
+  var dataDifficulty = $("#difficulty").val().split(',');
+  totalDifficulty = parseInt(dataDifficulty[0])+ parseInt(dataDifficulty[1])+
+      parseInt(dataDifficulty[2])+ parseInt(dataDifficulty[3]);
+  percentageDifficulty = [(dataDifficulty[0]/totalDifficulty*100).toFixed(0),
+      (dataDifficulty[1]/totalDifficulty*100).toFixed(0), (dataDifficulty[2]/totalDifficulty*100).toFixed(0),
+      (dataDifficulty[3]/totalDifficulty*100).toFixed(0)];
   var chartDifficulty = new Chart(ctDifficulty, {
-      type: 'horizontalBar',
+      type: 'pie',
       data: {
-          labels: ["Muy fácil", "Fácil", "Difícil", "Muy difícil", "Total"],
+          labels: ["Muy fácil: "+ percentageDifficulty[0]+"%", "Fácil: "+ percentageDifficulty[1]+"%", "Difícil: "+ percentageDifficulty[2]+"%", "Muy difícil: "+ percentageDifficulty[3]+"%"],
           datasets: [{
               label: '',
               data: dataDifficulty,
@@ -107,22 +98,21 @@ function showGraphicsData(){
               borderWidth: 1
           }]
       },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
+
   });
 
+
+  var ctContact = document.getElementById("chart-contact").getContext('2d');
+  var dataContact = $("#contact").val().split(',');
+  totalContact = parseInt(dataContact[0])+ parseInt(dataContact[1])+
+      parseInt(dataContact[2])+ parseInt(dataContact[3])+ parseInt(dataContact[4]);
+  percentageContact = [(dataContact[0]/totalContact*100).toFixed(0), (dataContact[1]/totalContact*100).toFixed(0),
+      (dataContact[2]/totalContact*100).toFixed(0), (dataContact[3]/totalContact*100).toFixed(0),(dataContact[4]/totalContact*100).toFixed(0)];
   var chartContact = new Chart(ctContact, {
-      type: 'horizontalBar',
+      type: 'pie',
       data: {
-          labels: ["Extensión telefónica", "Correo electrónico", "Celular",
-                    "Chat", "Ninguno", "Total"],
+          labels: ["Extensión telefónica: "+ percentageContact[0]+"%", "Correo electrónico: "+ percentageContact[1]+"%", "Celular: "+ percentageContact[2]+"%",
+                    "Chat: "+ percentageContact[3]+"%", "Ninguno: "+ percentageContact[4]+"%"],
           datasets: [{
               label: '',
               data: dataContact,
@@ -139,22 +129,20 @@ function showGraphicsData(){
               borderWidth: 1
           }]
       },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
   });
 
+
+  var ctSatisfied = document.getElementById("chart-satisfied").getContext('2d');
+  var dataSatisfied = $("#satisfied").val().split(',');
+  totalSatisfied = parseInt(dataSatisfied[0])+ parseInt(dataSatisfied[1])+
+      parseInt(dataSatisfied[2])+ parseInt(dataSatisfied[3]);
+  percentageSatisfied = [(dataSatisfied[0]/totalSatisfied*100).toFixed(0), (dataSatisfied[1]/totalSatisfied*100).toFixed(0),
+      (dataSatisfied[2]/totalSatisfied*100).toFixed(0), (dataSatisfied[3]/totalSatisfied*100).toFixed(0)];
   var chartSatisfied = new Chart(ctSatisfied, {
-      type: 'horizontalBar',
+      type: 'pie',
       data: {
-          labels: ["Muy insatisfecho", "Insatisfecho", "Satisfecho",
-                    "Muy satisfecho", "Total"],
+          labels: ["Muy insatisfecho: "+ percentageSatisfied[0]+"%", "Insatisfecho: "+ percentageSatisfied[1]+"%", "Satisfecho: "+ percentageSatisfied[2]+"%",
+                    "Muy satisfecho: "+ percentageSatisfied[3]+"%"],
           datasets: [{
               label: '',
               data: dataSatisfied,
@@ -171,15 +159,7 @@ function showGraphicsData(){
               borderWidth: 1
           }]
       },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
+
   });
 
 }
