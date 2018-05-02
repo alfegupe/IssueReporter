@@ -1,7 +1,7 @@
 {% extends "bugtracker/index.html" %}
 {% block content %}
-    <div class="page-header">
-        <h3>Incidencia #{{ issue.id }}</h3>
+    <div class="page-header col col-md-10 col-md-offset-1 ">
+        <h3 class="text-center">Incidencia #{{ issue.id }}</h3>
     </div>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -20,10 +20,10 @@
                 </div>
             {% endif %}
 
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="margin: auto">
                 <tbody>
                     <tr>
-                        <th>Reportado por:</th>
+                        <th class="col-md-3">Reportado por:</th>
                         <td>{{ issue.reporter }}</td>
                     </tr>
                     <tr>
@@ -42,47 +42,44 @@
                         <th>Reproducibilidad:</th>
                         <td>{{ issue.reproducibility_issue }}</td>
                     </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered">
+                <tbody>
                     <tr>
-                        <th>Software:</th>
-                        <td>{{ issue.software }}</td>
-                    </tr>
-                    <tr>
-                        <th>Navegador:</th>
-                        <td>{{ issue.browser }}</td>
+                        <th class="col-md-3">Software:</th>
+                        <td class="col-md-3">{{ issue.software }}</td>
+                        <th class="col-md-3">Navegador:</th>
+                        <td class="col-md-3">{{ issue.browser }}</td>
                     </tr>
                     <tr>
                         <th>Sistema operativo:</th>
                         <td>{{ issue.os }}</td>
-                    </tr>
-                    <tr>
                         <th>Sede:</th>
                         <td>{{ issue.headquarter }}</td>
                     </tr>
                     <tr>
                         <th>Prioridad:</th>
                         <td>{{ issue.priority }}</td>
-                    </tr>
-                    <tr>
                         <th>Tipo:</th>
                         <td>{{ issue.type_issue }}</td>
                     </tr>
                     <tr>
-                        <th>Estado:</th>
-                        <td>
-                            {% if issue.status %}
-                                {{ issue.status }}
-                            {% else %}
-                                Nueva
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
+
                         <th>Asignada a:</th>
                         <td>
                             {% if issue.dev %}
                                 {{ issue.dev }}
                             {% else %}
                                 No asignada
+                            {% endif %}
+                        </td>
+                        <th>Estado:</th>
+                        <td>
+                            {% if issue.status %}
+                                {{ issue.status }}
+                            {% else %}
+                                Nueva
                             {% endif %}
                         </td>
                     </tr>
@@ -95,8 +92,6 @@
                                 No asignado
                             {% endif %}
                         </td>
-                    </tr>
-                    <tr>
                         <th>Categoría:</th>
                         <td>
                             {{ issue.category_issue }}
@@ -105,39 +100,36 @@
                     <tr>
                         <th>Fecha creación:</th>
                         <td>{{ issue.created_at }}</td>
-                    </tr>
-                    <tr>
                         <th>Fecha ult. modif.:</th>
                         <td>{{ issue.updated_at }}</td>
                     </tr>
-                    {% if issue.image1 %}
-                        <tr>
-                            <th>Imagen 1:</th>
-                            <td>
-                                <small class="text-muted">
-                                    {{ issue.image1 }} |
-                                    <a href="{{ MEDIA_URL }}{{ issue.image1 }}" target="_blank">Ver imagen.</a>
-                                </small>
-                            </td>
-                        </tr>
-                    {% endif %}
-                    {% if issue.image2 %}
-                        <tr>
-                            <th>Imagen 2:</th>
-                            <td>
-                                <small class="text-muted">
-                                    {{ issue.image2 }} |
-                                    <a href="{{ MEDIA_URL }}{{ issue.image2 }}" target="_blank">Ver imagen.</a>
-                                </small>
-                            </td>
-                        </tr>
-                    {% endif %}
+{#                    <tr>#}
+{#                    {% if issue.image1 %}#}
+{#                            <th>Imagen 1:</th>#}
+{#                            <td>#}
+{#                                <small class="text-muted">#}
+{#                                    {{ issue.image1 }} |#}
+{#                                    <a href="{{ MEDIA_URL }}{{ issue.image1 }}" target="_blank">Ver imagen.</a>#}
+{#                                </small>#}
+{#                            </td>#}
+{#                    {% endif %}#}
+{#                    {% if issue.image2 %}#}
+{#                            <th>Imagen 2:</th>#}
+{#                                <td>#}
+{#                                    <small class="text-muted">#}
+{#                                        {{ issue.image2 }} |#}
+{#                                        <a href="{{ MEDIA_URL }}{{ issue.image2 }}" target="_blank">Ver imagen.</a>#}
+{#                                    </small>#}
+{#                                </td>#}
+{##}
+{#                    {% endif %}#}
+{#                    </tr>#}
                 </tbody>
             </table>
         </div>
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-10 col-md-10 col-md-offset-1">
             {% if issue.image1 %}
-                <figure>
+                <figure class="col-md-6">
                     <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ issue.image1 }}">
                     <figcaption>
                         <small class="text-muted">
@@ -146,10 +138,9 @@
                         </small>
                     </figcaption>
                 </figure>
-                <hr>
             {% endif %}
             {% if issue.image2 %}
-                <figure>
+                <figure class="col-md-6">
                     <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ issue.image2 }}">
                     <figcaption>
                         <small class="text-muted">
@@ -159,83 +150,84 @@
                     </figcaption>
                 </figure>
             {% endif %}
+        </div>
+    </div>
+    <div>
+        <div class="col-md-10 col-md-offset-1">
+        <br>
+
+            <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
+                <i class="fa fa-reply"></i> Volver
+            </a>
+
+            <a class="btn btn-primary" href="{% url 'update' issue.id %}">
+                <i class="fa fa-edit"></i> Editar
+            </a>
+
+            {% if issue.status.id == 5 %}
+                {% if is_evaluated is not True %}
+                    {% if issue.reporter_id == user.id %}
+                      <a class="btn btn-info" data-toggle="modal" data-target="#myModalEv">
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Evaluar
+                      </a>
+                    {% endif %}
+                {% else %}
+                    <a class="btn btn-info" disabled>
+                      <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
+                    </a>
+                    {% for g in request.user.groups.all %}
+                        {% if "ResultsEvaluation" == g.name %}
+                          <a class="btn btn-info" data-toggle="modal"
+                            data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
+                              <i class="fa fa-eye"></i> Resultados de Evaluación
+                          </a>
+                          <input type="hidden" id="url_get_issue_details"
+                            value="{% url 'issue_evaluation_result_results' issue.id %}">
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
 
         </div>
-
     </div>
-
-    <div class="col-md-10 col-md-offset-1">
-
-        <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
-            <i class="fa fa-reply"></i> Volver
-        </a>
-
-        <a class="btn btn-primary" href="{% url 'update' issue.id %}">
-            <i class="fa fa-edit"></i> Editar
-        </a>
-
-        {% if issue.status.id == 5 %}
-            {% if is_evaluated is not True %}
-                {% if issue.reporter_id == user.id %}
-                  <a class="btn btn-info" data-toggle="modal" data-target="#myModalEv">
-                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Evaluar
-                  </a>
-                {% endif %}
-            {% else %}
-                <a class="btn btn-info" disabled>
-                  <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
+    <div class="row">
+         <div class="col-md-10 col-md-offset-1">
+            <hr>
+            <div class="panel panel-primary">
+                <a class="btn btn-default pull-right" data-toggle="modal"
+                                                            data-target="#myModal">
+                    <i class="fa fa-th-list"></i> Agregar Comentario
                 </a>
-                {% for g in request.user.groups.all %}
-                    {% if "ResultsEvaluation" == g.name %}
-                      <a class="btn btn-info" data-toggle="modal"
-                        data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
-                          <i class="fa fa-eye"></i> Resultados de Evaluación
-                      </a>
-                      <input type="hidden" id="url_get_issue_details"
-                        value="{% url 'issue_evaluation_result_results' issue.id %}">
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endif %}
-        <br>
-        <br>
-    </div>
-    <div class="col-md-12">
-        <hr>
-        <div class="panel panel-primary">
-            <a class="btn btn-default pull-right" data-toggle="modal"
-                                                        data-target="#myModal">
-                <i class="fa fa-th-list"></i> Agregar Comentario
-            </a>
-            <div class="panel-heading">
-                <strong>Comentarios registrados</strong>
+                <div class="panel-heading">
+                    <strong>Comentarios registrados</strong>
 
-            </div>
-            <div class="panel-body" style="max-height: 400px; overflow: scroll;">
-                <div id="list-comments"></div>
-                <div id="content-comments">
-                    {% for comment in comments %}
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                {{ comment.user.first_name }}
-                                {{ comment.user.last_name }}
-                                </br>
-                                <small>
-                                    {{ comment.created_at | date:"d/m/Y H:i" }}
-                                </small>
+                </div>
+                <div class="panel-body" style="max-height: 400px; overflow: scroll;">
+                    <div id="list-comments"></div>
+                    <div id="content-comments">
+                        {% for comment in comments %}
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    {{ comment.user.first_name }}
+                                    {{ comment.user.last_name }}
+                                    </br>
+                                    <small>
+                                        {{ comment.created_at | date:"d/m/Y H:i" }}
+                                    </small>
+                                </div>
+                                <div class="panel-body" >
+                                    {{ comment.comment }}
+                                </div>
                             </div>
-                            <div class="panel-body" >
-                                {{ comment.comment }}
-                            </div>
-                        </div>
-                    {% empty %}
-                        <span class="label label-warning">
-                            No se han registrado comentarios
-                        </span>
-                    {% endfor %}
+                        {% empty %}
+                            <span class="label label-warning">
+                                No se han registrado comentarios
+                            </span>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+         </div>
     </div>
     <hr>
 

@@ -91,7 +91,7 @@ class Person(models.Model):
 
 
 class Issue(models.Model):
-    issue = models.CharField(max_length=300)
+    issue = models.CharField(max_length=300,)
     description = models.TextField()
     software = models.ForeignKey(SoftwareIssue, on_delete=models.CASCADE)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)

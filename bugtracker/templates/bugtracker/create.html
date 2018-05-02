@@ -5,72 +5,77 @@
 
     {% include "includes/messages.html" %}
 
-    <div class="row">
-        <form id="issue-udapte-form" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="col-lg-offset-2 col-md-5 col-sm-12">
-                <div class="input-field col-sm-12 col-md-12 col-lg-12">
-                    <label>Título: <span style="color: red;"> * </span> </label>
-                    {{ form.issue }}
+
+        <div class="row">
+            <form id="issue-udapte-form" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-lg-offset-2 col-md-8">
+                    <div class="input-field col-sm-12 ">
+                        <label>Título: <span style="color: red;"> * </span> </label>
+                        {{ form.issue }}
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Descripción: <span style="color: red;"> * </span> </label>
+                        {{ form.description }}
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Pasos para reproducirlo: <span style="color: red;"> * </span> </label>
+                        {{ form.steps_to_reproduce }}
+                        <br>
+                    </div>
+                    <div class="col-md-6 file-field input-field">
+                      <div class="btn-flat">
+                        <span>Imagen1 (Opcional)</span>
+                        {{ form.image1 }}
+                      </div>
+                    </div>
+                    <div class="col-md-6 file-field input-field">
+                      <div class="btn-flat">
+                        <span>Imagen2 (Opcional)</span>
+                        {{ form.image2 }}
+                          <br>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Software: <span style="color: red;"> * </span> </label>
+                        {{ form.software }}
+
+                        <label>Sede: <span style="color: red;"> * </span> </label>
+                        {{ form.headquarter }}
+
+                        <label>Navegador: <span style="color: red;"> * </span> </label>
+                        {{ form.browser }}
+
+                        <label>Sistema operativo: <span style="color: red;"> * </span> </label>
+                        {{ form.os }}
+                    </div>
+                    <div class="col-md-6">
+
+                        <label>Prioridad: <span style="color: red;"> * </span> </label>
+                        {{ form.priority }}
+
+                        <label>Tipo: <span style="color: red;"> * </span> </label>
+                        {{ form.type_issue }}
+
+                        <label>Categoría: <span style="color: red;"> * </span> </label>
+                        {{ form.category_issue }}
+
+                        <label>Reproducibilidad: <span style="color: red;"> * </span> </label>
+                        {{ form.reproducibility_issue }}
+
+                        <br>
+                    </div>
+                    <div class="col-lg-12">
+                        <input type="hidden" id="is_admin" value="false">
+                        <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
+                            <i class="fa fa-arrow-left"></i> Volver
+                        </a>
+                        <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
+                          <i class="fa fa-save"></i> Actualizar incidencia
+                        </button>
+                    </div>
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <label>Descripción: <span style="color: red;"> * </span> </label>
-                    {{ form.description }}
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <label>Pasos para reproducirlo: <span style="color: red;"> * </span> </label>
-                    {{ form.steps_to_reproduce }}
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                  <div class="btn-flat">
-                    <span>Imagen1 (Opcional)</span>
-                    {{ form.image1 }}
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                  <div class="btn-flat">
-                    <span>Imagen2 (Opcional)</span>
-                    {{ form.image2 }}
-                  </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-9 col-sm-12">
-
-                <label>Software: <span style="color: red;"> * </span> </label>
-                {{ form.software }}
-
-                <label>Sede: <span style="color: red;"> * </span> </label>
-                {{ form.headquarter }}
-
-                <label>Navegador: <span style="color: red;"> * </span> </label>
-                {{ form.browser }}
-
-                <label>Sistema operativo: <span style="color: red;"> * </span> </label>
-                {{ form.os }}
-
-                <label>Prioridad: <span style="color: red;"> * </span> </label>
-                {{ form.priority }}
-
-                <label>Tipo: <span style="color: red;"> * </span> </label>
-                {{ form.type_issue }}
-
-                <label>Categoría: <span style="color: red;"> * </span> </label>
-                {{ form.category_issue }}
-
-                <label>Reproducibilidad: <span style="color: red;"> * </span> </label>
-                {{ form.reproducibility_issue }}
-            </div>
-        </form>
-    </div>
-     <div class="col-lg-offset-2 col-md-12">
-        <input type="hidden" id="is_admin" value="false">
-        <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
-            <i class="fa fa-arrow-left"></i> Volver
-        </a>
-        <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
-          <i class="fa fa-save"></i> Actualizar incidencia
-        </button>
-    </div>
-    <hr>
+            </form>
+        </div>
     <hr>
 {% endblock %}

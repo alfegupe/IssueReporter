@@ -8,7 +8,7 @@
 <div class="row">
     <form id="issue-udapte-form" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="col-lg-6 col-md-6 col-md-offset-1">
+        <div class="col-lg-10 col-md-offset-1">
 
             {% if form.evaluation_comments.value %}
             <div class="col-sm-12 col-md-12 col-lg-12">
@@ -40,122 +40,139 @@
             <div class="input-field col-sm-12 col-md-12 col-lg-12">
                 <label>Título: <span style="color: red;"> * </span> </label>
                 {{ form.issue }}
+                <br>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <label>Descripción: <span style="color: red;"> * </span> </label>
                 {{ form.description }}
+                <br>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <label>Pasos para reproducir: <span style="color: red;"> * </span> </label>
                 {{ form.steps_to_reproduce }}
+                <br>
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                <label>Imagen1 (Opcional)</label>
-                {{ form.image1 }}
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-12 file-field input-field">
-                <label>Imagen2 (Opcional)</label>
-                {{ form.image2 }}
-            </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 file-field input-field">
+                    <label>Imagen1 (Opcional)</label>
+                    {{ form.image1 }}
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 file-field input-field">
+                    <label>Imagen2 (Opcional)</label>
+                    {{ form.image2 }}
 
-            {% if form.dev and form.status and form.ticket and form.evaluation_comments %}
-              <div class="col-md-12">
-                  <hr>
-                  <div class="panel panel-primary">
-                      <div class="panel-heading">
-                          <strong>Visible por Administradores y
-                              desarrolladores</strong>
-                      </div>
-                      <div class="panel-body">
-                          <label>Asignar a: <span style="color: red;"> * </span> </label>
-                          {{ form.dev }}
-                          <label>Estado: <span style="color: red;"> * </span> </label>
-                          {{ form.status }}
-                          <label>Ticket:</label>
-                          {{ form.ticket }}
-                      </div>
-                  </div>
-                  <input type="hidden" id="is_admin" value="true">
-              </div>
-            {% else %}
-            <input type="hidden" id="is_admin" value="false">
-            {% endif %}
-
+                </div>
         </div>
-        <div class="col-lg-3 col-md-9 col-sm-12">
 
-            <label>Software: <span style="color: red;"> * </span> </label>
-            {{ form.software }}
-
-            <label>Sede: <span style="color: red;"> * </span> </label>
-            {{ form.headquarter }}
-
-            <label>Navegador: <span style="color: red;"> * </span> </label>
-            {{ form.browser }}
-
-            <label>Sistema operativo: <span style="color: red;"> * </span> </label>
-            {{ form.os }}
-
-            <label>Prioridad: <span style="color: red;"> * </span> </label>
-            {{ form.priority }}
-
-            <label>Tipo: <span style="color: red;"> * </span> </label>
-            {{ form.type_issue }}
-
-            <label>Categoría: <span style="color: red;"> * </span> </label>
-            {{ form.category_issue }}
-
-            <label>Reproducibilidad: <span style="color: red;"> * </span> </label>
-            {{ form.reproducibility_issue }}
-
-            <br/>
-
+        <div class="col-lg-10 col-md-10 col-md-offset-1">
+            <hr>
+            <div class="col-md-3">
+                <div>
+                <label>Software: <span style="color: red;"> * </span> </label>
+                {{ form.software }}
+                </div>
+                <div>
+                <label>Sede: <span style="color: red;"> * </span> </label>
+                {{ form.headquarter }}
+                </div>
+                <div>
+                <label>Navegador: <span style="color: red;"> * </span> </label>
+                {{ form.browser }}
+                </div>
+                <div>
+                <label>Sistema operativo: <span style="color: red;"> * </span> </label>
+                {{ form.os }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div>
+                <label>Prioridad: <span style="color: red;"> * </span> </label>
+                {{ form.priority }}
+                </div>
+                <div>
+                <label>Tipo: <span style="color: red;"> * </span> </label>
+                {{ form.type_issue }}
+                </div>
+                <div>
+                <label>Categoría: <span style="color: red;"> * </span> </label>
+                {{ form.category_issue }}
+                </div>
+                <div>
+                <label>Reproducibilidad: <span style="color: red;"> * </span> </label>
+                {{ form.reproducibility_issue }}
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    {% if form.dev and form.status and form.ticket and form.evaluation_comments %}
+                          <div class="col-md-12">
+                              <div class="panel panel-primary">
+                                  <div class="panel-heading">
+                                      <strong>Visible por Administradores y
+                                          desarrolladores</strong>
+                                  </div>
+                                  <div class="panel-body">
+                                      <label>Asignar a: <span style="color: red;"> * </span> </label>
+                                      {{ form.dev }}
+                                      <label>Estado: <span style="color: red;"> * </span> </label>
+                                      {{ form.status }}
+                                      <label>Ticket:</label>
+                                      {{ form.ticket }}
+                                  </div>
+                              </div>
+                              <input type="hidden" id="is_admin" value="true">
+                          </div>
+                        {% else %}
+                        <input type="hidden" id="is_admin" value="false">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-10 ">
             <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
-                <i class="fa fa-arrow-left"></i> Volver
+            <i class="fa fa-arrow-left"></i> Volver
             </a>
             <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">
               <i class="fa fa-save"></i> Actualizar incidencia
             </button>
         </div>
-
-        <div class="col-md-10 col-md-offset-1">
-            <hr>
-            <div class="panel panel-primary">
-                <a class="btn btn-default pull-right" data-toggle="modal"
-                                                        data-target="#myModal">
-                    <i class="fa fa-th-list"></i>
-                    Agregar Comentario
-                </a>
-                <div class="panel-heading">
-                    <strong>Comentarios registrados</strong>
-                </div>
-                <div class="panel-body" style="max-height: 400px; overflow: scroll;">
-                    <div id="list-comments"></div>
-                    <div id="content-comments">
-                        {% for comment in comments %}
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    {{ comment.user.first_name }}
-                                    {{ comment.user.last_name }}
-                                    </br>
-                                    <small>
-                                        {{comment.created_at | date:"d/m/Y H:i"}}
-                                    </small>
+            <div class="col-md-12">
+                <hr>
+                <div class="panel panel-primary">
+                    <a class="btn btn-default pull-right" data-toggle="modal"
+                                                            data-target="#myModal">
+                        <i class="fa fa-th-list"></i>
+                        Agregar Comentario
+                    </a>
+                    <div class="panel-heading">
+                        <strong>Comentarios registrados</strong>
+                    </div>
+                    <div class="panel-body" style="max-height: 400px; overflow: scroll;">
+                        <div id="list-comments"></div>
+                        <div id="content-comments">
+                            {% for comment in comments %}
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        {{ comment.user.first_name }}
+                                        {{ comment.user.last_name }}
+                                        </br>
+                                        <small>
+                                            {{comment.created_at | date:"d/m/Y H:i"}}
+                                        </small>
+                                    </div>
+                                    <div class="panel-body">
+                                        {{ comment.comment }}
+                                    </div>
                                 </div>
-                                <div class="panel-body">
-                                    {{ comment.comment }}
-                                </div>
-                            </div>
-                        {% empty %}
-                            <span class="label label-warning">
-                                No se han registrado comentarios
-                            </span>
-                        {% endfor %}
+                            {% empty %}
+                                <span class="label label-warning">
+                                    No se han registrado comentarios
+                                </span>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </form>
 </div>
 
