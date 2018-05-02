@@ -130,7 +130,7 @@
         <div class="col-lg-10 col-md-10 col-md-offset-1">
             {% if issue.image1 %}
                 <figure class="col-md-6">
-                    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ issue.image1 }}">
+                    <img class="img-responsive img-rounded" width="450px" height="250px" src="{{ MEDIA_URL }}{{ issue.image1 }}">
                     <figcaption>
                         <small class="text-muted">
                             {{ issue.image1 }}
@@ -141,7 +141,7 @@
             {% endif %}
             {% if issue.image2 %}
                 <figure class="col-md-6">
-                    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ issue.image2 }}">
+                    <img class="img-responsive img-rounded" width="450px" height="250px" src="{{ MEDIA_URL }}{{ issue.image2 }}">
                     <figcaption>
                         <small class="text-muted">
                             {{ issue.image2 }}
@@ -154,7 +154,7 @@
     </div>
     <div>
         <div class="col-md-10 col-md-offset-1">
-        <br>
+        <hr>
 
             <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
                 <i class="fa fa-reply"></i> Volver
