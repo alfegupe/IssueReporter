@@ -131,8 +131,10 @@ class UpdateIssueForm(forms.ModelForm):
 
 
 class UpdateIssueAdminForm(forms.ModelForm):
+
     class Meta:
         model = Issue
+
         fields = [
             'id', 'issue', 'description', 'os', 'software', 'headquarter',
             'browser', 'priority', 'type_issue', 'category_issue', 'image1',
@@ -163,10 +165,19 @@ class UpdateIssueAdminForm(forms.ModelForm):
             'reproducibility_issue': forms.Select(
                 attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'dev': forms.Select(attrs={'class': 'form-control'}),
             'ticket': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Ticket'}),
+            'dev': forms.Select(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateIssueAdminForm, self).__init__(*args, **kwargs)
+
+        self.fields['dev'] = forms.ModelChoiceField(
+            queryset=Person.objects.filter(user__is_active=True, dev=True),
+            widget=forms.Select(attrs={'class': 'form-control input-sm',
+                                       'required': False})
+        )
 
 
 class SearchIssueForm(forms.ModelForm):
@@ -205,6 +216,11 @@ class SearchIssueForm(forms.ModelForm):
         self.fields['type_issue'].empty_label = '-- tipo'
         self.fields['status'].empty_label = '-- estado'
         self.fields['reporter'].empty_label = '-- reportado por'
+        self.fields['dev'] = forms.ModelChoiceField(
+            queryset=Person.objects.filter(user__is_active=True, dev=True),
+            widget=forms.Select(attrs={'class': 'form-control input-sm',
+                                       'required': False})
+        )
         self.fields['dev'].empty_label = '-- asignado a'
 
 

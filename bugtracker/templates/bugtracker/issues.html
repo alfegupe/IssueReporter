@@ -130,8 +130,13 @@
                     <td>{{ issue.created_at | date:"d/m/Y H:i" }}</td>
                     <td class="text-center">
                         {% if issue.evaluated %}
-                            <i class="fa fa-exclamation-circle" title="Evaluada"
+                            <a class="btn btn-default btn-xs " data-toggle="modal"
+                            data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
+                            <i class="fa fa-eye" title="Evaluada"
                            data-toggle="tooltip" data-placement="top"></i>
+                            </a>
+                            <input type="hidden" id="url_get_issue_details"
+                            value="{% url 'issue_evaluation_result_results' issue.id %}">
                         {% endif %}
                         <a class="btn btn-default btn-xs" title="Ver"
                            data-toggle="tooltip" data-placement="top"

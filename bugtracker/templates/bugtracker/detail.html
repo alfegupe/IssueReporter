@@ -5,7 +5,6 @@
     </div>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-
             {% if issue.evaluation_comments %}
                 <div class="panel panel-default panel-danger" style="background-color: #ffe6e6; margin-bottom: 10px;">
                     <div class="panel-body">
@@ -19,7 +18,6 @@
                     </div>
                 </div>
             {% endif %}
-
             <table class="table table-bordered" style="margin: auto">
                 <tbody>
                     <tr>
@@ -65,7 +63,6 @@
                         <td>{{ issue.type_issue }}</td>
                     </tr>
                     <tr>
-
                         <th>Asignada a:</th>
                         <td>
                             {% if issue.dev %}
@@ -155,7 +152,6 @@
     <div>
         <div class="col-md-10 col-md-offset-1">
         <hr>
-
             <a class="btn btn-default" href="{{request.META.HTTP_REFERER}}">
                 <i class="fa fa-reply"></i> Volver
             </a>
@@ -175,6 +171,9 @@
                     <a class="btn btn-info" disabled>
                       <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
                     </a>
+                    <a class="btn btn-info" disabled>
+                      <i class="fa fa-eye-slash" aria-hidden="true"></i> Ya se ha evaluado...
+                    </a>
                     {% for g in request.user.groups.all %}
                         {% if "ResultsEvaluation" == g.name %}
                           <a class="btn btn-info" data-toggle="modal"
@@ -187,7 +186,6 @@
                     {% endfor %}
                 {% endif %}
             {% endif %}
-
         </div>
     </div>
     <div class="row">
@@ -230,5 +228,4 @@
          </div>
     </div>
     <hr>
-
 {% endblock %}

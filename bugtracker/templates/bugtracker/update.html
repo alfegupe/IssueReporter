@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div class="col-md-10 ">
-            <a href="{% url 'home' %}" id="btn-to-back" class="btn btn-primary notify">
+            <a href="{{request.META.HTTP_REFERER}}" id="btn-to-back" class="btn btn-primary notify">
             <i class="fa fa-arrow-left"></i> Volver
             </a>
             <button class="btn btn-success notify" type="button" id="btn-to-save" onclick="validateFormNewUpdateIssue()">

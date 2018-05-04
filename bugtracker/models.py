@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 class SoftwareIssue(models.Model):
     software = models.CharField(max_length=200)
 
+    class Meta:
+        ordering = ('software',)
+
     def __unicode__(self):
         return self.software
 
@@ -17,6 +20,9 @@ class PriorityIssue(models.Model):
     priority = models.CharField(max_length=200)
     bg_color = models.CharField(max_length=30, null=True)
     fa_icon = models.CharField(max_length=30, null=True)
+
+    class Meta:
+        ordering = ('priority',)
 
     def __unicode__(self):
         return self.priority
@@ -27,6 +33,9 @@ class StatusIssue(models.Model):
     show_in_main_list = models.BooleanField(default=True, blank=False)
     fa_icon = models.CharField(max_length=30, null=True)
 
+    class Meta:
+        ordering = ('status',)
+
     def __unicode__(self):
         return self.status
 
@@ -34,12 +43,18 @@ class StatusIssue(models.Model):
 class ReproducibilityIssue(models.Model):
     reproducibility = models.CharField(max_length=200)
 
+    class Meta:
+        ordering = ('reproducibility',)
+
     def __unicode__(self):
         return self.reproducibility
 
 
 class Headquarter(models.Model):
     headquarter = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ('headquarter',)
 
     def __unicode__(self):
         return self.headquarter
@@ -49,6 +64,9 @@ class BrowserIssue(models.Model):
     browser = models.CharField(max_length=200)
     fa_icon = models.CharField(max_length=30, null=True)
 
+    class Meta:
+        ordering = ('browser',)
+
     def __unicode__(self):
         return self.browser
 
@@ -56,6 +74,9 @@ class BrowserIssue(models.Model):
 class OsIssue(models.Model):
     os = models.CharField(max_length=200)
     fa_icon = models.CharField(max_length=30, null=True)
+
+    class Meta:
+        ordering = ('os',)
 
     def __unicode__(self):
         return self.os
@@ -65,12 +86,18 @@ class TypeIssue(models.Model):
     type_issue = models.CharField(max_length=100)
     fa_icon = models.CharField(max_length=30, null=True)
 
+    class Meta:
+        ordering = ('type_issue',)
+
     def __unicode__(self):
         return self.type_issue
 
 
 class CategoryIssue(models.Model):
     category_issue = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ('category_issue',)
 
     def __unicode__(self):
         return self.category_issue
@@ -85,6 +112,10 @@ class Person(models.Model):
     cellphone = models.CharField(max_length=20, blank=True)
     extension = models.CharField(max_length=10, blank=True)
     headquarter = models.ForeignKey(Headquarter, on_delete=models.CASCADE)
+    dev = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('user__first_name',)
 
     def __unicode__(self):
         return self.user.first_name + ' ' + self.user.last_name

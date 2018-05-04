@@ -59,7 +59,7 @@ def send_notification_bug_email(request, issue, is_update=None):
         html_content = htmly.render(d)
 
         f_from = ''
-        to = [request.user.email]
+        to = [request.user.email, 'edisonml@campus.udes.edu.co']
         if issue.reporter:
             rep = issue.reporter
             if issue.status.id == 5:
@@ -333,6 +333,8 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
         except Exception as e:
             print e.message
             return super(IssueCreateView, self).form_invalid(form)
+
+
 
     def get_success_url(self):
         send_notification_bug_email(self.request, self.object)
