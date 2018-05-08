@@ -6,7 +6,7 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
 from .models import SoftwareIssue, Headquarter, BrowserIssue, TypeIssue, \
     Person, Issue, StatusIssue, PriorityIssue, CategoryIssue, OsIssue, \
-    ReproducibilityIssue
+    ReproducibilityIssue, IssueEvaluation
 
 
 class PersonInLine(admin.StackedInline):
@@ -20,6 +20,7 @@ class UserAdmin(AuthUserAdmin):
 
 
 admin.site.unregister(User)
+admin.site.register(IssueEvaluation)
 admin.site.register(User, UserAdmin)
 admin.site.register([
     SoftwareIssue, Headquarter, BrowserIssue, TypeIssue, Issue,
