@@ -6,9 +6,13 @@
         <h1>
             <i class="fa fa-bug"></i>
             Incidencias <small>Errores, ajustes ó mejoras</small>
-            <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
+            {% if evalue %}
+                <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
                 <i class="fa fa-plus-circle"></i> Reportar incidencia
-            </a>
+                </a>
+                {% else %}
+                <h4 style="color: red">Tiene incidencias pendientes por calificar</h4>
+            {% endif %}
         </h1>
     </div>
     <div class="row">

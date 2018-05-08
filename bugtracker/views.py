@@ -243,6 +243,10 @@ class IssueListView(LoginRequiredMixin, ListView):
             self.request.user, developers_group
         ) or self.request.user.is_superuser else None
         context['paginator_params'] = self.get_params_pagination()
+        evaluated = Issue.objects.filter(reporter__user=self.request.user, evaluated=False, status_id=5,
+                                         ).exclude(reporter__user__date_joined__year__lt='2017',
+                                         reporter__user__date_joined__month__lt='7').count()
+        context['evalue'] = evaluated == 0
         return context
 
     def get_queryset(self):
@@ -268,8 +272,8 @@ class IssueListView(LoginRequiredMixin, ListView):
         elif date == "dsc":
             issues = self.model.objects.filter(**query).order_by('-created_at')
         else:
-            issues = self.model.objects.filter(**query).order_by(
-                'priority', 'type_issue', 'created_at')
+            issues = self.model.objects.filter(**query).order_by('-created_at')
+            # 'priority', 'type_issue',
 
         return issues
 
@@ -333,8 +337,6 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
         except Exception as e:
             print e.message
             return super(IssueCreateView, self).form_invalid(form)
-
-
 
     def get_success_url(self):
         send_notification_bug_email(self.request, self.object)

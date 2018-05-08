@@ -272,4 +272,4 @@ class CreateIssueEvaluation(forms.ModelForm):
                                             attrs={'class': 'form-control'}),
             'satisfied': forms.Select(choices=satisfied_choices,
                                             attrs={'class': 'form-control'}),
-        }
+            }
