@@ -2,19 +2,38 @@
 
 {% block content %}
 
-    <div class="page-header">
-        <h1>
-            <i class="fa fa-bug"></i>
-            Incidencias <small>Errores, ajustes ó mejoras</small>
-            {% if evalue %}
-                <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
-                <i class="fa fa-plus-circle"></i> Reportar incidencia
-                </a>
+    <div class="row">
+        <div class="col-md-6">
+            <h1>
+                <i class="fa fa-bug"></i>
+                Incidencias <small>Errores, ajustes ó mejoras</small>
+            </h1>
+        </div>
+        <div class="col-md-6">
+
+                {% if evalue %}
+                    <div>
+                    <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
+                        <i class="fa fa-plus-circle"></i> Reportar incidencia
+                    </a>
+                    </div>
                 {% else %}
-                <h4 style="color: red">Tiene incidencias pendientes por calificar</h4>
-            {% endif %}
-        </h1>
+                    <div>
+                    <a class="btn btn-success btn-sm pull-right" onclick="alert('Tiene incidencias pendientes por evaluar.')">
+                        <i class="fa fa-plus-circle"></i> Reportar incidencia
+                    </a>
+                    </div>
+                    <div><br><br>
+                    <a href="{% url 'home' %}" class="btn btn-default btn-sm pull-right">
+                        <i class="fa fa-list-alt"></i> Sin Evaluar
+                    </a>
+                    </div>
+                {% endif %}
+
+
+        </div>
     </div>
+    <hr/>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <form class="form-inline" action="" id="filter" method="get" novalidate>
@@ -50,14 +69,18 @@
                 </div>
 
                 {% if user.is_superuser %}
-                <div class="form-group">
+                {% comment %}<div class="form-group">
                     {{ form_search.reporter }}
-                </div>
+                </div>{% endcomment %}
                 {% endif %}
                 {% if is_dev %}
                     <div class="form-group">
                         {{ form_search.dev }}
                     </div>
+                    <div class="form-group">
+                    {{ form_search.reporter }}
+                    </div>
+
                 {% endif %}
                 <div class="form-group">
                     <select name="date" id="date" class="form-control">
@@ -68,7 +91,7 @@
                 </div>
                 <div class="form-group well well-sm" style="padding: 3px;">
                     <label for="id_is_closed">
-                        {{ form_search.is_closed }} Ver cerradas
+                        {{ form_search.is_closed }} Sin Evaluar
                     </label>
                 </div>
                 <button type="submit" class="btn btn-default btn-sm">
@@ -133,15 +156,26 @@
                     </td>
                     <td>{{ issue.created_at | date:"d/m/Y H:i" }}</td>
                     <td class="text-center">
-                        {% if issue.evaluated %}
-                            <a class="btn btn-default btn-xs " data-toggle="modal"
-                            data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
-                            <i class="fa fa-eye" title="Evaluada"
-                           data-toggle="tooltip" data-placement="top"></i>
-                            </a>
-                            <input type="hidden" id="url_get_issue_details"
-                            value="{% url 'issue_evaluation_result_results' issue.id %}">
+                    {% if issue.status.id == 5 %}
+                        {% if is_evaluated is not True %}
+                            {% if issue.reporter_id == user.id %}
+                              <a class="btn btn-default btn-xs " data-toggle="modal" data-target="#myModalEv">
+                                <i class="fa fa-list-alt" aria-hidden="true" title="Pendiente por Evaluar"
+                                   data-toggle="tooltip" data-placement="top"></i>
+                              </a>
+                                {% else %}
+                                {% if issue.evaluated %}
+                                    <a class="btn btn-default btn-xs" data-toggle="modal"
+                                    data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
+                                    <i class="fa fa-calendar-check-o" title="Evaluada"
+                                   data-toggle="tooltip" data-placement="top"></i>
+                                    </a>
+                                    <input type="hidden" id="url_get_issue_details"
+                                    value="{% url 'issue_evaluation_result_results' issue.id %}">
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
+                    {% endif %}
                         <a class="btn btn-default btn-xs" title="Ver"
                            data-toggle="tooltip" data-placement="top"
                             href="{% url 'detail' issue.id %}">

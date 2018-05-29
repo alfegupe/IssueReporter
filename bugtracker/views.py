@@ -59,7 +59,8 @@ def send_notification_bug_email(request, issue, is_update=None):
         html_content = htmly.render(d)
 
         f_from = ''
-        to = [request.user.email, 'edisonml@campus.udes.edu.co']
+        to = [request.user.email]
+        # , 'edisonml@campus.udes.edu.co'
         if issue.reporter:
             rep = issue.reporter
             if issue.status.id == 5:
@@ -142,6 +143,10 @@ class IndexView(View):
             context['status_issues'] = status
             context['priority_issues'] = priority
             context['type_issues'] = type_i
+            evaluated = Issue.objects.filter(reporter__user=self.request.user, evaluated=False, status_id=5,
+                                             ).exclude(reporter__user__date_joined__year__lt='2017',
+                                                       reporter__user__date_joined__month__lt='7').count()
+            context['evalue'] = evaluated == 0
 
             return render(request, self.template, context)
 
