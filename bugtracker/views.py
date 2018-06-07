@@ -541,10 +541,10 @@ class IssueEvaluationResultView(View):
     @method_decorator(permission_required(
         'bugtracker.can_view_results_evaluations', reverse_lazy('home')))
     def get(self, request, *args, **kwargs):
-        resolve = {'1': 0, '5': 0}
+        resolve = {'1': 0, '3': 0, '5': 0}
         time = {'1': 0, '2': 0, '3': 0, '5': 0}
         difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
-        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
         satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
         issue_evaluations = IssueEvaluation.objects.all()
         for ev in issue_evaluations:
@@ -567,10 +567,10 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
         from xlsxwriter.workbook import Workbook
         from io import BytesIO
 
-        resolve = {'1': 0, '5': 0}
+        resolve = {'1': 0, '3': 0, '5': 0}
         time = {'1': 0, '2': 0, '3': 0, '5': 0}
         difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
-        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
         satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
 
         init_date = request.GET['init_date']
@@ -651,6 +651,8 @@ class IssueEvaluationResulExportXlsx(JSONResponseMixin, CreateView):
         sheet.write(21, 1, contact['3'], datax)
         sheet.write(22, 0, 'Chat', header)
         sheet.write(22, 1, contact['4'], datax)
+        sheet.write(23, 0, "Personalmente", header)
+        sheet.write(23, 1, contact['5'], datax)
         sheet.write(23, 0, "Ninguno", header)
         sheet.write(23, 1, contact['5'], datax)
 
@@ -681,11 +683,11 @@ class IssueEvaluationDetails(LoginRequiredMixin, DetailView):
     def get(self, request, *args, **kwargs):
         time_opc = {"1": "Muy lento", "2": "Lento", "3": "Rápido",
                     "5": "Muy rápido"}
-        resolve_opc = {"1": "No resuelta", "5": "Fue resuelta completamente"}
+        resolve_opc = {"1": "No resuelta", "3": "Resuelta", "5": "Fue resuelta completamente"}
         difficulty_opc = {"1": "Muy fácil", "2": "Fácil", "3": "Difícil",
                           "5": "Muy difícil"}
         contact_opc = {"1": "Extensión telefónica", "2": "Correo electrónico",
-                       "3": "Celular", "4": "Chat", "5": "Ninguno"}
+                       "3": "Celular", "4": "Chat", "5": "Ninguno", "6": "Personalmente"}
         satisfied_opc = {"1": "Muy insatisfecho", "2": "Insatisfecho",
                          "3": "Satisfecho", "5": "Muy satisfecho"}
 
@@ -709,10 +711,10 @@ class IssueEvaluationFilter(JSONResponseMixin, CreateView):
         init_date = request.GET['init_date']
         end_date = request.GET['end_date']
 
-        resolve = {'1': 0, '5': 0}
+        resolve = {'1': 0, '3': 0,'5': 0}
         time = {'1': 0, '2': 0, '3': 0, '5': 0}
         difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
-        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+        contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
         satisfied = {'1': 0, '2': 0, '3': 0, '5': 0}
 
         if init_date and end_date:

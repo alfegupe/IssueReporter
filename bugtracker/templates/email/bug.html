@@ -92,6 +92,12 @@
             <td>{{ cdf.ticket }}</td>
         </tr>
     {% endif %}
+    {% if cdf.sprint %}
+        <tr>
+            <th>Sprint asociado: </th>
+            <td>{{ cdf.sprint }}</td>
+        </tr>
+    {% endif %}
     {% if cdf.reporter %}
         <tr>
             <th>Reportado por: </th>
