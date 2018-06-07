@@ -116,8 +116,16 @@
                                       {{ form.dev }}
                                       <label>Estado: <span style="color: red;"> * </span> </label>
                                       {{ form.status }}
-                                      <label>Ticket:</label>
-                                      {{ form.ticket }}
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                          <label>Ticket:</label>
+                                          {{ form.ticket }}
+                                          </div>
+                                          <div class="col-md-6">
+                                          <label>Sprint:</label>
+                                          {{ form.sprint }}
+                                          </div>
+                                      </div>
                                   </div>
                               </div>
                               <input type="hidden" id="is_admin" value="true">

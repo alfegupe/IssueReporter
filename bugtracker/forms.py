@@ -138,7 +138,7 @@ class UpdateIssueAdminForm(forms.ModelForm):
         fields = [
             'id', 'issue', 'description', 'os', 'software', 'headquarter',
             'browser', 'priority', 'type_issue', 'category_issue', 'image1',
-            'image2', 'status', 'dev', 'ticket', 'reproducibility_issue',
+            'image2', 'status', 'dev', 'ticket', 'sprint', 'reproducibility_issue',
             'steps_to_reproduce', 'evaluation_comments', 'reporter',
         ]
         widgets = {
@@ -167,6 +167,8 @@ class UpdateIssueAdminForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-control'}),
             'ticket': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Ticket'}),
+            'sprint': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Sprint'}),
             'dev': forms.Select(attrs={'class': 'form-control'}),
         }
 
@@ -184,7 +186,7 @@ class SearchIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'id', 'issue', 'software', 'headquarter', 'browser', 'priority',
+            'id', 'issue', 'software', 'headquarter', 'sprint', 'browser', 'priority',
             'type_issue', 'status', 'reporter', 'dev',
         ]
         select_attr = {'class': 'form-control input-sm', 'required': False}
@@ -197,6 +199,9 @@ class SearchIssueForm(forms.ModelForm):
                        'placeholder': 'Buscar por nombre'}),
             'software': forms.Select(attrs=select_attr),
             'headquarter': forms.Select(attrs=select_attr),
+            'sprint': forms.TextInput(
+                attrs={'class': 'form-control input-sm',
+                       'placeholder': 'Buscar por sprint'}),
             'browser': forms.Select(attrs=select_attr),
             'priority': forms.Select(attrs=select_attr),
             'type_issue': forms.Select(attrs=select_attr),
@@ -241,25 +246,27 @@ class CreateIssueEvaluation(forms.ModelForm):
         fields = ['resolve', 'time_evaluation', 'difficulty',
                   'contact', 'satisfied']
         resolve_choices = [
-            ('', '-- Selecciona una opción --'), ('1', 'No resuelta'),
-            ('5', 'Fue resuelta completamente')
+            ('', '-- Selecciona una opción --'), ('3', 'Resuelta'), ('5', 'Fue resuelta completamente'),
+            ('1', 'No resuelta')
+
         ]
         time_evaluation_choices = [
-            ('', '-- Selecciona una opción --'), ('1', 'Muy lento'),
-            ('2', 'Lento'), ('3', 'Rápido'), ('5', 'Muy rápido')
+            ('', '-- Selecciona una opción --'), ('5', 'Muy rápido'), ('3', 'Rápido'),
+            ('2', 'Lento'), ('1', 'Muy lento'),
         ]
         difficulty_choices = [
             ('', '-- Selecciona una opción --'), ('1', 'Muy fácil'),
             ('2', 'Fácil'), ('3', 'Difícil'), ('5', 'Muy difícil')
         ]
         contact_choices = [
-            ('', '-- Selecciona una opción --'), ('1', 'Extensión telefónica'),
-            ('2', 'Correo electrónico'), ('3', 'Celular'), ('4', 'Chat'),
-            ('5', 'Ninguno')
+            ('', '-- Selecciona una opción --'), ('3', 'Celular'), ('4', 'Chat'), ('2', 'Correo electrónico'),
+            ('1', 'Extensión telefónica'), ('6', 'Personalmente'), ('5', 'Ninguno')
+
+
         ]
         satisfied_choices = [
-            ('', '-- Selecciona una opción --',), ('1', 'Muy insatisfecho'),
-            ('2', 'Insatisfecho'), ('3', 'Satisfecho'), ('5', 'Muy satisfecho')
+            ('', '-- Selecciona una opción --',), ('5', 'Muy satisfecho'),
+            ('3', 'Satisfecho'), ('2', 'Insatisfecho'), ('1', 'Muy insatisfecho')
         ]
         widgets = {
             'resolve': forms.Select(choices=resolve_choices,

@@ -10,27 +10,19 @@
             </h1>
         </div>
         <div class="col-md-6">
-
-                {% if evalue %}
-                    <div>
-                    <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
-                        <i class="fa fa-plus-circle"></i> Reportar incidencia
-                    </a>
-                    </div>
-                {% else %}
-                    <div>
-                    <a class="btn btn-success btn-sm pull-right" onclick="alert('Tiene incidencias pendientes por evaluar.')">
-                        <i class="fa fa-plus-circle"></i> Reportar incidencia
-                    </a>
-                    </div>
-                    <div><br><br>
-                    <a href="{% url 'home' %}" class="btn btn-default btn-sm pull-right">
-                        <i class="fa fa-list-alt"></i> Sin Evaluar
-                    </a>
-                    </div>
-                {% endif %}
-
-
+            {% if evalue %}
+                <div>
+                <a href="{% url 'create' %}" class="btn btn-success btn-sm pull-right">
+                    <i class="fa fa-plus-circle"></i> Reportar incidencia
+                </a>
+                </div>
+            {% else %}
+                <div>
+                <a class="btn btn-success btn-sm pull-right" disabled="disabled" id="miboton" onclick="miFuncion()">
+                    <i class="fa fa-plus-circle"></i> Reportar incidencia
+                </a>
+                </div>
+            {% endif %}
         </div>
     </div>
     <hr/>
@@ -63,6 +55,8 @@
                 </div>
                 <div class="form-group">
                     {{ form_search.headquarter }}
+                </div><div class="form-group">
+                    {{ form_search.sprint }}
                 </div>
                 <div class="form-group">
                     {{ form_search.browser }}
@@ -89,11 +83,11 @@
                         <option value="dsc">Descendente</option>
                     </select>
                 </div>
-                <div class="form-group well well-sm" style="padding: 3px;">
+                {% comment %}<div class="form-group well well-sm" style="padding: 3px;">
                     <label for="id_is_closed">
                         {{ form_search.is_closed }} Sin Evaluar
                     </label>
-                </div>
+                </div>{% endcomment %}
                 <button type="submit" class="btn btn-default btn-sm">
                     <i class="fa fa-search"></i> Filtrar
                 </button>
@@ -116,6 +110,7 @@
                     <th class="text-center" style="width: 30px">Tipo</th>
                     <th class="text-center" style="width: 30px">Pri.</th>
                     <th>Nombre</th>
+                    <th class="text-center" style="width: 25px">Sprint</th>
                     <th>Sistema</th>
                     <th>Sede</th>
                     <th>Estado</th>
@@ -138,6 +133,13 @@
                            title="{{ issue.priority }}"></i>
                     </td>
                     <td>{{ issue.issue }}</td>
+                    <td style="text-align: center">
+                    {% if issue.sprint %}
+                        {{ issue.sprint }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                    </td>
                     <td>{{ issue.software }}</td>
                     <td>{{ issue.headquarter }}</td>
                     <td>
@@ -159,20 +161,24 @@
                     {% if issue.status.id == 5 %}
                         {% if is_evaluated is not True %}
                             {% if issue.reporter_id == user.id %}
-                              <a class="btn btn-default btn-xs " data-toggle="modal" data-target="#myModalEv">
-                                <i class="fa fa-list-alt" aria-hidden="true" title="Pendiente por Evaluar"
-                                   data-toggle="tooltip" data-placement="top"></i>
-                              </a>
+                                  {% comment %}<a class="btn btn-default btn-xs " data-toggle="modal" data-target="#myModalEv">
+                                    <i class="glyphicon glyphicon-list-alt" aria-hidden="true" title="Pendiente por Evaluar"
+                                       data-toggle="tooltip" data-placement="top"></i>
+                                  </a>{% endcomment %}
                                 {% else %}
-                                {% if issue.evaluated %}
-                                    <a class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
-                                    <i class="fa fa-calendar-check-o" title="Evaluada"
-                                   data-toggle="tooltip" data-placement="top"></i>
-                                    </a>
-                                    <input type="hidden" id="url_get_issue_details"
-                                    value="{% url 'issue_evaluation_result_results' issue.id %}">
-                                {% endif %}
+                                {% for g in request.user.groups.all %}
+                                    {% if "ResultsEvaluation" == g.name %}
+                                        {% if issue.evaluated %}
+                                            <a class="btn btn-default btn-xs" data-toggle="modal"
+                                            data-target="#myModalEvResults" onclick="getEvaluationDataById('{{ issue.id }}')">
+                                            <i class="fa fa-check-square-o" title="Evaluada"
+                                           data-toggle="tooltip" data-placement="top"></i>
+                                            </a>
+                                            <input type="hidden" id="url_get_issue_details"
+                                            value="{% url 'issue_evaluation_result_results' issue.id %}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
                             {% endif %}
                         {% endif %}
                     {% endif %}
@@ -197,5 +203,12 @@
     {% else %}
         <p class="text-info">No se encontraron incidencias.</p>
     {% endif %}
+<script type="text/javascript">
+  function miFuncion() {
+
+    alertify.warning('Tiene incidencias pendientes por evaluar.');
+
+  }
+</script>
 
 {% endblock %}

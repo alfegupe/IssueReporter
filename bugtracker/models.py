@@ -141,6 +141,7 @@ class Issue(models.Model):
     dev = models.ForeignKey(
         Person, on_delete=models.CASCADE, null=True, related_name='Developer')
     ticket = models.CharField(max_length=6, null=True, blank=True)
+    sprint = models.CharField(max_length=6, null=True, blank=True)
     reporter = models.ForeignKey(
         Person, on_delete=models.CASCADE, related_name='Persons')
     created_at = models.DateTimeField(auto_now_add=True)

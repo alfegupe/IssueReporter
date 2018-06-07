@@ -17,7 +17,7 @@
           href="{% static 'font-awesome/css/font-awesome.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/alertify.css' %}"/>
     {% endblock %}
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -39,7 +39,6 @@
     {% block nav %}{% endblock %}
     {% block content %}{% endblock %}
     {% block footer %}
-
     <footer class="footer text-center">
                     <span class="text-muted ">Universidad de Santander - Sistemas de información.<br/>
                         Todos los derechos reservados © 2016 <br/>
@@ -49,6 +48,7 @@
     {% endblock %}
     {% endblock %}
 <!-- Modal add comment evaluator -->
+</div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -307,7 +307,7 @@
         src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+<script src="{% static 'js/alertify.min.js' %}"></script>
 <script type="text/javascript">
   alertify.defaults = {
         // dialogs defaults
