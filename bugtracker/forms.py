@@ -246,7 +246,7 @@ class CreateIssueEvaluation(forms.ModelForm):
         fields = ['resolve', 'time_evaluation', 'difficulty',
                   'contact', 'satisfied']
         resolve_choices = [
-            ('', '-- Selecciona una opción --'), ('3', 'Resuelta'), ('5', 'Fue resuelta completamente'),
+            ('', '-- Selecciona una opción --'), ('3', 'Resuelta'), ('5', 'Fue resuelta parcialmente'),
             ('1', 'No resuelta')
 
         ]
