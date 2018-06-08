@@ -20,6 +20,7 @@ class PriorityIssue(models.Model):
     priority = models.CharField(max_length=200)
     fa_icon = models.CharField(max_length=30, null=True)
 
+
     class Meta:
         ordering = ('priority',)
 
