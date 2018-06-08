@@ -18,8 +18,8 @@ class SoftwareIssue(models.Model):
 
 class PriorityIssue(models.Model):
     priority = models.CharField(max_length=200)
-    bg_color = models.CharField(max_length=30, null=True)
     fa_icon = models.CharField(max_length=30, null=True)
+
 
     class Meta:
         ordering = ('priority',)
@@ -31,7 +31,7 @@ class PriorityIssue(models.Model):
 class StatusIssue(models.Model):
     status = models.CharField(max_length=200)
     show_in_main_list = models.BooleanField(default=True, blank=False)
-    fa_icon = models.CharField(max_length=30, null=True)
+    bg_color = models.CharField(max_length=7, null=True)
 
     class Meta:
         ordering = ('status',)
