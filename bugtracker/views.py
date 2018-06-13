@@ -60,7 +60,7 @@ def send_notification_bug_email(request, issue, is_update=None):
 
         f_from = ''
         to = [request.user.email]
-        # , 'edisonml@campus.udes.edu.co'
+        'edisonml@campus.udes.edu.co'
         if issue.reporter:
             rep = issue.reporter
             if issue.status.id == 5:
@@ -91,7 +91,7 @@ def send_notification_bug_email(request, issue, is_update=None):
 def send_notification_new_evaluation_comment_email(issue_id, comments):
     issue = Issue.objects.get(pk=issue_id)
     f_from = ''
-    to = []
+    to = [issue.reporter.user.email]
     if issue.dev:
         if issue.dev.user.email not in to:
             to.append(issue.dev.user.email)
@@ -147,7 +147,6 @@ class IndexView(View):
                                              ).exclude(reporter__user__date_joined__year__lt='2017',
                                                        reporter__user__date_joined__month__lt='7').count()
             context['evalue'] = evaluated == 0
-
             return render(request, self.template, context)
 
         return redirect('home')
@@ -711,7 +710,7 @@ class IssueEvaluationFilter(JSONResponseMixin, CreateView):
         init_date = request.GET['init_date']
         end_date = request.GET['end_date']
 
-        resolve = {'1': 0, '3': 0,'5': 0}
+        resolve = {'1': 0, '3': 0, '5': 0}
         time = {'1': 0, '2': 0, '3': 0, '5': 0}
         difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
         contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}

@@ -1,7 +1,11 @@
 {% extends "bugtracker/index.html" %}
 
 {% block content %}
+    {% if evalue %}
 
+    {% else %}
+        <h4 id="book" style="color: red">Tiene incidencias pendientes por evaluar.</h4>
+    {% endif %}
     <div class="row">
         <div class="col-md-6">
             <h1>
@@ -120,7 +124,7 @@
             </thead>
             <tbody>
             {% for issue in object_list %}
-                <tr style="background-color: {{ issue.status.bg_color }}">
+                <tr {% comment %}style="background-color: {{ issue.status.bg_color }}"{% endcomment %}>
                     <td class="text-center">{{ issue.id }}</td>
                     <td class="text-center">
                         <i class="fa fa-{{ issue.type_issue.fa_icon }}"

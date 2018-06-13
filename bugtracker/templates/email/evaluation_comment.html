@@ -1,11 +1,11 @@
 
-<h2>{{ main_message }}</h2>
-<h4>
-    El evaluador <i>{{ user }}</i> ha realizado un nuevo comentario:
-</h4>
-<h4 style="text-align: center;">
-    <i>"{{ comment }}"</i>
-</h4>
+{% comment %}<h2>{{ main_message }}</h2>{% endcomment %}
+
+    <p>El usuario <strong>{{ user }}</strong> ha realizado un nuevo comentario:</p>
+
+<p style="text-align: center;">
+    <a>"{{ comment }}"</a>
+</p>
 <br/><br/>
 <hr/>
 <strong>
