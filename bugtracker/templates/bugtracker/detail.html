@@ -166,9 +166,15 @@
                 <i class="fa fa-reply"></i> Volver
             </a>
 
-            <a class="btn btn-primary" href="{% url 'update' issue.id %}">
-                <i class="fa fa-edit"></i> Editar
-            </a>
+             {% comment %}{% if issue.status.id == 6 or issue.status.id == 5 or issue.status.id == 4 or issue.status.id == 3 %}{% endcomment %}
+                    {% if is_dev %}
+
+                    {% else %}
+                    <a class="btn btn-primary" href="{% url 'update' issue.id %}">
+                    <i class="fa fa-edit"></i> Editar
+                    </a>
+                {% endif %}
+           {% comment %} {% endif %}{% endcomment %}
 
             {% if issue.status.id == 5 %}
                 {% if is_evaluated is not True %}

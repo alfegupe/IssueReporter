@@ -247,6 +247,7 @@ class IssueListView(LoginRequiredMixin, ListView):
             self.request.user, developers_group
         ) or self.request.user.is_superuser else None
         context['paginator_params'] = self.get_params_pagination()
+        context['formissueevaluation'] = CreateIssueEvaluation()
         evaluated = Issue.objects.filter(reporter__user=self.request.user, evaluated=False, status_id=5,
                                          ).exclude(reporter__user__date_joined__year__lt='2017',
                                          reporter__user__date_joined__month__lt='7').count()
