@@ -60,7 +60,7 @@ def send_notification_bug_email(request, issue, is_update=None):
 
         f_from = ''
         to = [request.user.email]
-        # 'edisonml@campus.udes.edu.co'
+        'edisonml@campus.udes.edu.co'
         if issue.reporter:
             rep = issue.reporter
             if issue.status.id == 5:
@@ -404,6 +404,7 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     template_name = 'bugtracker/detail.html'
     slug_field = 'id'
     slug_url_kwarg = 'id_issue'
+    developers_group = 'is_dev'
 
     def get_context_data(self, **kwargs):
         form = super(IssueDetailView, self).get_context_data()
@@ -415,6 +416,8 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         evaluated = IssueEvaluation.objects. \
             filter(issue__id=self.kwargs['id_issue']).all()
         form['is_evaluated'] = True if len(evaluated) > 0 else False
+        form['is_dev'] = (is_member(self.request.user, developers_group) or
+                          self.request.user.is_superuser)
         return form
 
 
