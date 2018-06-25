@@ -2,9 +2,7 @@
 
 {% block content %}
     {% if not is_dev %}
-        {% if evalue  %}
-
-        {% else %}
+        {% if not evalue  %}
             <h4 id="book" style="color: red">Tiene incidencias pendientes por evaluar. </h4>
         {% endif %}
     {% endif %}
