@@ -107,8 +107,13 @@ function excel(opc){
   xhttp.send(data);
 }
 
+var issue_from_list = undefined;
 function saveIssueEvaluation(){
     var issue_id = $("#id_issue").val();
+    if (issue_id == '' && issue_from_list)
+    {
+        issue_id = issue_from_list;
+    }
     var q1 = $("#id_resolve").val();
     var q2 = $("#id_time_evaluation").val();
     var q3 = $("#id_difficulty").val();
