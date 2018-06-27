@@ -91,7 +91,7 @@ def send_notification_bug_email(request, issue, is_update=None):
 def send_notification_new_evaluation_comment_email(issue_id, comments):
     issue = Issue.objects.get(pk=issue_id)
     f_from = ''
-    to = []
+    to = [issue.reporter.user.email]
     if issue.dev:
         if issue.dev.user.email not in to:
             to.append(issue.dev.user.email)
@@ -147,7 +147,6 @@ class IndexView(View):
                                              ).exclude(reporter__user__date_joined__year__lt='2017',
                                                        reporter__user__date_joined__month__lt='7').count()
             context['evalue'] = evaluated == 0
-
             return render(request, self.template, context)
 
         return redirect('home')
@@ -248,6 +247,7 @@ class IssueListView(LoginRequiredMixin, ListView):
             self.request.user, developers_group
         ) or self.request.user.is_superuser else None
         context['paginator_params'] = self.get_params_pagination()
+        context['formissueevaluation'] = CreateIssueEvaluation()
         evaluated = Issue.objects.filter(reporter__user=self.request.user, evaluated=False, status_id=5,
                                          ).exclude(reporter__user__date_joined__year__lt='2017',
                                          reporter__user__date_joined__month__lt='7').count()
@@ -404,6 +404,7 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     template_name = 'bugtracker/detail.html'
     slug_field = 'id'
     slug_url_kwarg = 'id_issue'
+    developers_group = 'is_dev'
 
     def get_context_data(self, **kwargs):
         form = super(IssueDetailView, self).get_context_data()
@@ -415,6 +416,8 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         evaluated = IssueEvaluation.objects. \
             filter(issue__id=self.kwargs['id_issue']).all()
         form['is_evaluated'] = True if len(evaluated) > 0 else False
+        form['is_dev'] = (is_member(self.request.user, developers_group) or
+                          self.request.user.is_superuser)
         return form
 
 
@@ -711,7 +714,7 @@ class IssueEvaluationFilter(JSONResponseMixin, CreateView):
         init_date = request.GET['init_date']
         end_date = request.GET['end_date']
 
-        resolve = {'1': 0, '3': 0,'5': 0}
+        resolve = {'1': 0, '3': 0, '5': 0}
         time = {'1': 0, '2': 0, '3': 0, '5': 0}
         difficulty = {'1': 0, '2': 0, '3': 0, '5': 0}
         contact = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
