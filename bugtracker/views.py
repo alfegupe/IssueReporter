@@ -37,7 +37,7 @@ def send_notification_bug_email(request, issue, is_update=None):
     try:
         id_issue = issue.id
         if issue.status_id == 5:
-            op = "cerrada"
+            op = "Solucionada"
         elif is_update:
             op = "actualizada"
         else:
@@ -527,10 +527,19 @@ class IssueEvaluationView(JSONResponseMixin, CreateView):
         ev.save()
         if ev:
             # send_notification_new_evaluation_comment_email(id, comments)
-            Issue.objects.filter(pk=id).update(evaluated=True)
+            cerrado = StatusIssue.objects.get(status='Cerrada')
+            Issue.objects.filter(pk=id).update(evaluated=True, status=cerrado)
+            messages.success(
+                self.request,
+                'Incidencia evaluada.'
+            )
             return JsonResponse(
                 {'code': 200, 'msg': 'Se ha creado...'}, safe=False)
         else:
+            messages.error(
+                self.request,
+                'Incidencia no se pudo evaluada.'
+            )
             return JsonResponse(
                 {'code': 400, 'msg': 'No se ha creado...'}, safe=False)
 

@@ -137,9 +137,7 @@ function saveIssueEvaluation(){
         }).done(function(response) {
             if(response.code == 200){
                 //alert(JSON.stringify(response.msg));
-                window.location.href = "/bugtracker/home/?id=&issue=&type_issue=&priority=&status=&software=&headquarter=&browser=&dev=&date=&is_closed=on";
-            }else{
-                alert(JSON.stringify(response.msg));
+                window.location.href = "/bugtracker/home/";
             }
         });
     }else{
