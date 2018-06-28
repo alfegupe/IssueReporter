@@ -180,6 +180,8 @@ class UpdateIssueAdminForm(forms.ModelForm):
             widget=forms.Select(attrs={'class': 'form-control input-sm',
                                        'required': False})
         )
+        self.fields['status'].queryset = StatusIssue.objects.exclude\
+            (status__icontains='cerrada')
 
 
 class SearchIssueForm(forms.ModelForm):
