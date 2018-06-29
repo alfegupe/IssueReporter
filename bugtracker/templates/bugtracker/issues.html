@@ -3,7 +3,18 @@
 {% block content %}
     {% if not is_dev %}
         {% if not evalue  %}
-            <h4 id="book" style="color: red">Tiene incidencias pendientes por evaluar. </h4>
+            <div class="messages">
+
+                <div class="alert alert-primary alert-warning alert-dismissible text-center" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong style="color: #a94442">Tiene incidencias pendientes por evaluar. <a class="btn btn-warning btn-sm" href="{% url 'home' %}?is_evaluated=on">
+                    Ver aqui
+                </a></strong>
+                </div>
+
+            </div>
         {% endif %}
     {% endif %}
     <div class="row">
@@ -87,11 +98,11 @@
                         <option value="dsc">Descendente</option>
                     </select>
                 </div>
-               {% comment %}<div class="form-group well well-sm" style="padding: 3px;">
+               <div class="form-group well well-sm" style="padding: 3px;">
                     <label for="id_is_closed">
-                        {{ form_search.is_closed }} Sin Evaluar
+                        {{ form_search.is_evaluated }} Sin Evaluar
                     </label>
-                </div>{% endcomment %}
+                </div>
                 <button type="submit" class="btn btn-default btn-sm">
                     <i class="fa fa-search"></i> Filtrar
                 </button>

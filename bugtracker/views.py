@@ -27,6 +27,8 @@ import json
 # names Groups:
 reporters_group = 'Reporter'
 developers_group = 'Developer'
+solved_status = StatusIssue.objects.get(status='Solucionada')
+closed_status = StatusIssue.objects.get(status='Cerrada')
 
 
 def is_member(user, group):
@@ -259,9 +261,13 @@ class IssueListView(LoginRequiredMixin, ListView):
         date = ""
         issues = ""
         show_in_main_list = True
-        if 'is_closed' in query:
-            show_in_main_list = False if query['is_closed'] == 'on' else True
-            del query['is_closed']
+        if 'is_evaluated' in query:
+            # show_in_main_list = False if query['is_evaluated'] == 'on' else True
+            query['evaluated'] = False if query['is_evaluated'] == 'on' else True
+            query['status'] = solved_status
+            query['reporter'] = Person.objects.get(user=self.request.user)
+
+            del query['is_evaluated']
 
         if 'date' in query:
             date = query['date']
@@ -270,8 +276,9 @@ class IssueListView(LoginRequiredMixin, ListView):
         if not self.request.user.is_superuser and \
                 not is_member(self.request.user, developers_group):
             query['reporter'] = Person.objects.get(user=self.request.user)
-        query['status__show_in_main_list'] = show_in_main_list
+        # query['status__show_in_main_list'] = show_in_main_list
 
+        print query
         if date == "asc":
             issues = self.model.objects.filter(**query).order_by('created_at')
         elif date == "dsc":
