@@ -3,7 +3,18 @@
 {% block content %}
     {% if not is_dev %}
         {% if not evalue  %}
-            <h4 id="book" style="color: red">Tiene incidencias pendientes por evaluar. </h4>
+            <div class="messages">
+
+                <div class="alert alert-primary alert-warning alert-dismissible text-center" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong style="color: #a94442">Tiene incidencias pendientes por evaluar. <a class="btn btn-warning btn-sm" href="{% url 'home' %}?is_evaluated=on">
+                    Ver aqui
+                </a></strong>
+                </div>
+
+            </div>
         {% endif %}
     {% endif %}
     <div class="row">
@@ -59,19 +70,16 @@
                 </div>
                 <div class="form-group">
                     {{ form_search.headquarter }}
-                </div><div class="form-group">
-                    {{ form_search.sprint }}
                 </div>
+                {% comment %}{% if user.is_superuser %}
                 <div class="form-group">
-                    {{ form_search.browser }}
-                </div>
-
-                {% if user.is_superuser %}
-                {% comment %}<div class="form-group">
                     {{ form_search.reporter }}
-                </div>{% endcomment %}
-                {% endif %}
+                </div>
+                {% endif %}{% endcomment %}
                 {% if is_dev %}
+                    <div class="form-group">
+                    {{ form_search.sprint }}
+                    </div>
                     <div class="form-group">
                         {{ form_search.dev }}
                     </div>
@@ -81,17 +89,19 @@
 
                 {% endif %}
                 <div class="form-group">
-                    <select name="date" id="date" class="form-control">
-                        <option value="">-- Fecha</option>
-                        <option value="asc">Ascendente</option>
-                        <option value="dsc">Descendente</option>
-                    </select>
+                    {{ form_search.browser }}
                 </div>
-               {% comment %}<div class="form-group well well-sm" style="padding: 3px;">
+                <div class="form-group">
+                    {{ form_search.date_init }}
+                </div>
+                <div class="form-group">
+                    {{ form_search.date_end }}
+                </div>
+               <div class="form-group well well-sm" style="padding: 3px;">
                     <label for="id_is_closed">
-                        {{ form_search.is_closed }} Sin Evaluar
+                        {{ form_search.is_evaluated }} Sin Evaluar
                     </label>
-                </div>{% endcomment %}
+                </div>
                 <button type="submit" class="btn btn-default btn-sm">
                     <i class="fa fa-search"></i> Filtrar
                 </button>
@@ -230,12 +240,69 @@
     {% else %}
         <p class="text-info">No se encontraron incidencias.</p>
     {% endif %}
+
+{% endblock %}
+{% block javascript %}
+    {{ block.super }}
 <script type="text/javascript">
   function miFuncion() {
 
     alertify.warning('Tiene incidencias pendientes por evaluar.');
 
   }
-</script>
+  $(document).ready(function(){
+    $('#date_init').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true,
+    language: 'es',
+    format: 'dd-mm-yyyy',
+    //endDate: new Date()
+    });
+    $('#date_end').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true,
+    language: 'es',
+    format: 'dd-mm-yyyy',
+    //endDate: new Date()
+    });
 
+
+  });
+
+$('#date_init').on('changeDate', function (event) {
+    value_date_init = $('#date_init').val();
+    if($('#date_end').val() === ''){
+    $('#date_end').val();
+    }
+
+    $('#date_end').datepicker("remove");
+    id = value_date_init.split("-");
+    var data_init = new Date(parseInt(id[2]), parseInt(id[1])-1, parseInt(id[0]))
+    $('#date_end').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true,
+    language: 'es',
+    startDate: data_init,
+    format: 'dd-mm-yyyy',
+    endDate: new Date()
+    });
+});
+
+{% comment %}$("#date_end").on('focusin', function () {
+    value_date_init = $('#date_init').val();
+    if(value_date_init === '') {
+    alertify.warning("Debe seleccionar la fecha de inicio.");
+    }
+}){% endcomment %}
+
+</script>
 {% endblock %}

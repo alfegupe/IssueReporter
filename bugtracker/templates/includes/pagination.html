@@ -1,44 +1,53 @@
 
 {% if is_paginated %}
-    <ul class="pagination">
-        <li>
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}{{ paginator_params }}">
-                    <i class="fa fa-angle-double-left"></i>
-                </a>
-            {% else %}
-                <span class="text-muted">
-                    <i class="fa fa-angle-double-left"></i>
-                </span>
-            {% endif %}
-        </li>
-
-        {% for page_number in paginator.page_range %}
-            {% if page_number == page_obj.number %}
-                <li class="active">
-                    <span>{{ page_number }}</span>
-                </li>
-            {% else %}
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <ul class="pagination">
                 <li>
-                    <a href="?page={{ page_number }}{{ paginator_params }}">
-                        {{ page_number }}
-                    </a>
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; Primera</a>
+                        <a href="?page={{ page_obj.previous_page_number }}{{ paginator_params }}">
+                            <i class="fa fa-angle-double-left"></i>
+                        </a>
+                    {% comment %}{% else %}
+                        <span class="text-muted">
+                            <i class="fa fa-angle-double-left"></i>
+                        </span>{% endcomment %}
+                    {% endif %}
                 </li>
-            {% endif %}
-        {% endfor %}
 
-        <li>
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{{ paginator_params }}">
-                    <i class="fa fa-angle-double-right"></i>
-                </a>
-            {% else %}
-                <span class="text-muted">
-                    <i class="fa fa-angle-double-right"></i>
-                </span>
-            {% endif %}
-        </li>
-    </ul>
+                {% for page_number in paginator.page_range %}
+                    {% if forloop.counter in custom_page_range %}
+                        {% if page_number == page_obj.number %}
+                            <li class="active">
+                                <span>{{ page_number }}</span>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="?page={{ page_number }}{{ paginator_params }}">
+                                    {{ page_number }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+
+                <li>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{{ paginator_params }}">
+                            <i class="fa fa-angle-double-right"></i>
+                        </a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">Ultima &raquo;</a>
+                        {% comment %}{% else %}
+                        <span class="text-muted">
+                            <i class="fa fa-angle-double-right"></i>
+                        </span>{% endcomment %}
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endif %}
 
 {#{% if is_paginated %}#}

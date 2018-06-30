@@ -134,8 +134,8 @@
   padding: 0;
 }
 .alertify.ajs-no-padding:not(.ajs-maximized) .ajs-body {
-  margin-left: -24px;
-  margin-right: -24px;
+  margin-left: -4px;
+  margin-right: -4px;
 }
 .alertify.ajs-no-padding:not(.ajs-maximized) .ajs-body .ajs-content {
   padding: 0;

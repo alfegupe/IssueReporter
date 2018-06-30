@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 
+import datetime
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, \
     update_session_auth_hash
@@ -22,11 +23,13 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
-import json
+
 
 # names Groups:
 reporters_group = 'Reporter'
 developers_group = 'Developer'
+solved_status = StatusIssue.objects.get(status='Solucionada')
+closed_status = StatusIssue.objects.get(status='Cerrada')
 
 
 def is_member(user, group):
@@ -238,7 +241,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     model = Issue
     template_name = 'bugtracker/issues.html'
     login_url = 'login'
-    paginate_by = 20
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         context = super(IssueListView, self).get_context_data(**kwargs)
@@ -252,6 +255,18 @@ class IssueListView(LoginRequiredMixin, ListView):
                                          ).exclude(reporter__user__date_joined__year__lt='2017',
                                          reporter__user__date_joined__month__lt='7').count()
         context['evalue'] = evaluated == 0
+        paginator = context['paginator']
+        page = int(self.request.GET.get('page', 1))
+        upper_limit = page + 5 if page > 6 else 11
+
+        if page == paginator.num_pages or page > (paginator.num_pages - 5):
+            lower_limit = paginator.num_pages - 10
+        elif page > 5:
+            lower_limit = page - 5
+        else:
+            lower_limit = 1
+
+        context['custom_page_range'] = xrange(lower_limit, upper_limit)
         return context
 
     def get_queryset(self):
@@ -259,18 +274,35 @@ class IssueListView(LoginRequiredMixin, ListView):
         date = ""
         issues = ""
         show_in_main_list = True
-        if 'is_closed' in query:
-            show_in_main_list = False if query['is_closed'] == 'on' else True
-            del query['is_closed']
+        if 'is_evaluated' in query:
+            # show_in_main_list = False if query['is_evaluated'] == 'on' else True
+            query['evaluated'] = False if query['is_evaluated'] == 'on' else True
+            query['status'] = solved_status
+            query['reporter'] = Person.objects.get(user=self.request.user)
 
-        if 'date' in query:
-            date = query['date']
-            del query['date']
+            del query['is_evaluated']
+
+        if 'date_init' in query:
+            date_init = query['date_init'].split('-')
+            year = int(date_init[2])
+            month = int(date_init[1])
+            day = int(date_init[0])
+            date = datetime.datetime(year, month, day)
+            query['created_at__gte'] = date
+            del query['date_init']
+        if 'date_end' in query:
+            date_end = query['date_end'].split('-')
+            year = int(date_end[2])
+            month = int(date_end[1])
+            day = int(date_end[0])
+            date = datetime.date(year, month, day)
+            query['created_at__lt'] = date
+            del query['date_end']
 
         if not self.request.user.is_superuser and \
                 not is_member(self.request.user, developers_group):
             query['reporter'] = Person.objects.get(user=self.request.user)
-        query['status__show_in_main_list'] = show_in_main_list
+        # query['status__show_in_main_list'] = show_in_main_list
 
         if date == "asc":
             issues = self.model.objects.filter(**query).order_by('created_at')
@@ -292,6 +324,7 @@ class IssueListView(LoginRequiredMixin, ListView):
         except Exception as e:
             print e.message
         finally:
+            print params
             return params
 
     def get_params_pagination(self):
