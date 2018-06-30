@@ -188,7 +188,7 @@ class SearchIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = [
-            'id', 'issue', 'software', 'headquarter', 'sprint', 'browser', 'priority',
+            'id', 'issue', 'software', 'headquarter', 'sprint', 'priority',
             'type_issue', 'status', 'reporter', 'dev',
         ]
         select_attr = {'class': 'form-control input-sm', 'required': False}
@@ -204,7 +204,6 @@ class SearchIssueForm(forms.ModelForm):
             'sprint': forms.TextInput(
                 attrs={'class': 'form-control input-sm',
                        'placeholder': 'Buscar por sprint'}),
-            'browser': forms.Select(attrs=select_attr),
             'priority': forms.Select(attrs=select_attr),
             'type_issue': forms.Select(attrs=select_attr),
             'status': forms.Select(attrs=select_attr),
@@ -216,9 +215,16 @@ class SearchIssueForm(forms.ModelForm):
         super(SearchIssueForm, self).__init__(*args, **kwargs)
         self.fields['is_evaluated'] = \
             forms.BooleanField()
+        self.fields['date_init'] = forms.DateField(
+            widget=forms.TextInput(
+                attrs={'class': 'form-control input-sm', 'id': 'date_init',
+                       'placeholder': 'Fecha inicial'}))
+        self.fields['date_end'] = forms.DateField(
+            widget=forms.TextInput(
+                attrs={'class': 'form-control input-sm', 'id': 'date_end',
+                       'placeholder': 'Fecha Final'}))
         self.fields['software'].empty_label = '-- sistema'
         self.fields['headquarter'].empty_label = '-- sede'
-        self.fields['browser'].empty_label = '-- navegador'
         self.fields['priority'].empty_label = '-- prioridad'
         self.fields['type_issue'].empty_label = '-- tipo'
         self.fields['status'].empty_label = '-- estado'
