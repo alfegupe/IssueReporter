@@ -217,12 +217,12 @@ class SearchIssueForm(forms.ModelForm):
             forms.BooleanField()
         self.fields['date_init'] = forms.DateField(
             widget=forms.TextInput(
-                attrs={'class': 'form-control input-sm', 'id': 'date_init',
-                       'placeholder': 'Fecha inicial'}))
+                attrs={'class': 'form-control input-sm', 'readonly': 'readonly',
+                       'id': 'date_init', 'placeholder': 'Fecha inicial'}))
         self.fields['date_end'] = forms.DateField(
             widget=forms.TextInput(
-                attrs={'class': 'form-control input-sm', 'id': 'date_end',
-                       'placeholder': 'Fecha Final'}))
+                attrs={'class': 'form-control input-sm', 'readonly': 'readonly',
+                       'id': 'date_end', 'placeholder': 'Fecha Final'}))
         self.fields['software'].empty_label = '-- sistema'
         self.fields['headquarter'].empty_label = '-- sede'
         self.fields['priority'].empty_label = '-- prioridad'
