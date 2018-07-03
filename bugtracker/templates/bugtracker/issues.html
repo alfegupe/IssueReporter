@@ -258,7 +258,7 @@
     calendarWeeks: true,
     autoclose: true,
     language: 'es',
-    format: 'dd-mm-yyyy',
+    format: 'dd/mm/yyyy',
     //endDate: new Date()
     });
     $('#date_end').datepicker({
@@ -268,7 +268,7 @@
     calendarWeeks: true,
     autoclose: true,
     language: 'es',
-    format: 'dd-mm-yyyy',
+    format: 'dd/mm/yyyy',
     //endDate: new Date()
     });
 
@@ -282,7 +282,7 @@ $('#date_init').on('changeDate', function (event) {
     }
 
     $('#date_end').datepicker("remove");
-    id = value_date_init.split("-");
+    id = value_date_init.split("/");
     var data_init = new Date(parseInt(id[2]), parseInt(id[1])-1, parseInt(id[0]))
     $('#date_end').datepicker({
     todayBtn: "linked",
@@ -292,7 +292,7 @@ $('#date_init').on('changeDate', function (event) {
     autoclose: true,
     language: 'es',
     startDate: data_init,
-    format: 'dd-mm-yyyy',
+    format: 'dd/mm/yyyy',
     endDate: new Date()
     });
 });

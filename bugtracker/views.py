@@ -283,7 +283,7 @@ class IssueListView(LoginRequiredMixin, ListView):
             del query['is_evaluated']
 
         if 'date_init' in query:
-            date_init = query['date_init'].split('-')
+            date_init = query['date_init'].split('/')
             year = int(date_init[2])
             month = int(date_init[1])
             day = int(date_init[0])
@@ -291,12 +291,12 @@ class IssueListView(LoginRequiredMixin, ListView):
             query['created_at__gte'] = date
             del query['date_init']
         if 'date_end' in query:
-            date_end = query['date_end'].split('-')
+            date_end = query['date_end'].split('/')
             year = int(date_end[2])
             month = int(date_end[1])
             day = int(date_end[0])
-            date = datetime.date(year, month, day)
-            query['created_at__lt'] = date
+            date = datetime.datetime(year, month, day, 23)
+            query['created_at__lte'] = date
             del query['date_end']
 
         if not self.request.user.is_superuser and \
