@@ -193,12 +193,12 @@ class SearchIssueForm(forms.ModelForm):
         ]
         select_attr = {'class': 'form-control input-sm', 'required': False}
         widgets = {
-            'id': forms.TextInput(
+            'id': forms.NumberInput(
                 attrs={'class': 'form-control input-sm',
                        'placeholder': 'Buscar por id'}),
             'issue': forms.TextInput(
                 attrs={'class': 'form-control input-sm',
-                       'placeholder': 'Buscar por nombre'}),
+                       'placeholder': 'Buscar por nombre', 'autocomplete': 'off'}),
             'software': forms.Select(attrs=select_attr),
             'headquarter': forms.Select(attrs=select_attr),
             'sprint': forms.TextInput(
