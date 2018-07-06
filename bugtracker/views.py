@@ -63,7 +63,7 @@ def send_notification_bug_email(request, issue, is_update=None):
 
         f_from = ''
         to = [request.user.email]
-        # 'edisonml@campus.udes.edu.co'
+        'edisonml@campus.udes.edu.co'
         if issue.reporter:
             rep = issue.reporter
             if issue.status.id == 5:
