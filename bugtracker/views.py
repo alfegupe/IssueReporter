@@ -281,7 +281,6 @@ class IssueListView(LoginRequiredMixin, ListView):
             query['reporter'] = Person.objects.get(user=self.request.user)
 
             del query['is_evaluated']
-
         if 'date_init' in query:
             date_init = query['date_init'].split('/')
             year = int(date_init[2])
@@ -319,12 +318,11 @@ class IssueListView(LoginRequiredMixin, ListView):
         try:
             for key in self.request.GET:
                 if self.request.GET[key] != '' and key != 'page':
-                    k = key + '__contains' if key == 'issue' else key
+                    k = key + '__icontains' if key == 'issue' else key
                     params[k] = self.request.GET[key]
         except Exception as e:
             print e.message
         finally:
-            print params
             return params
 
     def get_params_pagination(self):

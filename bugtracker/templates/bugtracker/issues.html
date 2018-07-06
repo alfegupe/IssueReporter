@@ -49,9 +49,8 @@
                 </div>
                 <div class="form-group">
                     <input class="form-control input-sm"
-                           id="id" maxlength="300"
-                           name="id" placeholder="Buscar por ID"
-                           type="number" required="">
+                           id="id" maxlength="300" type="text" autocomplete="off"
+                           name="id" placeholder="Buscar por ID" required="" onkeypress="return valida(event)">
                 </div>
                 <div class="form-group">
                     {{ form_search.issue }}
@@ -296,6 +295,19 @@ $('#date_init').on('changeDate', function (event) {
     endDate: new Date()
     });
 });
+    function valida(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+
+    //Tecla de retroceso para borrar, siempre la permite
+    if (tecla==8){
+        return true;
+    }
+
+    // Patron de entrada, en este caso solo acepta numeros
+    patron =/[0-9]/;
+    tecla_final = String.fromCharCode(tecla);
+    return patron.test(tecla_final);
+}
 
 {% comment %}$("#date_end").on('focusin', function () {
     value_date_init = $('#date_init').val();
