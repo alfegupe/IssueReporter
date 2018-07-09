@@ -40,79 +40,86 @@
             {% endif %}
         </div>
     </div>
-    <hr/>
+
+    <strong>Filtrar:</strong>
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <form class="form-inline" action="" id="filter" method="get" novalidate>
+        <div class="col-md-12">
+            <form class="form-horizontal" action="" id="filter" method="get" novalidate>
                 <div class="form-group">
-                    <strong>Filtrar:</strong>
-                </div>
-                <div class="form-group">
-                    <input class="form-control input-sm"
-                           id="id" maxlength="300" type="text" autocomplete="off"
-                           name="id" placeholder="Buscar por ID" required="" onkeypress="return valida(event)">
-                </div>
-                <div class="form-group">
-                    {{ form_search.issue }}
-                </div>
-                <div class="form-group">
-                    {{ form_search.type_issue }}
-                </div>
-                <div class="form-group">
-                    {{ form_search.priority }}
-                </div>
-                <div class="form-group">
-                    {{ form_search.status }}
-                </div>
-                <div class="form-group">
-                    {{ form_search.software }}
-                </div>
-                <div class="form-group">
-                    {{ form_search.headquarter }}
-                </div>
-                {% comment %}{% if user.is_superuser %}
-                <div class="form-group">
-                    {{ form_search.reporter }}
-                </div>
-                {% endif %}{% endcomment %}
-                {% if is_dev %}
-                    <div class="form-group">
-                    {{ form_search.sprint }}
+                    <div class="col-lg-2">
+                    <input class="form-control input-sm"  id="id" maxlength="300"
+                           type="text" autocomplete="off" name="id"
+                           placeholder="Buscar por ID" required=""
+                           onkeypress="return valida(event)">
                     </div>
-                    <div class="form-group">
-                        {{ form_search.dev }}
+                    <div class="col-lg-2">
+                        {{ form_search.issue }}
                     </div>
-                    <div class="form-group">
-                    {{ form_search.reporter }}
+                    <div class="col-lg-2">
+                        {{ form_search.sprint }}
                     </div>
+                    <div class="col-lg-2">
+                        {{ form_search.type_issue }}
+                    </div>
+                    <div class="col-lg-2">
+                        {{ form_search.priority }}
+                    </div>
+                    <div class="col-lg-2">
+                        {{ form_search.status }}
+                    </div>
+                </div>
 
-                {% endif %}
                 <div class="form-group">
-                    {{ form_search.browser }}
+
+                        <div class="col-lg-2">
+                            {{ form_search.software }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_search.headquarter }}
+                        </div>
+                        {% if is_dev %}
+                            <div class="col-lg-2">
+                            {{ form_search.reporter }}
+                            </div>
+                            <div class="col-lg-2">
+                                {{ form_search.dev }}
+                            </div>
+                        {% endif %}
+
+                        {% comment %}{% if user.is_superuser %}
+                        <div class="form-group">
+                            {{ form_search.reporter }}
+                        </div>
+                        {% endif %}{% endcomment %}
+                        <div class="col-lg-2">
+                            {{ form_search.date_init }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_search.date_end }}
+                        </div>
                 </div>
+
                 <div class="form-group">
-                    {{ form_search.date_init }}
+                    <div class=" col-lg-2 text-center">
+                        <label for="id_is_closed">
+                            {{ form_search.is_evaluated }} Sin Evaluar
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn btn-default btn-sm" style="width: 100%">
+                            <i class="fa fa-search"></i> Filtrar
+                        </button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" onclick="excel('1')" class="btn btn-success btn-sm"
+                        style="width: 100%">
+                            <i class="fa fa-file-excel-o"></i> Ver en Excel
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    {{ form_search.date_end }}
-                </div>
-               <div class="form-group well well-sm" style="padding: 3px;">
-                    <label for="id_is_closed">
-                        {{ form_search.is_evaluated }} Sin Evaluar
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-default btn-sm">
-                    <i class="fa fa-search"></i> Filtrar
-                </button>
-                <button type="button" onclick="excel('1')" class="btn btn-success btn-sm">
-                    <i class="fa fa-file-excel-o"></i> Ver en Excel
-                </button>
             </form>
-
         </div>
     </div>
-    <hr>
-
     {% include "includes/messages.html" %}
 
     {% if object_list %}
