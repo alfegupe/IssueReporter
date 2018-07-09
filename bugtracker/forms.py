@@ -203,7 +203,7 @@ class SearchIssueForm(forms.ModelForm):
             'headquarter': forms.Select(attrs=select_attr),
             'sprint': forms.TextInput(
                 attrs={'class': 'form-control input-sm',
-                       'placeholder': 'Buscar por sprint'}),
+                       'placeholder': 'Buscar por sprint', 'autocomplete': 'off'}),
             'priority': forms.Select(attrs=select_attr),
             'type_issue': forms.Select(attrs=select_attr),
             'status': forms.Select(attrs=select_attr),
