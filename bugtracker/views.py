@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import datetime
+
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, \
     update_session_auth_hash
@@ -123,7 +124,8 @@ class IndexView(View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
             return redirect('login')
-
+        if 'filter' in self.request.session:
+            del self.request.session['filter']
         if self.request.user.is_superuser or \
                 is_member(self.request.user, developers_group):
             context = {}
@@ -245,7 +247,11 @@ class IssueListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(IssueListView, self).get_context_data(**kwargs)
-        context['form_search'] = SearchIssueForm(data=self.request.GET)
+        if self.request.GET:
+            self.request.session['filter'] = self.request.GET
+        elif not'filter' in self.request.session:
+            self.request.session['filter'] = {}
+        context['form_search'] = SearchIssueForm(data=self.request.session['filter'])
         context['is_dev'] = True if is_member(
             self.request.user, developers_group
         ) or self.request.user.is_superuser else None
@@ -314,12 +320,16 @@ class IssueListView(LoginRequiredMixin, ListView):
         return issues
 
     def get_params_search(self):
+        if self.request.GET:
+            self.request.session['filter'] = self.request.GET
+        elif not 'filter' in self.request.session:
+            self.request.session['filter'] = {}
         params = {}
         try:
-            for key in self.request.GET:
-                if self.request.GET[key] != '' and key != 'page':
+            for key in self.request.session['filter']:
+                if self.request.session['filter'][key] != '' and key != 'page':
                     k = key + '__icontains' if key == 'issue' else key
-                    params[k] = self.request.GET[key]
+                    params[k] = self.request.session['filter'][key]
         except Exception as e:
             print e.message
         finally:
@@ -449,6 +459,7 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         form['is_evaluated'] = True if len(evaluated) > 0 else False
         form['is_dev'] = (is_member(self.request.user, developers_group) or
                           self.request.user.is_superuser)
+        self.request.session['http_referer'] = self.request.META['HTTP_REFERER']
         return form
 
 
