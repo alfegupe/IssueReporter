@@ -459,9 +459,7 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         form['is_evaluated'] = True if len(evaluated) > 0 else False
         form['is_dev'] = (is_member(self.request.user, developers_group) or
                           self.request.user.is_superuser)
-
         self.request.session['http_referer'] = self.request.META['HTTP_REFERER']
-        print self.request.META
         return form
 
 
