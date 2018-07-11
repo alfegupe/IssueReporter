@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import datetime
-
+import xlsxwriter
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, \
     update_session_auth_hash
@@ -495,40 +495,70 @@ class ExportXlsx(JSONResponseMixin, CreateView):
     def get(self, request, *args, **kwargs):
         from xlsxwriter.workbook import Workbook
         from io import BytesIO
-
         query = self.get_params_search()
         if query:
             output = BytesIO()
-
             book = Workbook(output)
+            header5 = book.add_format({
+                'align': 'center',
+                'border': 1,
+                'bold': 'True',
+                'bg_color': '#F2F2F2'
+
+            })
+            header4 = book.add_format({
+                'align': 'center',
+                'border': 1,
+                'bold': 'True',
+                'bg_color': '#D8D8D8'
+
+
+            })
+            header3 = book.add_format({
+                'border': 1
+            })
+            header2 = book.add_format({
+                'align': 'center',
+                'border': 1
+            })
             header = book.add_format({
                 'bg_color': '#F7F7F7',
                 'color': 'black',
                 'align': 'center',
-                'valign': 'top',
+                'bold': 'True',
+                'valign': 'auto',
                 'border': 1
             })
+
             sheet = book.add_worksheet('Listado')
-            row = 1
-            sheet.write(0, 0, "ID", header)
-            sheet.write(0, 1, "NOMBRE", header)
-            sheet.write(0, 2, "REPORTADA", header)
-            sheet.write(0, 3, "TIPO", header)
-            sheet.write(0, 4, "ESTADO", header)
-            sheet.write(0, 5, "SOFTWARE", header)
-            sheet.write(0, 6, "ASIGNADO A", header)
+            row = 6
+
+            sheet.merge_range('B2:J2', 'REPORTEADOR DE INCIDENCIAS OPTIMUS APP', header4)
+            sheet.merge_range('B4:J4', 'LISTADO DE INCIDENCIAS', header5)
+            sheet.write(5, 1, "ID", header)
+            sheet.write(5, 2, "NOMBRE", header)
+            sheet.write(5, 3, "REPORTADA POR", header)
+            sheet.write(5, 4, "TIPO", header)
+            sheet.write(5, 5, "ESTADO", header)
+            sheet.write(5, 6, "SISTEMA", header)
+            sheet.write(5, 7, "ASIGNADO A", header)
+            sheet.write(5, 8, "FECHA REPORTE", header)
+            sheet.write(5, 9, "SPRINT", header)
             data = self.model.objects.all().filter(**query)
             for issue in data:
-                sheet.write(row, 0, issue.id, header)
-                sheet.write(row, 1, issue.issue)
-                sheet.write(row, 2, str(issue.created_at).split(" ")[0])
-                sheet.write(row, 3, issue.type_issue.type_issue)
-                sheet.write(row, 4, issue.status.status)
-                sheet.write(row, 5, issue.software.software)
+                sheet.write(row, 1, issue.id, header2)
+                sheet.write(row, 2, issue.issue, header3)
+                sheet.write(row, 3, str(issue.reporter.user), header3)
+                sheet.write(row, 4, issue.type_issue.type_issue, header3)
+                sheet.write(row, 5, issue.status.status, header3)
+                sheet.write(row, 6, issue.software.software, header3)
+                sheet.write(row, 8, str(issue.created_at).split(" ")[0], header2)
+                sheet.write(row, 9, issue.sprint, header2)
+
                 if issue.dev:
-                    sheet.write(row, 6, str(issue.dev).decode('utf-8'))
+                    sheet.write(row, 7, str(issue.dev).decode('utf-8'), header3)
                 else:
-                    sheet.write(row, 6, '--')
+                    sheet.write(row, 10, '')
                 row += 1
             book.close()
             output.seek(0)
@@ -543,7 +573,7 @@ class ExportXlsx(JSONResponseMixin, CreateView):
     def get_params_search(self):
         params = {}
         try:
-            params['status__id__lt'] = 4
+            params['status__id__lt'] = 8
             for i in self.request.GET:
                 if self.request.GET.get(i):
                     params[i] = self.request.GET.get(i)
