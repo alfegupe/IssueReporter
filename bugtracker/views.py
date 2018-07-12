@@ -544,7 +544,7 @@ class ExportXlsx(JSONResponseMixin, CreateView):
             sheet.write(5, 7, "ASIGNADO A", header)
             sheet.write(5, 8, "FECHA REPORTE", header)
             sheet.write(5, 9, "SPRINT", header)
-            data = self.model.objects.all().filter(**query)
+            data = self.model.objects.all().filter(**query).order_by('-created_at')
             for issue in data:
                 sheet.write(row, 1, issue.id, header2)
                 sheet.write(row, 2, issue.issue, header3)
