@@ -94,7 +94,7 @@ def send_notification_bug_email(request, issue, is_update=None):
 
 def send_notification_new_evaluation_comment_email(issue_id, comments):
     issue = Issue.objects.get(pk=issue_id)
-    f_from = ''
+    f_from = 'edisonml@campus.udes.edu.co'
     to = [issue.reporter.user.email]
     if issue.dev:
         if issue.dev.user.email not in to:
