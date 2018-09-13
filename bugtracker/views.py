@@ -63,8 +63,7 @@ def send_notification_bug_email(request, issue, is_update=None):
         html_content = htmly.render(d)
 
         f_from = ''
-        to = [request.user.email]
-        'edisonml@campus.udes.edu.co'
+        to = [request.user.email, 'edisonml@campus.udes.edu.co']
         if issue.reporter:
             rep = issue.reporter
             if issue.status.id == 5:
